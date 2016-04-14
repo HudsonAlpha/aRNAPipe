@@ -1,0 +1,37 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% ANALYSIS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+trimgalore	20/NA/NA
+fastqc	10/NA/NA
+kallisto	10/NA/NA
+star	12/40/5
+star-fusion	10/NA/NA
+picard	10/NA/NA
+htseq-gene	10/NA/NA
+htseq-exon	10/NA/NA
+varscan	10/NA/NA
+gatk	20/30/NA
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% GENOME REFERENCES
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+genome_build	g1k_v37
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% HPC CONFIG
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+wt	400:00
+q	normal
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% ADDITIONAL PROGRAM OPTIONS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+kalboot	20	Number of bootstraps for Kallisto analysis
+trimgal_args	--illumina
+star2pass	yes
+star_args	encode
+star_args_own	--outFilterType BySJout --outFilterMultimapNmax 20 --alignSJoverhangMin 8 --alignSJDBoverhangMin 1 --outFilterMismatchNmax 999 --outFilterMismatchNoverLmax 0.04 --alignIntronMin 20 --alignIntronMax 1000000 --alignMatesGapMax 1000000
+starfusion	default
+starfusion_own	--chimSegmentMin 12 --chimJunctionOverhangMin 12
+varscan_args	--output-vcf 1 --variants 1
+gatk_args	yes|30
+strandedness	no
+htseq-gene-mode	union
+htseq-exon-mode	union

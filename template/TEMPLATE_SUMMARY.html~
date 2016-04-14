@@ -1,0 +1,47 @@
+<!doctype html>
+<html><head><title>#PROJECT: QC #PROG</title>
+<script type="text/javascript" language="javascript" src="./html/lytebox.js"></script>
+<script type="text/javascript" language="javascript" src="./html/jquery-1.12.0.js"></script>
+<script type="text/javascript" language="javascript" src="./html/jquery.dataTables.min.js"></script>
+<script type="text/javascript" language="javascript" src="./html/dataTables.colReorder.min.js"></script>
+<script type="text/javascript" language="javascript" src="./html/amcharts.js"></script>
+<script type="text/javascript" language="javascript" src="./html/xy.js" type="text/javascript"></script>
+<script type="text/javascript" language="javascript" src="./html/serial.js" type="text/javascript"></script>
+<link rel="stylesheet" type="text/css" href="./html/lytebox.css">
+<link rel="stylesheet" type="text/css" href="./html/jquery.dataTables.min.css">
+<link rel="stylesheet" type="text/css" href="./html/style.css">
+<script type="text/javascript" class="init">
+	$(document).ready(function() {$('#DT').DataTable({
+		colReorder: true,
+		'scrollY': '400px',
+		'scrollCollapse': true,
+		'bPaginate': false,
+		'bAutoWidth': false,
+		'sScrollX': '100%'});});
+</script>
+</head>
+<body>
+<title>RNA-Seq pipeline (BEDpipe)</title>
+<h1>RNA-Seq pipeline (BEDpipe)</h1>
+<h2>Project: #PROJECT</h2>
+<div id="menu">
+<h1><a #HIGHLIGHT href="./summary.html">Summary</a></h1>
+<h1><a #HIGHLIGHT href="./hpc.html">HPC statistics</a></h1>
+<h1><a #HIGHLIGHT href="./fastqc.html">QC Raw Data (FastQC)</a></h1>
+<h1>Alignment QC:</h1>
+<h2><a #HIGHLIGHT href="./picard.html">- Picard</a></h2>
+<h2><a #HIGHLIGHT href="./star.html">- STAR</a></h2>
+<h2><a #HIGHLIGHT href="./htseq-gene.html">- HTseq-Gene</a></h2>
+<h2><a #HIGHLIGHT href="./htseq-exon.html">- HTseq-Exon</a></h2>
+<h2><a #HIGHLIGHT href="./star2.html">- STAR</a></h2>
+<h2><a #HIGHLIGHT href="./htseq-gene2.html">- HTseq-Gene</a></h2>
+<h2><a #HIGHLIGHT href="./htseq-exon2.html">- HTseq-Exon</a></h2>
+<h1><a #HIGHLIGHT href="./varscan.html">VARSCAN</a></h1>
+</div>
+<div id="content">
+<h1>SAMPLES & CONFIGURATION</h1>
+<h2>SAMPLES SUMMARY</h2>
+#TABLE1
+<h2>CONFIGURATION FILE</h2>
+#TABLE2
+</div></body></html>

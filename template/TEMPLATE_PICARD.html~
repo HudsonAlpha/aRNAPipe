@@ -1,0 +1,108 @@
+<!doctype html>
+<html><head><title>#PROJECT: QC #PROG</title>
+<script type="text/javascript" language="javascript" src="./html/lytebox.js"></script>
+<script type="text/javascript" language="javascript" src="./html/jquery-1.12.0.js"></script>
+<script type="text/javascript" language="javascript" src="./html/jquery.dataTables.min.js"></script>
+<script type="text/javascript" language="javascript" src="./html/dataTables.colReorder.min.js"></script>
+<script type="text/javascript" language="javascript" src="./html/amcharts.js"></script>
+<script type="text/javascript" language="javascript" src="./html/xy.js" type="text/javascript"></script>
+<script type="text/javascript" language="javascript" src="./html/serial.js" type="text/javascript"></script>
+<link rel="stylesheet" type="text/css" href="./html/lytebox.css">
+<link rel="stylesheet" type="text/css" href="./html/jquery.dataTables.min.css">
+<link rel="stylesheet" type="text/css" href="./html/style.css">
+<script>
+    var chart;
+    #DATA
+    AmCharts.ready(function () {
+        // SERIALL CHART
+        chart = new AmCharts.AmSerialChart();
+        chart.dataProvider = chartData;
+        chart.categoryField = "sample_id";
+        chart.plotAreaBorderAlpha = 0.2;
+        chart.rotate = false;
+        // AXES
+        // Category
+        var categoryAxis = chart.categoryAxis;
+        categoryAxis.gridAlpha = 0.1;
+        categoryAxis.labelRotation = 90;
+        categoryAxis.axisAlpha = 0;
+        categoryAxis.gridPosition = "start";
+        // value
+        var valueAxis = new AmCharts.ValueAxis();
+        valueAxis.stackType = "regular";
+        valueAxis.gridAlpha = 0.1;
+        valueAxis.axisAlpha = 0;
+        valueAxis.title = "#LABEL";
+        chart.addValueAxis(valueAxis);
+	var valueAxis2 = new AmCharts.ValueAxis();
+        valueAxis2.position = "right";
+        valueAxis2.stackType = "none";
+        valueAxis2.gridAlpha = 0.1;
+        valueAxis2.axisAlpha = 0;
+	valueAxis2.id = "axis2";
+        valueAxis2.title = "CV & BIAS * 100";
+        chart.addValueAxis(valueAxis2);
+        var valueAxis = new AmCharts.ValueAxis();
+        valueAxis.position = "left";
+	valueAxis.stackType = "regular";
+    	valueAxis.id = "axis1";
+        valueAxis.gridAlpha = 0.1;
+        valueAxis.axisAlpha = 0;
+        valueAxis.title = "Mapping statistics per genomic region (%)";
+        chart.addValueAxis(valueAxis);
+        // GRAPHS
+        var graph = new AmCharts.AmGraph(); graph.valueAxis = "axis1"; graph.title = "mRNA-Coding"; graph.valueField = "mRNA-Coding"; graph.type = "column"; graph.lineAlpha = 0; graph.fillAlphas = 1; graph.lineColor = "#FFA500"; graph.balloonText = "<b><span style='color:#afbb86'>[[title]]</b></span><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>"; graph.labelPosition = "middle"; chart.addGraph(graph); var graph = new AmCharts.AmGraph(); graph.valueAxis = "axis1"; graph.title = "mRNA-Ribosomal"; graph.valueField = "mRNA-Ribosomal"; graph.type = "column"; graph.lineAlpha = 0; graph.fillAlphas = 1; graph.lineColor = "#9D26CD"; graph.balloonText = "<b><span style='color:#afbb86'>[[title]]</b></span><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>"; graph.labelPosition = "middle"; chart.addGraph(graph); var graph = new AmCharts.AmGraph(); graph.valueAxis = "axis1"; graph.title = "mRNA-Others"; graph.valueField = "mRNA-Others"; graph.type = "column"; graph.lineAlpha = 0; graph.fillAlphas = 1; graph.lineColor = "#2B5E54"; graph.balloonText = "<b><span style='color:#afbb86'>[[title]]</b></span><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>"; graph.labelPosition = "middle"; chart.addGraph(graph); var graph = new AmCharts.AmGraph(); graph.valueAxis = "axis1"; graph.title = "Intron"; graph.valueField = "Intron"; graph.type = "column"; graph.lineAlpha = 0; graph.fillAlphas = 1; graph.lineColor = "#00FFFF"; graph.balloonText = "<b><span style='color:#afbb86'>[[title]]</b></span><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>"; graph.labelPosition = "middle"; chart.addGraph(graph); var graph = new AmCharts.AmGraph(); graph.valueAxis = "axis1"; graph.title = "Intergenic"; graph.valueField = "Intergenic"; graph.type = "column"; graph.lineAlpha = 0; graph.fillAlphas = 1; graph.lineColor = "#69A55C"; graph.balloonText = "<b><span style='color:#afbb86'>[[title]]</b></span><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>"; graph.labelPosition = "middle"; chart.addGraph(graph); var graph = new AmCharts.AmGraph(); graph.valueAxis = "axis1"; graph.title = "Unmapped"; graph.valueField = "Unmapped"; graph.type = "column"; graph.lineAlpha = 0; graph.fillAlphas = 1; graph.lineColor = "#B5B8D3"; graph.balloonText = "<b><span style='color:#afbb86'>[[title]]</b></span><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>"; graph.labelPosition = "middle"; chart.addGraph(graph); var graph = new AmCharts.AmGraph(); graph.valueAxis = "axis2"; graph.title = "Med-CVcov"; graph.valueField = "Med-CVcov"; graph.type = "line"; graph.fillAlphas = 0;graph.lineAlpha = 1; graph.useLineColorForBulletBorder = true;graph.bullet = "round";graph.bulletBorderAlpha = 1;graph.bulletColor = "#00008B";graph.lineColor = "#00008B";graph.lineThickness = 2;graph.bulletSize = 7;graph.balloonText = "<span style='font-size:13px;'>[[title]] in [[category]]:<b>[[value]]</b></span>";chart.addGraph(graph); var graph = new AmCharts.AmGraph(); graph.valueAxis = "axis2"; graph.title = "Med-5bias"; graph.valueField = "Med-5bias"; graph.type = "line"; graph.fillAlphas = 0;graph.lineAlpha = 1; graph.useLineColorForBulletBorder = true;graph.bullet = "round";graph.bulletBorderAlpha = 1;graph.bulletColor = "#801616";graph.lineColor = "#801616";graph.lineThickness = 2;graph.bulletSize = 7;graph.balloonText = "<span style='font-size:13px;'>[[title]] in [[category]]:<b>[[value]]</b></span>";chart.addGraph(graph); var graph = new AmCharts.AmGraph(); graph.valueAxis = "axis2"; graph.title = "Med-3bias"; graph.valueField = "Med-3bias"; graph.type = "line"; graph.fillAlphas = 0;graph.lineAlpha = 1; graph.useLineColorForBulletBorder = true;graph.bullet = "round";graph.bulletBorderAlpha = 1;graph.bulletColor = "#FF0000";graph.lineColor = "#FF0000";graph.lineThickness = 2;graph.bulletSize = 7;graph.balloonText = "<span style='font-size:13px;'>[[title]] in [[category]]:<b>[[value]]</b></span>";chart.addGraph(graph); var graph = new AmCharts.AmGraph(); graph.valueAxis = "axis2"; graph.title = "Med-5/3bias"; graph.valueField = "Med-5/3bias"; graph.type = "line"; graph.fillAlphas = 0;graph.lineAlpha = 1; graph.useLineColorForBulletBorder = true;graph.bullet = "round";graph.bulletBorderAlpha = 1;graph.bulletColor = "#00FF00";graph.lineColor = "#00FF00";graph.lineThickness = 2;graph.bulletSize = 7;graph.balloonText = "<span style='font-size:13px;'>[[title]] in [[category]]:<b>[[value]]</b></span>";chart.addGraph(graph);
+        // LEGEND
+        var legend = new AmCharts.AmLegend();
+        legend.position = "right";
+        legend.borderAlpha = 0.3;
+        legend.horizontalGap = 2;
+        legend.switchType = "v";
+        chart.addLegend(legend);
+        chart.creditsPosition = "top-right";
+        chart.depth3D = 20;
+        chart.angle = 30;
+        // WRITE
+        chart.write("chartdiv");
+    });
+    // Make chart 2D/3D
+    function setDepth() {
+    	if (document.getElementById("rb2").checked) {
+            chart.depth3D = 20;
+            chart.angle = 30;
+        } else {
+            chart.depth3D = 0;
+            chart.angle = 0;
+        }
+        chart.validateNow();
+    }
+</script>
+</head>
+<body>
+<title>RNA-Seq pipeline (BEDpipe)</title>
+<h1>RNA-Seq pipeline (BEDpipe)</h1>
+<h2>Project: #PROJECT</h2>
+<div id="menu">
+<h1><a #HIGHLIGHT href="./summary.html">Summary</a></h1>
+<h1><a #HIGHLIGHT href="./hpc.html">HPC statistics</a></h1>
+<h1><a #HIGHLIGHT href="./fastqc.html">QC Raw Data (FastQC)</a></h1>
+<h1>Alignment QC:</h1>
+<h2><a #HIGHLIGHT href="./picard.html">- Picard</a></h2>
+<h2><a #HIGHLIGHT href="./star.html">- STAR</a></h2>
+<h2><a #HIGHLIGHT href="./htseq-gene.html">- HTseq-Gene</a></h2>
+<h2><a #HIGHLIGHT href="./htseq-exon.html">- HTseq-Exon</a></h2>
+<h1>Count statistics:</h1>
+<h2><a #HIGHLIGHT href="./star2.html">- STAR</a></h2>
+<h2><a #HIGHLIGHT href="./htseq-gene2.html">- HTseq-Gene</a></h2>
+<h2><a #HIGHLIGHT href="./htseq-exon2.html">- HTseq-Exon</a></h2>
+<h1><a #HIGHLIGHT href="./varscan.html">VARSCAN</a></h1>
+</div>
+<div id="content">
+<h1><hr>#PROG: ALIGNMENT QUALITY METRICS<hr></h1>
+<div id="chartdiv" style="width: 100%; height: 300px;"></div>
+<div style="margin-left:40px;">
+<input type="radio" name="group" id="rb1" onclick="setDepth()">2D
+<input type="radio" checked="true" name="group" id="rb2" onclick="setDepth()">3D
+</div>
+#TABLE
+</div></body></html>
