@@ -7,7 +7,7 @@ import time
 import optparse
 import lib.config as config
 import lib.vcrparser as vcrparser
-# Dynamic load of the workload manager library depending on 'config.mode' value set in lib/config.py
+# Dynamics load of the workload manager library depending on 'config.mode' value set in lib/config.py
 if config.mode == "LSF":
     import lib.sys_LSF as manager
 elif config.mode == "LOCAL":
