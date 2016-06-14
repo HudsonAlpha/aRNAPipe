@@ -7,14 +7,16 @@ path <- args[1]  # path to the project outputs/ folder
 alg  <- args[2]  # algorithm: star or htseq-gene or htseq-exon
 # READS RPKM AND COUNT MATRICES
 rpkms  <- read.table(paste(path, alg, "_rpkms.txt", sep=""), sep = "\t", header = T, stringsAsFactors = F)
+snames1 <- as.character(read.table(paste(path, alg, "_rpkms.txt", sep=""), sep = "\t", header = F, stringsAsFactors = F, nrows = 1))
 counts <- read.table(paste(path, alg, "_counts.txt", sep=""), sep = "\t", header = T, stringsAsFactors = F)
+snames2 <- as.character(read.table(paste(path, alg, "_counts.txt", sep=""), sep = "\t", header = F, stringsAsFactors = F, nrows = 1))
 # ONLY USES FEATURES WITH AT LEAST TWO RAW COUNTS IN ONE LIBRARY
 inc <- which(rowSums(counts[2:ncol(counts)], na.rm = T) > 1)
 NT <- c()
 for (i in 1:2){
   N <- matrix(NA,nrow=0,ncol=0)
-  if (i == 1) {G <- rpkms[inc,];lab <- "RPKM"}
-  if (i == 2) {G <- counts[inc,];lab <- "COUNTS"}
+  if (i == 1) {G <- rpkms[inc,];lab <- "RPKM"; snames <- snames1}
+  if (i == 2) {G <- counts[inc,];lab <- "COUNTS"; snames <- snames2}
   if (ncol(G)>2){ # at least two samples available
     lcounts  <- log2(G[, 2:ncol(G)]+1)
     s_ok <- (which(colSums(is.na(lcounts)) == 0)) # remove samples with NA (not processed yet)
@@ -40,11 +42,10 @@ for (i in 1:2){
       N <- cbind(scores, tp, ng1, ng2)
       colnames(N)[10:11] <- c("GV1", "GV2") 
       colnames(N) <- paste(lab, colnames(N), sep=" ")
-      samples <- colnames(lcounts)
     }
   }
   NT <- cbind(NT, N)
 }
-NT <- cbind(samples[s_ok], NT)
+NT <- cbind(snames[s_ok], NT)
 write.table(NT, file = paste(path, alg, "_pca", ".txt", sep=""), quote = F, row.names = F, sep = "\t")
 

@@ -449,7 +449,7 @@ def skeleton(path, path2html):
 #         if ("FASTQ_1" in i) and ("FASTQ_2" in i):
 #             k = "paired-end"
 #             for r in range(len(i)):
-#                 if i[r]=="BARCODE":
+#                 if i[r]=="SampleID":
 #                     index[0] = r
 #                 if i[r]=="FASTQ_1":
 #                     index[1] = r
@@ -458,7 +458,7 @@ def skeleton(path, path2html):
 #         else:
 #             k = "single-end"
 #             for r in range(len(i)):
-#                 if i[r]=="BARCODE":
+#                 if i[r]=="SampleID":
 #                     index[0] = r
 #                 if i[r]=="FASTQ":
 #                     index[1] = r

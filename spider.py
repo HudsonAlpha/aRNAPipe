@@ -24,6 +24,9 @@ try:
     samples = vcrparser.get_samples(path.replace(project, ""), project, path + "/samples.list") # PARSES THE SAMPLE FILE AND ASSOCIATED FASTQ FILES
 except:
     samples = vcrparser.get_samples_nocheck(path.replace(project, ""), project, path + "/samples.list")
+f = open(path + "/samples.list", 'r')
+h = f.readline()
+samples_ordered = [(i.split("\t")[0]) for i in f]
 lmenu = html.get_menu(config, len(samples))
 
 #########################################################################
@@ -50,19 +53,19 @@ try:
 except:
     print "Unexpected error generating stats of HPC."
 try:
-    spider_stats.stats_kallisto(path + "/results_kallisto/", samples.keys()) # GENERATES STATISTICS, ESTIMATED COUNTS, TPM AND ANNOTATION MATRICES
+    spider_stats.stats_kallisto(path + "/results_kallisto/", samples_ordered) # GENERATES STATISTICS, ESTIMATED COUNTS, TPM AND ANNOTATION MATRICES
 except:
     print "Error: Statistics of KALLISTO not yet ready or unexpected error."
 try:
-    spider_stats.stats_star(path + "/results_star/", samples.keys())  # GENERATES STATISTICS, COUNTS, RPKM AND ANNOTATION MATRICES
+    spider_stats.stats_star(path + "/results_star/", samples_ordered)  # GENERATES STATISTICS, COUNTS, RPKM AND ANNOTATION MATRICES
 except:
     print "Error: Statistics of STAR not yet ready or unexpected error."
 try:
-    spider_stats.stats_htseq(path + "/results_htseq-gene/", samples.keys(), "gene") # GENERATES STATISTICS, COUNTS, RPKM AND ANNOTATION MATRICES
+    spider_stats.stats_htseq(path + "/results_htseq-gene/", samples_ordered, "gene") # GENERATES STATISTICS, COUNTS, RPKM AND ANNOTATION MATRICES
 except:
     print "Error: Statistics of HTSEQ-GENE not yet ready or unexpected error."
 try:
-    spider_stats.stats_htseq(path + "/results_htseq-exon/", samples.keys(), "exon") # GENERATES STATISTICS, COUNTS, RPKM AND ANNOTATION MATRICES
+    spider_stats.stats_htseq(path + "/results_htseq-exon/", samples_ordered, "exon") # GENERATES STATISTICS, COUNTS, RPKM AND ANNOTATION MATRICES
 except:
     print "Error: Statistics of HTSEQ-EXON not yet ready or unexpected error."
 #########################################################################

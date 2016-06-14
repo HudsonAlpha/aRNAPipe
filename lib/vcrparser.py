@@ -172,7 +172,7 @@ def get_samples_nocheck(path_base, folder, samplefile):
     i = f.readline().strip("\n").split("\t")
     idx = [-1, -1, -1]
     for j in range(len(i)):
-        if i[j] == "BARCODE":
+        if i[j] == "SampleID":
             idx[0] = j
         elif i[j] == "FASTQ_1":
             idx[1] = j
@@ -180,9 +180,9 @@ def get_samples_nocheck(path_base, folder, samplefile):
             idx[2] = j
         elif i[j] == "FASTQ":
             idx[1] = j
-    # 'BARCODE' AND 'FASTQ' COLUMNS ARE REQUIRED
+    # 'SampleID' AND 'FASTQ' COLUMNS ARE REQUIRED
     if (idx[0] < 0) or (idx[1] < 0):
-        exit("Error: Samples file headers must contain 'BARCODE' and 'FASTQ' columns for single-end or 'BARCODE', 'FASTQ_1' and 'FASTQ_2' for paired-end data")
+        exit("Error: Samples file headers must contain 'SampleID' and 'FASTQ' columns for single-end or 'SampleID', 'FASTQ_1' and 'FASTQ_2' for paired-end data")
     # PARSE SAMPLE DATA
     errors = dict({"ID duplication errors":[],"Missing input files":[], "Empty input files":[]})
     for i in f:
@@ -237,7 +237,7 @@ def get_samples(path_base, folder, samplefile):
     i = f.readline().strip("\n").split("\t")
     idx = [-1, -1, -1]
     for j in range(len(i)):
-        if i[j] == "BARCODE":
+        if i[j] == "SampleID":
             idx[0] = j
         elif i[j] == "FASTQ_1":
             idx[1] = j
@@ -245,9 +245,9 @@ def get_samples(path_base, folder, samplefile):
             idx[2] = j
         elif i[j] == "FASTQ":
             idx[1] = j
-    # 'BARCODE' AND 'FASTQ' COLUMNS ARE REQUIRED
+    # 'SampleID' AND 'FASTQ' COLUMNS ARE REQUIRED
     if (idx[0] < 0) or (idx[1] < 0):
-        exit("Error: Samples file headers must contain 'BARCODE' and 'FASTQ' columns for single-end or 'BARCODE', 'FASTQ_1' and 'FASTQ_2' for paired-end data")
+        exit("Error: Samples file headers must contain 'SampleID' and 'FASTQ' columns for single-end or 'SampleID', 'FASTQ_1' and 'FASTQ_2' for paired-end data")
     # PARSE SAMPLE DATA
     errors = dict({"ID duplication errors":[],"Missing input files":[], "Empty input files":[]})
     for i in f:
