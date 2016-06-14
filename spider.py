@@ -27,6 +27,7 @@ except:
 f = open(path + "/samples.list", 'r')
 h = f.readline()
 samples_ordered = [(i.split("\t")[0]) for i in f]
+f.close()
 lmenu = html.get_menu(config, len(samples))
 
 #########################################################################
