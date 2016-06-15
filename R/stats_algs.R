@@ -15,8 +15,8 @@ inc <- which(rowSums(counts[2:ncol(counts)], na.rm = T) > 1)
 NT <- c()
 for (i in 1:2){
   N <- matrix(NA,nrow=0,ncol=0)
-  if (i == 1) {G <- rpkms[inc,];lab <- "RPKM"; snames <- snames1}
-  if (i == 2) {G <- counts[inc,];lab <- "COUNTS"; snames <- snames2}
+  if (i == 1) {G <- rpkms[inc,];lab <- "RPKM"; snames <- snames1[2:length(snames1)]}
+  if (i == 2) {G <- counts[inc,];lab <- "COUNTS"; snames <- snames2[2:length(snames2)]}
   if (ncol(G)>2){ # at least two samples available
     lcounts  <- log2(G[, 2:ncol(G)]+1)
     s_ok <- (which(colSums(is.na(lcounts)) == 0)) # remove samples with NA (not processed yet)

@@ -264,7 +264,6 @@ def get_samples(path_base, folder, samplefile):
                         for ifile in range(1,3):
                             # CHECKS IF INPUT FILES EXIST
                             try:
-                                print i[idx[ifile]]
                                 f = open(i[idx[ifile]], 'r')
                                 f.close()
                                 S = os.stat(i[idx[ifile]]).st_size
