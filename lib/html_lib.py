@@ -357,6 +357,8 @@ def stats_picard(path,samples,config):
                     tr += "<td bgcolor='#CC3300'>NA</td>"
                     o += "\tNA"
                 tr = "<tr>"+tr+"</tr>"
+                table.append(tr)
+                s = ["NA" for ii in range(10)]
             else:
                 align  = int(stats[0]["PF_ALIGNED_BASES"])
                 cod  = int(stats[0]["CODING_BASES"])
@@ -394,20 +396,20 @@ def stats_picard(path,samples,config):
                         tr +="<td bgcolor='#99CC66'>0</td>"
                         o += "\t0"
                 tr = "<tr>"+tr+"</tr>"
-            table.append(tr)
-            o = o.split("\t")
-            st= 0
-            s = []
-            for ind in [10, 11, 12, 5, 7, 3]:
-                s.append(str(round(float(o[ind]) * float(o[2])/float(o[1]),3)))
-                if ind != 3:
-                    st += float(o[ind]) * float(o[2])/float(o[1])
-            for ind in [15,16,17,18]:
-                if o[ind] != "0":
-                    s.append(str(round(float(o[ind]) * 100,3)))
-                else:
-                    s.append("0")
-            s[5] = str(round(100 - st,3))
+                table.append(tr)
+                o = o.split("\t")
+                st= 0
+                s = []
+                for ind in [10, 11, 12, 5, 7, 3]:
+                    s.append(str(round(float(o[ind]) * float(o[2])/float(o[1]),3)))
+                    if ind != 3:
+                        st += float(o[ind]) * float(o[2])/float(o[1])
+                for ind in [15,16,17,18]:
+                    if o[ind] != "0":
+                        s.append(str(round(float(o[ind]) * 100,3)))
+                    else:
+                        s.append("0")
+                s[5] = str(round(100 - st,3))
             print >> out, i + "\t" + "\t".join(s)
         out.close()
         return "<table>"+"\n".join(table)+"</table>"
