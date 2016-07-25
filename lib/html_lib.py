@@ -344,14 +344,17 @@ def stats_picard(path,samples,config):
                             vals = ii.strip("\n").split("\t")
                             for kk in range(len(head)):
                                 stats[k][head[kk]] = vals[kk]
+                                print vals[kk]
                                 if float(vals[kk]) > 0:
                                     kdiff0 += 1
                             nx = 0
                     if kdiff0 == 0:
                         ex = 1
+                        break
                     f.close()
                 else:
                     ex = 1
+                    break
             print ex
             if ex ==1:
                 tr = "<td bgcolor='#CC3300'>"+i+"</td>"
