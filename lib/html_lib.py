@@ -323,10 +323,12 @@ def stats_picard(path,samples,config):
         header = "<tr>"+header+"</tr>"
         table.append(header)
         for i in sorted(samples.keys()):
+            print i
             stats = [{},{},{}]
             heads = list()
             ex = 0
             for k in range(3):
+                print k
                 if i+n[k] in files:
                     f = open(path+"/results_picard"+"/"+i+n[k],'r')
                     nx = 0
@@ -350,6 +352,7 @@ def stats_picard(path,samples,config):
                     f.close()
                 else:
                     ex = 1
+            print ex
             if ex ==1:
                 tr = "<td bgcolor='#CC3300'>"+i+"</td>"
                 o = i
