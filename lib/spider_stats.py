@@ -523,7 +523,7 @@ def stats_star(path, samples):
             r = list()
             for sample in samples:
                 if N[i].has_key(sample):
-                    if len(N[i][sample]) > j:
+                    if (len(N[i][sample]) > j) and (MT[sample] > 0):
                         s = str(round(float(N[i][sample][j]) * 1000000000 / (float(L[ng[j]]) * MT[sample]),4))
                     else:
                         s = "NA"
