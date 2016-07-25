@@ -10,6 +10,15 @@ rpkms  <- read.table(paste(path, alg, "_rpkms.txt", sep=""), sep = "\t", header 
 snames1 <- as.character(read.table(paste(path, alg, "_rpkms.txt", sep=""), sep = "\t", header = F, stringsAsFactors = F, nrows = 1))
 counts <- read.table(paste(path, alg, "_counts.txt", sep=""), sep = "\t", header = T, stringsAsFactors = F)
 snames2 <- as.character(read.table(paste(path, alg, "_counts.txt", sep=""), sep = "\t", header = F, stringsAsFactors = F, nrows = 1))
+# DEFAULT RETURN
+cn <- c('RPKM PC1', 'RPKM PC2', 'RPKM PC3', 'RPKM PC4', 
+        'RPKM Quantile_5%', 'RPKM Quantile_25%', 'RPKM Quantile_50%', 'RPKM Quantile_75%', 'RPKM Quantile_95%', 
+        'RPKM GV1', 'RPKM GV2', 
+        'COUNTS PC1', 'COUNTS PC2', 'COUNTS PC3', 'COUNTS PC4', 
+        'COUNTS Quantile_5%', 'COUNTS Quantile_25%', 'COUNTS Quantile_50%', 'COUNTS Quantile_75%', 'COUNTS Quantile_95%', 
+        'COUNTS GV1', 'COUNTS GV2')
+NT <- matrix(NA, nrow = length(snames1) - 1, ncol = length(cn))
+
 # ONLY USES FEATURES WITH AT LEAST TWO RAW COUNTS IN ONE LIBRARY
 inc <- which(rowSums(counts[2:ncol(counts)], na.rm = T) > 1)
 NT <- c()
@@ -19,7 +28,7 @@ for (i in 1:2){
   if (i == 2) {G <- counts[inc,];lab <- "COUNTS"; snames <- snames2[2:length(snames2)]}
   if (ncol(G)>2){ # at least two samples available
     lcounts  <- log2(G[, 2:ncol(G)]+1)
-    s_ok <- (which(colSums(is.na(lcounts)) == 0)) # remove samples with NA (not processed yet)
+    s_ok <- (which((colSums(G[, 2:ncol(G)]) > 10000)&(colSums(is.na(lcounts)) == 0))) # remove samples with NA (not processed yet)
     if (length(s_ok) > 1){
       ## QUANTILES
       tp <- round(t(apply(lcounts[, s_ok], 2, quantile, probs = c(0.05,0.25,0.5,0.75,0.95), na.rm = T)), 2)
@@ -48,4 +57,5 @@ for (i in 1:2){
 }
 NT <- cbind(snames[s_ok], NT)
 write.table(NT, file = paste(path, alg, "_pca", ".txt", sep=""), quote = F, row.names = F, sep = "\t")
+
 
