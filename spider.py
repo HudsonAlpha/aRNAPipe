@@ -4,7 +4,7 @@ import optparse
 import lib.vcrparser as vcrparser
 import lib.spider_stats as spider_stats
 import lib.html_lib as html
-a
+
 #########################################################################
 # PARSER
 #########################################################################
