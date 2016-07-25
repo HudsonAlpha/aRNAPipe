@@ -330,6 +330,7 @@ def stats_picard(path,samples,config):
                 if i+n[k] in files:
                     f = open(path+"/results_picard"+"/"+i+n[k],'r')
                     nx = 0
+                    kdiff0 = 0
                     for ii in f:
                         if ii.startswith("PF_BASES"):
                             head = ii.rstrip().split("\t")
@@ -341,7 +342,11 @@ def stats_picard(path,samples,config):
                             vals = ii.strip("\n").split("\t")
                             for kk in range(len(head)):
                                 stats[k][head[kk]] = vals[kk]
+                                if float(vals[kk]) > 0:
+                                    kdiff0 += 1
                             nx = 0
+                    if kdiff0 == 0:
+                        ex = 1
                     f.close()
                 else:
                     ex = 1
