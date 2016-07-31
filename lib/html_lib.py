@@ -35,16 +35,20 @@ def get_menu(config, ns):
         menu.append('<h2><a #highlight="" href="./picard.html">- Picard</a></h2>')
     if enabled.has_key("star"):
         menu.append('<h2><a #highlight="" href="./star.html">- STAR</a></h2>')
+    if enabled.has_key("kallisto"):
+        menu.append('<h2><a #highlight="" href="./kallisto.html">- KALLISTO</a></h2>')
     if enabled.has_key("htseq-gene"):
         menu.append('<h2><a #highlight="" href="./htseq-gene.html">- HTseq-Gene</a></h2>')
     if enabled.has_key("htseq-exon"):
         menu.append('<h2><a #highlight="" href="./htseq-exon.html">- HTseq-Exon</a></h2>')
     if ns > 1:
-        if enabled.has_key("star") or enabled.has_key("htseq-gene") or enabled.has_key("htseq-exon"):
+        if enabled.has_key("star") or enabled.has_key("htseq-gene") or enabled.has_key("htseq-exon") or enabled.has_key("kallisto"):
             menu.append('<h1>Count statistics:</h1>')
             menu.append('<h2><a #highlight="" href="./downloads.html">- DOWNLOADS</a></h2>')
         if enabled.has_key("star"):
             menu.append('<h2><a #highlight="" href="./star2.html">- STAR</a></h2>')
+        if enabled.has_key("kallisto"):
+            menu.append('<h2><a #highlight="" href="./kallisto2.html">- KALLISTO</a></h2>')
         if enabled.has_key("htseq-gene"):
             menu.append('<h2><a  href="./htseq-gene2.html">- HTseq-Gene</a></h2>')
         if enabled.has_key("htseq-exon"):
