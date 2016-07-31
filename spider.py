@@ -168,7 +168,7 @@ try:
         print "  - " + path + "/HTML/kallisto.html"
         html_table = html.print_table_default(path + "/outputs/kallisto_stats_est_counts.txt", -1, []) # PROVIDES HTML TABLE WITH HPC STATS
         data = html.bar_getdata (path + "/outputs/star_unstranded_stats.txt",0,range(1,2),[])
-        html.build_from_template("KALLISTO", project, data, html_table, "", path+"/HTML/kallisto.html", os.path.dirname(sys.argv[0]) + "/template/TEMPLATE_STAR.html", lmenu)
+        html.build_from_template("KALLISTO", project, data, html_table, "", path+"/HTML/kallisto.html", os.path.dirname(sys.argv[0]) + "/template/TEMPLATE_KALLISTO.html", lmenu)
 except:
     print "  - Not ready"
 
@@ -209,7 +209,7 @@ try:
         elif config["programs"]["strandedness"] == "no":
             n = {"star":["STAR","star_unstranded"],"htseq-gene":["HTseq-count Gene", "htseq-gene"],"htseq-exon":["HTseq-count Exon", "htseq-exon"]}
         elif config["programs"]["strandedness"] == "reverse":
-            n = {"star":["STAR","star_stranded-reverse"],"htseq-gene":["HTseq-count Gene", "htseq-gene"],"htseq-exon":["HTseq-count Exon", "htseq-exon"]}
+            n = {"star":["STAR","star_stranded-reverse"],"htseq-gene":["HTseq-count Gene", "htseq-gene"],"htseq-exon":["HTseq-count Exon", "htseq-exon"], 'kallisto': ['Kallisto', 'kallisto']}
         for prog, pname in n.iteritems():
             if config.has_key(prog):
                 os.system("Rscript "+pathscript+"/stats_algs.R " + path + "/outputs/ " + pname[1]) # PLOT OF HPC USAGE

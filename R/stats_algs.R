@@ -4,12 +4,23 @@
 # INPUT DATA
 args <- commandArgs(trailingOnly = TRUE)
 path <- args[1]  # path to the project outputs/ folder
-alg  <- args[2]  # algorithm: star or htseq-gene or htseq-exon
+alg  <- args[2]  # algorithm: star or htseq-gene or htseq-exon or kallisto
 # READS RPKM AND COUNT MATRICES
-rpkms  <- read.table(paste(path, alg, "_rpkms.txt", sep=""), sep = "\t", header = T, stringsAsFactors = F)
-snames1 <- as.character(read.table(paste(path, alg, "_rpkms.txt", sep=""), sep = "\t", header = F, stringsAsFactors = F, nrows = 1))
-counts <- read.table(paste(path, alg, "_counts.txt", sep=""), sep = "\t", header = T, stringsAsFactors = F)
-snames2 <- as.character(read.table(paste(path, alg, "_counts.txt", sep=""), sep = "\t", header = F, stringsAsFactors = F, nrows = 1))
+if (alg != 'kallisto'){
+  rpkms  <- read.table(paste(path, alg, "_rpkms.txt", sep=""), sep = "\t", header = T, stringsAsFactors = F)
+  snames1 <- as.character(read.table(paste(path, alg, "_rpkms.txt", sep=""), sep = "\t", header = F, stringsAsFactors = F, nrows = 1))
+  counts <- read.table(paste(path, alg, "_counts.txt", sep=""), sep = "\t", header = T, stringsAsFactors = F)
+  snames2 <- as.character(read.table(paste(path, alg, "_counts.txt", sep=""), sep = "\t", header = F, stringsAsFactors = F, nrows = 1))
+} else{
+  rpkms  <- read.table(paste(path, alg, "_tpm.txt", sep=""), sep = "\t", header = T, stringsAsFactors = F, na.strings = '-nan')
+  rpkms <- rpkms[,2:ncol(rpkms)]
+  snames1 <- as.character(read.table(paste(path, alg, "_tpm.txt", sep=""), sep = "\t", header = F, stringsAsFactors = F, nrows = 1))
+  snames1 <- snames1[2:length(snames1)]
+  counts <- read.table(paste(path, alg, "_est_counts.txt", sep=""), sep = "\t", header = T, stringsAsFactors = F)
+  counts <- counts[,2:ncol(counts)]
+  snames2 <- as.character(read.table(paste(path, alg, "_counts.txt", sep=""), sep = "\t", header = F, stringsAsFactors = F, nrows = 1))
+  snames2 <- snames2[2:length(snames2)]
+}
 # ONLY USES FEATURES WITH AT LEAST TWO RAW COUNTS IN ONE LIBRARY
 inc <- which(rowSums(counts[2:ncol(counts)], na.rm = T) > 1)
 NT <- c()
