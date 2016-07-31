@@ -323,7 +323,6 @@ def stats_picard(path,samples,config):
         header = "<tr>"+header+"</tr>"
         table.append(header)
         for i in sorted(samples.keys()):
-            print i
             stats = [{},{},{}]
             heads = list()
             ex = 0

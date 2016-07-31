@@ -160,6 +160,19 @@ except:
     print "  - Not ready"
 
 #########################################################################
+# KALLISTO_QC
+#########################################################################
+try:
+    if config.has_key("kallisto"):
+        print "> Generating webpage with Kallisto statistics..."
+        print "  - " + path + "/HTML/kallisto.html"
+        html_table = html.print_table_default(path + "/outputs/kallisto_stats_est_counts.txt", -1, []) # PROVIDES HTML TABLE WITH HPC STATS
+        data = html.bar_getdata (path + "/outputs/star_unstranded_stats.txt",0,range(1,2),[])
+        html.build_from_template("KALLISTO", project, data, html_table, "", path+"/HTML/kallisto.html", os.path.dirname(sys.argv[0]) + "/template/TEMPLATE_STAR.html", lmenu)
+except:
+    print "  - Not ready"
+
+#########################################################################
 # STAR_QC
 #########################################################################
 try:
