@@ -18,7 +18,7 @@ if (alg != 'kallisto'){
   snames1 <- snames1[2:length(snames1)]
   counts <- read.table(paste(path, alg, "_est_counts.txt", sep=""), sep = "\t", header = T, stringsAsFactors = F)
   counts <- counts[,2:ncol(counts)]
-  snames2 <- as.character(read.table(paste(path, alg, "_counts.txt", sep=""), sep = "\t", header = F, stringsAsFactors = F, nrows = 1))
+  snames2 <- as.character(read.table(paste(path, alg, "_est_counts.txt", sep=""), sep = "\t", header = F, stringsAsFactors = F, nrows = 1))
   snames2 <- snames2[2:length(snames2)]
 }
 # ONLY USES FEATURES WITH AT LEAST TWO RAW COUNTS IN ONE LIBRARY
