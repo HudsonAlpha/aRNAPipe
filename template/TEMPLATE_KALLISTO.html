@@ -51,7 +51,7 @@
         valueAxis.title = "Distribution of alignments (N)";
         chart.addValueAxis(valueAxis);
         // GRAPHS
-        var graph = new AmCharts.AmGraph(); graph.valueAxis = "axis1"; graph.title = "Estimated Counts"; graph.valueField = "Estimated_Counts"; graph.type = "column"; graph.lineAlpha = 0; graph.fillAlphas = 1; graph.lineColor = "#FFA500"; graph.balloonText = "<b><span style='color:#afbb86'>[[title]]</b></span><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>"; graph.labelPosition = "middle"; chart.addGraph(graph);
+        var graph = new AmCharts.AmGraph(); graph.valueAxis = "axis1"; graph.title = "Estimated Counts"; graph.valueField = "TotalCounts"; graph.type = "column"; graph.lineAlpha = 0; graph.fillAlphas = 1; graph.lineColor = "#FFA500"; graph.balloonText = "<b><span style='color:#afbb86'>[[title]]</b></span><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>"; graph.labelPosition = "middle"; chart.addGraph(graph);
         // LEGEND
         var legend = new AmCharts.AmLegend();
         legend.position = "right";
