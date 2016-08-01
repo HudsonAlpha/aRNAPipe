@@ -214,7 +214,10 @@ try:
             if config.has_key(prog):
                 os.system("Rscript "+pathscript+"/stats_algs.R " + path + "/outputs/ " + pname[1]) # PLOT OF HPC USAGE
                 html_table = html.print_table_default(path + "/outputs/" + pname[1] + "_pca.txt", -1, [0, 1, 2, 3, 4, 6, 7, 8, 12, 13, 14, 15, 17, 18, 19])
-                html.build_amcharts(os.path.dirname(sys.argv[0]) + "/template/TEMPLATE_PCA.html", path + "/HTML/" + prog + "2.html", prog, pname, path, html_table, project, lmenu)
+                if prog != 'kallisto':
+                    html.build_amcharts(os.path.dirname(sys.argv[0]) + "/template/TEMPLATE_PCA.html", path + "/HTML/" + prog + "2.html", prog, pname, path, html_table, project, lmenu)
+                else:
+                    html.build_amcharts(os.path.dirname(sys.argv[0]) + "/template/TEMPLATE_PCA2.html", path + "/HTML/" + prog + "2.html", prog, pname, path, html_table, project, lmenu)
 except:
     print "  - Not ready"
 

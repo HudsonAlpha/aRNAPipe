@@ -202,12 +202,18 @@ if int(var["htseq-exon"].split("/")[0]) > 0:
     if len(samples_v) > 0:
         uds_htseqE, logs_htseqE = programs.htseq(timestamp, path_base, folder, samples_v, config.path_annotation, var["htseq-exon"], var["wt"], var["q"], "exon", var["strandedness"],var["htseq-exon-mode"])
         procs.append(logs_htseqE)
-if (int(var["varscan"].split("/")[0]) > 0) or (int(var["gatk"].split("/")[0]) > 0):
+if (int(var["varscan"].split("/")[0]) > 0) or (int(var["gatk"].split("/")[0]) > 0) or (int(var["picard_IS"].split("/")[0]) > 0):
     samples_v, stats = vcrparser.check_samples(samples, path_base, folder, "sam2sortbam", opt.m)
     if len(samples_v) > 0:
         uds_sam2sortbam, logs_sam2sortbam = programs.sam2sortbam(timestamp, path_base, folder, samples_v, var["varscan"], var["wt"], var["q"])
         procs.append(logs_sam2sortbam)
         w = vcrparser.job_wait(logs_sam2sortbam, 20)
+if int(var["picard_IS"].split("/")[0]) > 0:
+    samples_v, stats = vcrparser.check_samples(samples, path_base, folder, "picard_IS", opt.m)
+    if len(samples_v) > 0:
+        uds_insert, logs_insert  = programs.picard_IS(timestamp, path_base, folder, samples_v, var["picard_IS"], var["wt"], var["q"])
+        procs.append(logs_insert)
+
 if int(var["gatk"].split("/")[0]) > 0:
     samples_v, stats = vcrparser.check_samples(samples, path_base, folder, "gatk", opt.m)
     if len(samples_v) > 0:
