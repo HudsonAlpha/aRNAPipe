@@ -43,18 +43,18 @@ shutil.copy(opt.config, opt.config.replace("config.txt", "logs/"+timestamp+"_con
 
 ## CHECK GENOME BUILD
 config.path_genome = config.path_genome.replace("#LABEL", var["genome_build"])
-if ~os.path.exists(config.path_genome):
+if not os.path.exists(config.path_genome):
     print config.path_genome
     exit("path_genome not found. Genome build " + var["genome_build"] + " missing or incomplete.")
 config.path_index = config.path_index.replace("#LABEL", var["genome_build"])
-if ~os.path.exists(config.path_index):
+if not os.path.exists(config.path_index):
     exit("path_index not found. Genome build " + var["genome_build"] + " missing or incomplete.")
 config.path_annotation = config.path_annotation.replace("#LABEL", var["genome_build"])
 if not os.path.exists(config.path_annotation):
     exit("path_annotation not found. Genome build " + var["genome_build"]+ " missing or incomplete.")
 for i in range(3):
     config.annots[i] = config.annots[i].replace("#LABEL", var["genome_build"])
-    if ~os.path.exists(config.annots[i]):
+    if not os.path.exists(config.annots[i]):
         exit("annots not found. Genome build " + var["genome_build"] + " missing or incomplete.")
 
 ## VERBOSE OPTIONS
@@ -114,8 +114,8 @@ elif var["strandedness"] == "no":
     var["strandedness"] = " --stranded=no"
 else:
     exit("Error: Strandedness value not correct (yes/no/reverse).")
-if (~(var["htseq-gene-mode"] in ["union", "intersection-strict", "intersection-nonempty"])) \
-        or (~(var["htseq-exon-mode"] in ["union", "intersection-strict", "intersection-nonempty"])):
+if (not (var["htseq-gene-mode"] in ["union", "intersection-strict", "intersection-nonempty"])) \
+        or (not (var["htseq-exon-mode"] in ["union", "intersection-strict", "intersection-nonempty"])):
     exit("Error: HTseq mode value not correct (union/intersection-strict/intersection-nonempty).")
 
 ##########################################################
