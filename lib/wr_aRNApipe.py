@@ -44,6 +44,7 @@ shutil.copy(opt.config, opt.config.replace("config.txt", "logs/"+timestamp+"_con
 ## CHECK GENOME BUILD
 config.path_genome = config.path_genome.replace("#LABEL", var["genome_build"])
 if ~os.path.exists(config.path_genome):
+    print config.path_genome
     exit("path_genome not found. Genome build " + var["genome_build"] + " missing or incomplete.")
 config.path_index = config.path_index.replace("#LABEL", var["genome_build"])
 if ~os.path.exists(config.path_index):
