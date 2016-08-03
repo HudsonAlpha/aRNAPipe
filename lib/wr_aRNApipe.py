@@ -13,15 +13,16 @@ elif config.mode == "LOCAL":
 else:
     import sys_OTHER as manager
 
-########################################################################
+################################################################################
 ## HELP OPTIONS AND DOCUMENTATION
 desc = "aRNApipe: RNA-seq framework"
 parser = optparse.OptionParser(description=desc)
-parser.add_option("-f", "--project_folder", dest = "folder",    default = "",  help = "")
-parser.add_option("-m", "--write",          dest = "m",         default = "0", help = "")
-parser.add_option("-b", "--path_base",      dest = "path_base", default = "",  help = "")
-parser.add_option("-t", "--timestamp",      dest = "timestamp", default = "",  help = "")
-########################################################################
+parser.add_option("-f", "--project_folder", dest="folder", default="",  help="")
+parser.add_option("-m", "--write", dest = "m", default="0", help="")
+parser.add_option("-b", "--path_base", dest="path_base", default="", help="")
+parser.add_option("-t", "--timestamp", dest="timestamp", default="", help="")
+################################################################################
+
 (opt, args) = parser.parse_args()
 timestamp = opt.timestamp
 print "###########################################"
@@ -29,28 +30,32 @@ print "### aRNApipe: RNA-seq framework    #########"
 print "###########################################"
 print "> Analysis started: " + timestamp
 print "> Parsing options..."
+
 ## PATH BASE AND PROJECT FOLDER CHECK
 [path_base, folder] = vcrparser.check_args(opt.path_base, opt.folder)
+
 ## PARSE CONFIGURATION FILE
 opt.samples = path_base + folder + "/samples.list"
 opt.config  = path_base + folder + "/config.txt"
-[opt.config, var]   = vcrparser.config_file(opt.config, path_base, folder, config)
-shutil.copy(opt.samples, opt.samples.replace("samples.list","logs/" + timestamp + "_samples.list"))
-shutil.copy(opt.config, opt.config.replace("config.txt","logs/" + timestamp + "_config.txt"))
+[opt.config, var] = vcrparser.config_file(opt.config, path_base, folder, config)
+shutil.copy(opt.samples, opt.samples.replace("samples.list", "logs/" + timestamp + "_samples.list"))
+shutil.copy(opt.config, opt.config.replace("config.txt", "logs/"+timestamp+"_config.txt"))
+
 ## CHECK GENOME BUILD
 config.path_genome = config.path_genome.replace("#LABEL", var["genome_build"])
-if not os.path.exists(config.path_genome):
+if ~os.path.exists(config.path_genome):
     exit("path_genome not found. Genome build " + var["genome_build"] + " missing or incomplete.")
 config.path_index = config.path_index.replace("#LABEL", var["genome_build"])
-if not os.path.exists(config.path_index):
+if ~os.path.exists(config.path_index):
     exit("path_index not found. Genome build " + var["genome_build"] + " missing or incomplete.")
 config.path_annotation = config.path_annotation.replace("#LABEL", var["genome_build"])
 if not os.path.exists(config.path_annotation):
-    exit("path_annotation not found. Genome build " + var["genome_build"] + " missing or incomplete.")
+    exit("path_annotation not found. Genome build " + var["genome_build"]+ " missing or incomplete.")
 for i in range(3):
     config.annots[i] = config.annots[i].replace("#LABEL", var["genome_build"])
-    if not os.path.exists(config.annots[i]):
+    if ~os.path.exists(config.annots[i]):
         exit("annots not found. Genome build " + var["genome_build"] + " missing or incomplete.")
+
 ## VERBOSE OPTIONS
 print "> GLOBAL VARIABLES:"
 print "  - Project folder:  " + folder
@@ -83,19 +88,20 @@ print "  - GATK args:       " + var["gatk_args"]
 print "  - HTseqGene mode:  " + var["htseq-gene-mode"]
 print "  - HTseqExon mode:  " + var["htseq-exon-mode"]
 
-
 samples = vcrparser.get_samples(path_base, folder, opt.samples)
+
 ##########################################################
 ## Creates 'temp' folder for temporary managing files
 ##########################################################
-n = os.listdir(opt.path_base + "/" + opt.folder)
+n = os.listdir("/".join([opt.path_base, opt.folder]))
 if not ("temp" in n):
-    os.mkdir(path_base + "/" + folder + "/temp")
+    os.mkdir("/".join([opt.path_base, opt.folder, 'temp']))
 else:
-    out = open(path_base + "/" + folder + "/temp/pids.txt", 'w')
+    out = open("/".join([opt.path_base, opt.folder, 'temp', 'pids.txt']), 'w')
     out.close()
-    out = open(path_base + "/" + folder + "/temp/pids_scheduler.txt", 'w')
+    out = open("/".join([opt.path_base, opt.folder, 'temp', 'pids_scheduler.txt']), 'w')
     out.close()
+
 ##########################################################
 ## Strand-specific protocol and HTseq mode
 ##########################################################
@@ -107,7 +113,8 @@ elif var["strandedness"] == "no":
     var["strandedness"] = " --stranded=no"
 else:
     exit("Error: Strandedness value not correct (yes/no/reverse).")
-if (not (var["htseq-gene-mode"] in ["union", "intersection-strict", "intersection-nonempty"])) or (not (var["htseq-exon-mode"] in ["union", "intersection-strict", "intersection-nonempty"])):
+if (~(var["htseq-gene-mode"] in ["union", "intersection-strict", "intersection-nonempty"])) \
+        or (~(var["htseq-exon-mode"] in ["union", "intersection-strict", "intersection-nonempty"])):
     exit("Error: HTseq mode value not correct (union/intersection-strict/intersection-nonempty).")
 
 ##########################################################
@@ -203,9 +210,10 @@ if int(var["htseq-exon"].split("/")[0]) > 0:
         uds_htseqE, logs_htseqE = programs.htseq(timestamp, path_base, folder, samples_v, config.path_annotation, var["htseq-exon"], var["wt"], var["q"], "exon", var["strandedness"],var["htseq-exon-mode"])
         procs.append(logs_htseqE)
 if (int(var["varscan"].split("/")[0]) > 0) or (int(var["gatk"].split("/")[0]) > 0) or (int(var["picard_IS"].split("/")[0]) > 0):
+    temp = str(max([int(var["varscan"].split("/")[0]), int(var["gatk"].split("/")[0]), int(var["picard_IS"].split("/")[0])])) + "/0/0"
     samples_v, stats = vcrparser.check_samples(samples, path_base, folder, "sam2sortbam", opt.m)
     if len(samples_v) > 0:
-        uds_sam2sortbam, logs_sam2sortbam = programs.sam2sortbam(timestamp, path_base, folder, samples_v, var["varscan"], var["wt"], var["q"])
+        uds_sam2sortbam, logs_sam2sortbam = programs.sam2sortbam(timestamp, path_base, folder, samples_v, temp, var["wt"], var["q"])
         procs.append(logs_sam2sortbam)
         w = vcrparser.job_wait(logs_sam2sortbam, 20)
 if int(var["picard_IS"].split("/")[0]) > 0:

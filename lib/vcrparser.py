@@ -59,7 +59,7 @@ def project_process(path_base, folder):
                 i[1] = i[1].split("/")[0]
                 if i[1] != "0":
                     config[i[0]] = i[1]
-    if config.has_key("varscan") or config.has_key("gatk"):
+    if config.has_key("varscan") or config.has_key("gatk") or config.has_key("picard_IS") :
         config["sam2sortbam"] = 1
     if len(config) > 0:
         for pg in ["trimgalore", "fastqc", "kallisto", "star", "star-fusion", "picard", "htseq-gene", "htseq-exon", "sam2sortbam", "picard_IS", "varscan", "gatk"]:
