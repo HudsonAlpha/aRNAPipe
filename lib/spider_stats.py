@@ -1,4 +1,5 @@
 import os
+import sys
 import config
 
 head_star_log = ["Sample", "Links","Started job","Started mapping","Finished","Mapping speed [Mr/h]","Input reads [n]","Input read length (mean)","Uniquely mapped [n]","Uniquely mapped [%]","Mapped length","Splices [n]","Splices annotated [n]","Splices GT/AG [n]","Splices: GC/AG [n]","Splices: AT/AC [n]","Splices: Non-canonical [n]","Mismatch rate per base [%]","Deletion rate per base [%]","Deletion average length","Insertion rate per base [%]","Insertion average length","Multimapping reads [n]","Multimapping reads [%]","Multimapping reads (+) [n]","Multimapping reads (+) [%]","Unmapped reads: too many mismatches [%]","Unmapped reads: too short [%]","Unmapped reads: other [%]"]
@@ -522,7 +523,7 @@ def stats_star(path, samples):
             r = list()
             for sample in samples:
                 if N[i].has_key(sample):
-                    if (len(N[i][sample]) > j) and (MT[sample] > 0):
+                    if len(N[i][sample]) > j:
                         s = str(round(float(N[i][sample][j]) * 1000000000 / (float(L[ng[j]]) * MT[sample]),4))
                     else:
                         s = "NA"
