@@ -55,14 +55,14 @@ def project_process(path_base, folder):
     for i in f:
         if not i.startswith("%"):
             i = i.strip("\n").split("\t")
-            if i[0] in ["trimgalore", "fastqc", "kallisto", "star", "star-fusion", "picard", "htseq-gene", "htseq-exon", "picard_IS", "varscan", "gatk"]:
+            if i[0] in ["trimgalore", "fastqc", "kallisto", "star", "star-fusion", "picard", "htseq-gene", "htseq-exon", "varscan", "gatk"]:
                 i[1] = i[1].split("/")[0]
                 if i[1] != "0":
                     config[i[0]] = i[1]
-    if config.has_key("varscan") or config.has_key("gatk") or config.has_key("picard_IS") :
+    if config.has_key("varscan") or config.has_key("gatk"):
         config["sam2sortbam"] = 1
     if len(config) > 0:
-        for pg in ["trimgalore", "fastqc", "kallisto", "star", "star-fusion", "picard", "htseq-gene", "htseq-exon", "sam2sortbam", "picard_IS", "varscan", "gatk"]:
+        for pg in ["trimgalore", "fastqc", "kallisto", "star", "star-fusion", "picard", "htseq-gene", "htseq-exon", "sam2sortbam", "varscan", "gatk"]:
             if config.has_key(pg):
                 print "Process:  " + pg
                 if not pids.has_key(pg):
