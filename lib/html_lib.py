@@ -440,11 +440,13 @@ def stats_picard_2(path,samples,config):
     n = os.listdir(path)
     hh = "\t".join(['sample_id','MEDIAN_INSERT_SIZE','MEDIAN_ABSOLUTE_DEVIATION','MIN_INSERT_SIZE',
                     'MAX_INSERT_SIZE','MEAN_INSERT_SIZE','STANDARD_DEVIATION','READ_PAIRS', 'LINK_TXT', 'LINK_PDF'])
+    print n
+    print config
+    print hh
     if config.has_key("picard_IS") and ("results_picard_IS" in n):
         files  = os.listdir(path+"/results_picard_IS")
         out = open(path + "/outputs/stats_picard2.txt",'w')
         print >> out, hh
-        data = list()
         for i in sorted(samples.keys()):
             if i + ".txt" in files:
                 f = open(path+"/results_picard_IS"+"/"+i+".txt",'r')
