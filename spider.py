@@ -144,6 +144,14 @@ try:
         html_table = html.stats_picard(path,samples,config) # PROVIDES HTML TABLE WITH PICARD STATS
         data = html.bar_getdata (path + "/outputs/stats_picard.txt",0,range(1,7), range(7,11))
         html.build_from_template("PICARD", project, data, html_table, "", path+"/HTML/picard.html", os.path.dirname(sys.argv[0]) + "/template/TEMPLATE_PICARD.html", lmenu)
+    if config.has_key("picard_IS"):
+        print "> Generating webpage with picard insert size statistics..."
+        print "  - " + path + "/HTML/picard-is.html"
+        x = html.stats_picard(path,samples,config)
+        html_table = html.print_table_default(path + "/outputs/stats_picard2.txt", -1, [])
+        data = html.bar_getdata (path + "/outputs/stats_picard2.txt",0,range(1,2),[])
+        html.build_from_template("PICARD-InsertSize", project, data, html_table, "", path+"/HTML/picard-is.html", os.path.dirname(sys.argv[0]) + "/template/TEMPLATE_PICARDIS.html", lmenu)
+
 except:
     print "  - Not ready"
 

@@ -33,6 +33,8 @@ def get_menu(config, ns):
         menu.append('<h1>Alignment QC:</h1>')
     if enabled.has_key("picard"):
         menu.append('<h2><a #highlight="" href="./picard.html">- Picard</a></h2>')
+    if enabled.has_key("picard_IS"):
+        menu.append('<h2><a #highlight="" href="./picard-is.html">- Picard Insert Size</a></h2>')
     if enabled.has_key("star"):
         menu.append('<h2><a #highlight="" href="./star.html">- STAR</a></h2>')
     if enabled.has_key("kallisto"):
@@ -66,8 +68,8 @@ def get_menu(config, ns):
     return menu
 
 def print_samples(path,config):
-    analysis = ['trimgalore', 'fastqc', 'kallisto', 'star', 'star-fusion', 'picard', "htseq-gene", "htseq-exon", "varscan", 'gatk']
-    sta= {"trimgalore":"TrimGalore", "fastqc":"FastQC","star":"STAR","star-fusion":"STAR-Fusion","picard":"PicardQC","kallisto":"Kallisto","htseq-gene":"HTseq-gene","htseq-exon":"HTseq-exon", "varscan":"VARSCAN", "gatk":"GATK"}
+    analysis = ['trimgalore', 'fastqc', 'kallisto', 'star', 'star-fusion', 'picard', "htseq-gene", "htseq-exon", "picard_IS", "varscan", 'gatk']
+    sta= {"trimgalore":"TrimGalore", "fastqc":"FastQC","star":"STAR","star-fusion":"STAR-Fusion","picard":"PicardQC","kallisto":"Kallisto","htseq-gene":"HTseq-gene","htseq-exon":"HTseq-exon", "picard_IS":"Picard-InsertSize", "varscan":"VARSCAN", "gatk":"GATK"}
     # SAMPLES LIST
     samples = dict()
     f   = open(path + "/samples.list",'r')
@@ -152,6 +154,16 @@ def print_samples(path,config):
                     else:
                         res.append("FAIL")
                     results["star-fusion"][x] = " / ".join(res)
+            elif i=="picard_IS":
+                for x, y in sorted(samples.iteritems()):
+                    res = []
+                    if sok.has_key(x):
+                        link = "../results_picard_IS/" + x + ".txt"
+                        link = '<a href="LINK" target="_blank">OK</a>'.replace("LINK", link)
+                        res.append(link)
+                    else:
+                        res.append("FAIL")
+                    results["picard_IS"][x] = " / ".join(res)
             elif i=="picard":
                 for x, y in sorted(samples.iteritems()):
                     res = []
@@ -424,6 +436,35 @@ def stats_picard(path,samples,config):
         return ""
 
 
+def stats_picard_2(path,samples,config):
+    n = os.listdir(path)
+    hh = "\t".join(['sample_id','MEDIAN_INSERT_SIZE','MEDIAN_ABSOLUTE_DEVIATION','MIN_INSERT_SIZE',
+                    'MAX_INSERT_SIZE','MEAN_INSERT_SIZE','STANDARD_DEVIATION','READ_PAIRS', 'LINK_TXT', 'LINK_PDF'])
+    if config.has_key("picard_IS") and ("results_picard_IS" in n):
+        files  = os.listdir(path+"/results_picard_IS")
+        out = open(path + "/outputs/stats_picard2.txt",'w')
+        print >> out, hh
+        data = list()
+        for i in sorted(samples.keys()):
+            if i + ".txt" in files:
+                f = open(path+"/results_picard_IS"+"/"+i+".txt",'r')
+                k = 0
+                while (1):
+                    j = f.readline()
+                    if j.startswith("MEDIAN_INSERT_SIZE"):
+                        j = f.readline().strip("\n").split("\t")
+                        break
+                    k += 1
+                    if k > 10 or len(j) == 0:
+                        j = ['NA' for i in range(7)]
+                        break
+                print >> out, "\t".join([i] + j + ['<a href="../results_picard_IS/' + i + '.txt" target="_blank">+</a>', '<a href="../results_picard_IS/' + i + '.pdf" target="_blank">+</a>'])
+                f.close()
+            else:
+                print >> out, "\t".join([i] + ['NA' for i in range(9)])
+        out.close()
+    return 1
+
 def skeleton(path, path2html):
     print "> Building HTML and OUTPUT folders skeletons..."
     print "  - Path: " + path
@@ -521,7 +562,7 @@ def check_config(path):
     # Parses the configuration file
     print "> Parsing configuration file..."
     try:
-        z = ["trimgalore", "fastqc", "star", "star-fusion", "picard", "htseq-gene", "htseq-exon", "kallisto", "varscan", "gatk"]
+        z = ["trimgalore", "fastqc", "star", "star-fusion", "picard", "htseq-gene", "htseq-exon", "kallisto", "picard_IS", "varscan", "gatk"]
         f = open(path + "/config.txt", 'r')
         analysis = dict()
         analysis["cluster"] = dict()
