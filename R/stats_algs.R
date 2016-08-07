@@ -4,22 +4,35 @@
 # INPUT DATA
 args <- commandArgs(trailingOnly = TRUE)
 path <- args[1]  # path to the project outputs/ folder
-alg  <- args[2]  # algorithm: star or htseq-gene or htseq-exon
+alg  <- args[2]  # algorithm: star or htseq-gene or htseq-exon or kallisto
 # READS RPKM AND COUNT MATRICES
-rpkms  <- read.table(paste(path, alg, "_rpkms.txt", sep=""), sep = "\t", header = T, stringsAsFactors = F)
-snames1 <- as.character(read.table(paste(path, alg, "_rpkms.txt", sep=""), sep = "\t", header = F, stringsAsFactors = F, nrows = 1))
-counts <- read.table(paste(path, alg, "_counts.txt", sep=""), sep = "\t", header = T, stringsAsFactors = F)
-snames2 <- as.character(read.table(paste(path, alg, "_counts.txt", sep=""), sep = "\t", header = F, stringsAsFactors = F, nrows = 1))
+if (alg != 'kallisto'){
+  rpkms  <- read.table(paste(path, alg, "_rpkms.txt", sep=""), sep = "\t", header = T, stringsAsFactors = F)
+  snames1 <- as.character(read.table(paste(path, alg, "_rpkms.txt", sep=""), sep = "\t", header = F, stringsAsFactors = F, nrows = 1))
+  counts <- read.table(paste(path, alg, "_counts.txt", sep=""), sep = "\t", header = T, stringsAsFactors = F)
+  snames2 <- as.character(read.table(paste(path, alg, "_counts.txt", sep=""), sep = "\t", header = F, stringsAsFactors = F, nrows = 1))
+  labs <- c("RPKM","COUNTS")
+} else{
+  rpkms  <- read.table(paste(path, alg, "_tpm.txt", sep=""), sep = "\t", header = T, stringsAsFactors = F, na.strings = '-nan')
+  rpkms <- rpkms[,2:ncol(rpkms)]
+  snames1 <- as.character(read.table(paste(path, alg, "_tpm.txt", sep=""), sep = "\t", header = F, stringsAsFactors = F, nrows = 1))
+  snames1 <- snames1[2:length(snames1)]
+  counts <- read.table(paste(path, alg, "_est_counts.txt", sep=""), sep = "\t", header = T, stringsAsFactors = F)
+  counts <- counts[,2:ncol(counts)]
+  snames2 <- as.character(read.table(paste(path, alg, "_est_counts.txt", sep=""), sep = "\t", header = F, stringsAsFactors = F, nrows = 1))
+  snames2 <- snames2[2:length(snames2)]
+  labs <- c("TPM","EST_COUNTS")
+}
 # ONLY USES FEATURES WITH AT LEAST TWO RAW COUNTS IN ONE LIBRARY
 inc <- which(rowSums(counts[2:ncol(counts)], na.rm = T) > 1)
 NT <- c()
 for (i in 1:2){
   N <- matrix(NA,nrow=0,ncol=0)
-  if (i == 1) {G <- rpkms[inc,];lab <- "RPKM"; snames <- snames1[2:length(snames1)]}
-  if (i == 2) {G <- counts[inc,];lab <- "COUNTS"; snames <- snames2[2:length(snames2)]}
+  if (i == 1) {G <- rpkms[inc,];lab <- labs[1]; snames <- snames1[2:length(snames1)]}
+  if (i == 2) {G <- counts[inc,];lab <- labs[2]; snames <- snames2[2:length(snames2)]}
   if (ncol(G)>2){ # at least two samples available
     lcounts  <- log2(G[, 2:ncol(G)]+1)
-    s_ok <- (which(colSums(is.na(lcounts)) == 0)) # remove samples with NA (not processed yet)
+    s_ok <- (which((colSums(G[, 2:ncol(G)]) > 10000)&(colSums(is.na(lcounts)) == 0))) # remove samples with NA (not processed yet)
     if (length(s_ok) > 1){
       ## QUANTILES
       tp <- round(t(apply(lcounts[, s_ok], 2, quantile, probs = c(0.05,0.25,0.5,0.75,0.95), na.rm = T)), 2)
@@ -48,4 +61,5 @@ for (i in 1:2){
 }
 NT <- cbind(snames[s_ok], NT)
 write.table(NT, file = paste(path, alg, "_pca", ".txt", sep=""), quote = F, row.names = F, sep = "\t")
+
 
