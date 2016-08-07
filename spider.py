@@ -147,8 +147,9 @@ try:
     if config.has_key("picard_IS"):
         print "> Generating webpage with picard insert size statistics..."
         print "  - " + path + "/HTML/picard-is.html"
-        x = html.stats_picard(path,samples,config)
+        x = html.stats_picard2(path,samples,config)
         html_table = html.print_table_default(path + "/outputs/stats_picard2.txt", -1, [])
+        print html_table
         data = html.bar_getdata (path + "/outputs/stats_picard2.txt",0,range(1,2),[])
         html.build_from_template("PICARD-InsertSize", project, data, html_table, "", path+"/HTML/picard-is.html", os.path.dirname(sys.argv[0]) + "/template/TEMPLATE_PICARDIS.html", lmenu)
 
