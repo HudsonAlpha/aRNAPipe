@@ -1,13 +1,14 @@
 import shutil
 import os
 
-modules = ["trimgalore", "fastqc", "kallisto", "star", "star-fusion", "picard", "htseq-gene", "htseq-exon", "varscan", "gatk"]
+modules = ["trimgalore", "fastqc", "kallisto", "star", "star-fusion", "picard", "picard_IS", "htseq-gene", "htseq-exon", "varscan", "gatk"]
 module_names = {"trimgalore":"",
                 "fastqc":"",
                 "kallisto":"",
                 "star":"",
                 "star-fusion":"",
                 "picard":"",
+                "picard_IS":"",
                 "htseq-gene":"",
                 "htseq-exon":"",
                 "varscan":"",
