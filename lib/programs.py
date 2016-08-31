@@ -25,12 +25,10 @@ def submit_job_super(pname, path, wt, nproc, q, ns, bsub_suffix, nstar, timestam
     uds = list()
     logs = list()
     for i in range(nstar):
-        print i, nstar
         logname = path + "/logs/" + timestamp + "_" + pname + "_" + str(i) + ".log"
         logs.append(logname)
         if os.path.exists(logname):
             os.remove(logname)
-        print wt, str(nproc), q, logname, folder + "_" + jid + "_" + str(i), path + "/results_" + pname + "/script_" + str(i) + ".sh", 1, path, bsub_suffix
         uds.append(str(manager.submit_job(wt, str(nproc), q, logname, folder + "_" + jid + "_" + str(i),
                               path + "/results_" + pname + "/script_" + str(i) + ".sh", 1, path, bsub_suffix)))
     uds = "|".join(uds)
