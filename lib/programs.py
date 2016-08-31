@@ -25,6 +25,8 @@ def submit_job_super(pname, path, wt, nproc, q, ns, bsub_suffix, nstar, timestam
     uds = list()
     logs = list()
     for i in range(nstar):
+        print i, nstar
+        print wt, str(nproc), q, logname, folder + "_" + jid + "_" + str(i), path + "/results_" + pname + "/script_" + str(i) + ".sh", 1, path, bsub_suffix
         logname = path + "/logs/" + timestamp + "_" + pname + "_" + str(i) + ".log"
         logs.append(logname)
         if os.path.exists(logname):
@@ -147,7 +149,6 @@ def trimgalore(timestamp, path_base, folder, samples, nproc, wt, q, extra_args):
         call = config.path_trimgalore + args + " --gzip --path_to_cutadapt " + config.path_cutadapt + " -o " + output_folder + " " + fnames
         call = call + sample_checker.replace("#FOLDER", output_folder).replace("#SAMPLE", sample) + "\n" + rename_tg_output(sample, files, path_base + folder)
         commands.append(call)
-        print call
     create_scripts(nchild, commands, path_base, folder, output)
     return submit_job_super("trimgalore", path_base + folder, wt, str(nproc), q, len(samples), bsub_suffix, nchild, timestamp)
 
