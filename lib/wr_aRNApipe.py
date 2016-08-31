@@ -160,7 +160,7 @@ if int(var["gatk"].split("/")[0]) > 0:
 if int(var["star-fusion"].split("/")[0]) > 0:
     if len(samples[samples.keys()[0]]) == 2:
         exit("Star-Fusion requires paired-end reads.")
-
+print 1
 ##########################################################
 ## Starts analysis
 ##########################################################
@@ -169,9 +169,12 @@ tg = False
 ## Pre-alignment analysis
 if int(var["trimgalore"].split("/")[0]) > 0:
     tg = True
+    print 2, samples
     samples_v, stats = vcrparser.check_samples(samples, path_base, folder, "trimgalore", opt.m)
+    print 3, samples
     if len(samples_v) > 0:
         uds_tg, logs_tg = programs.trimgalore(timestamp, path_base, folder, samples_v, var["trimgalore"], var["wt"], var["q"], var["trimgal_args"])
+        print 4, uds_tg
         w = vcrparser.job_wait(logs_tg, 20)
         procs.append(logs_tg)
 if int(var["fastqc"].split("/")[0]) > 0:
