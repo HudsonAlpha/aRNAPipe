@@ -130,7 +130,7 @@ def trimgalore(timestamp, path_base, folder, samples, nproc, wt, q, extra_args):
     secure_mkdir(path_base + folder, "results_trimgalore")
     output_folder = path_base + folder + "/results_trimgalore"
 
-    print "> Writing jobs for fastqc analysis..."
+    print "> Writing jobs for TrimGalore analysis..."
     nproc, nchild, bsub_suffix = manager.get_bsub_arg(nproc, len(samples))
     commands = list()
     ksamp = sortbysize(samples)
@@ -147,6 +147,7 @@ def trimgalore(timestamp, path_base, folder, samples, nproc, wt, q, extra_args):
         call = config.path_trimgalore + args + " --gzip --path_to_cutadapt " + config.path_cutadapt + " -o " + output_folder + " " + fnames
         call = call + sample_checker.replace("#FOLDER", output_folder).replace("#SAMPLE", sample) + "\n" + rename_tg_output(sample, files, path_base + folder)
         commands.append(call)
+        print call
     create_scripts(nchild, commands, path_base, folder, output)
     return submit_job_super("trimgalore", path_base + folder, wt, str(nproc), q, len(samples), bsub_suffix, nchild, timestamp)
 
