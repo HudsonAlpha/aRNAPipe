@@ -152,7 +152,6 @@ if int(var["gatk"].split("/")[0]) > 0:
 if int(var["star-fusion"].split("/")[0]) > 0:
     if len(samples[samples.keys()[0]]) == 2:
         exit("Star-Fusion requires paired-end reads.")
-
 ##########################################################
 ## Starts analysis
 ##########################################################

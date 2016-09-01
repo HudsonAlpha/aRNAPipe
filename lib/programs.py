@@ -130,7 +130,7 @@ def trimgalore(timestamp, path_base, folder, samples, nproc, wt, q, extra_args):
     secure_mkdir(path_base + folder, "results_trimgalore")
     output_folder = path_base + folder + "/results_trimgalore"
 
-    print "> Writing jobs for fastqc analysis..."
+    print "> Writing jobs for TrimGalore analysis..."
     nproc, nchild, bsub_suffix = manager.get_bsub_arg(nproc, len(samples))
     commands = list()
     ksamp = sortbysize(samples)

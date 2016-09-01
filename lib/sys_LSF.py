@@ -93,6 +93,9 @@ def submit_job(wt, n, q, output_log, jid, path2script, script, pt, bsub_suffix):
         command = 'bsub '+opts+' -W ' + wt + " -n " + n + " -q " + q + " -o " + output_log + " -J " + jid + " < " + path2script
     else:
         command = 'bsub '+opts+' -W ' + wt + " -n " + n + " -q " + q + " -o " + output_log + " -J " + jid + " '" + path2script + "'"
+    print command
     os.system(command + " > " + pt + "/temp/temp" + jid + "_" + r + ".txt")
+    print pt + "/temp/temp" + jid + "_" + r + ".txt"
     uds = get_pid(pt + "/temp/temp" + jid + "_" + r + ".txt", 3)
+    print uds
     return uds
