@@ -94,6 +94,7 @@ def annotate_gtf(filename):
             data[i] = dict()
         print 1, filename
         f = open(filename, 'r')
+        print 2
         for i in f:
             if not i.startswith("#"):
                 i = i.strip("\n").split("\t")
@@ -113,11 +114,11 @@ def annotate_gtf(filename):
                             exon2gene[feat_id] = gid
                         if i[2] == "transcript":
                             transc2gene[feat_id] = gid
+        print 3
         f.close()
         results = dict()
         for i in features:
             results[i] = dict()
-        print 2
         for feat_type, feat_data in data.iteritems():
             for feat_id, exons in feat_data.iteritems():
                 ints = list([exons[0]])
@@ -159,7 +160,6 @@ def annotate_gtf(filename):
                 for i in ints:
                     n += i[1]-i[0]+1
                 results[feat_type][feat_id] = str(n)
-        print 3
         for feat_type, feat_data in results.iteritems():
             print "  - " + filename.replace(".gtf", "." + feat_type + ".txt")
             out = open(filename.replace(".gtf", "." + feat_type + ".txt"), 'w')
