@@ -104,6 +104,9 @@ def annotate_gtf(filename):
                             feat_id = j.split(i[2]+'_id "')[1].split('"')[0] # feature id
                         else:
                             if i[2]=='exon':
+                                print gid
+                                print j.split('transcript_id "')[1].split('"')[0]
+                                print j.split('exon_number "')[1].split('"')[0]
                                 feat_id = gid + '_' + j.split('transcript_id "')[1].split('"')[0] + '_' + j.split('exon_number "')[1].split('"')[0]
                         loci[feat_id] = [i[0], i[3], i[4]] # chrom, start, end
                         L = [float(i[3]), float(i[4])]
