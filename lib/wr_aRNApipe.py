@@ -71,6 +71,8 @@ print "  - Picard QC:       " + var["picard"]
 print "  - HTseq (gene):    " + var["htseq-gene"]
 print "  - HTseq (exon):    " + var["htseq-exon"]
 print "  - Kallisto:        " + var["kallisto"]
+print "  - sam2sortbam:     " + var["sam2sortbam"]
+print "  - gatk:            " + var["gatk"]
 print "  - Varscan:         " + var["varscan"]
 print "> INDIVIDUAL ANALYSIS SETTINGS:"
 print "  - TrimGalore args: " + var["trimgal_args"]
@@ -201,10 +203,11 @@ if int(var["htseq-exon"].split("/")[0]) > 0:
     if len(samples_v) > 0:
         uds_htseqE, logs_htseqE = programs.htseq(timestamp, path_base, folder, samples_v, config.path_annotation, var["htseq-exon"], var["wt"], var["q"], "exon", var["strandedness"],var["htseq-exon-mode"])
         procs.append(logs_htseqE)
-if (int(var["varscan"].split("/")[0]) > 0) or (int(var["gatk"].split("/")[0]) > 0):
+if (int(var["sam2sortbam"].split("/")[0]) > 0) or (int(var["varscan"].split("/")[0]) > 0) or (int(var["gatk"].split("/")[0]) > 0):
     samples_v, stats = vcrparser.check_samples(samples, path_base, folder, "sam2sortbam", opt.m)
     if len(samples_v) > 0:
-        uds_sam2sortbam, logs_sam2sortbam = programs.sam2sortbam(timestamp, path_base, folder, samples_v, var["varscan"], var["wt"], var["q"])
+        gk = gk = var["sam2sortbam"] if int(var["sam2sortbam"].split("/")[0]) > 0 else var["varscan"]
+        uds_sam2sortbam, logs_sam2sortbam = programs.sam2sortbam(timestamp, path_base, folder, samples_v, gk, var["wt"], var["q"])
         procs.append(logs_sam2sortbam)
         w = vcrparser.job_wait(logs_sam2sortbam, 20)
 if int(var["gatk"].split("/")[0]) > 0:

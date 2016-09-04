@@ -9,6 +9,7 @@ star-fusion	10/NA/NA
 picard	10/NA/NA
 htseq-gene	10/NA/NA
 htseq-exon	10/NA/NA
+sorted-bam  10/NA/NA
 varscan	10/NA/NA
 gatk	20/30/NA
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -18,13 +19,13 @@ genome_build	g1k_v37
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% HPC CONFIG
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-wt	400:00
+wt	200:00
 q	normal
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% ADDITIONAL PROGRAM OPTIONS
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 kalboot	20	Number of bootstraps for Kallisto analysis
-trimgal_args	--illumina
+trimgal_args
 star2pass	yes
 star_args	encode
 star_args_own	
