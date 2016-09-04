@@ -99,12 +99,14 @@ def annotate_gtf(filename):
                 if len(i) == 9:
                     if i[2] in features: # gene/transcript/exon
                         j = i[8]
-                        gid     = j.split('gene_id "')[1].split('"')[0]  # associated gene id
+                        gid = j.split('gene_id "')[1].split('"')[0]  # associated gene id
+                        print gid
                         if i[2]+'_id "' in j:
                             feat_id = j.split(i[2]+'_id "')[1].split('"')[0] # feature id
                         else:
                             if i[2]=='exon':
-                                feat_id = gid + '_' + j.split('transcript_id "')[1].split('"')[0] + j.split('exon_number "')[1].split('"')[0]
+                                feat_id = gid + '_' + j.split('transcript_id "')[1].split('"')[0] + '_' + j.split('exon_number "')[1].split('"')[0]
+                        print feat_id
                         loci[feat_id] = [i[0], i[3], i[4]] # chrom, start, end
                         L = [float(i[3]), float(i[4])]
                         data[i[2]][feat_id] = list()
