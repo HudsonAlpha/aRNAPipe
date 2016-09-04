@@ -92,9 +92,7 @@ def annotate_gtf(filename):
         data = dict()
         for i in features:
             data[i] = dict()
-        print 1, filename
         f = open(filename, 'r')
-        print 2
         for i in f:
             if not i.startswith("#"):
                 i = i.strip("\n").split("\t")
@@ -174,6 +172,7 @@ def annotate_gtf(filename):
             out.close()
         return 1
     except:
+        print i
         return 0
 
 
