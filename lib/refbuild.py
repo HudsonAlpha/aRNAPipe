@@ -105,22 +105,19 @@ def annotate_gtf(filename):
                         else:
                             if i[2]=='exon':
                                 feat_id = gid + '_' + j.split('transcript_id "')[1].split('"')[0] + '_' + j.split('exon_number "')[1].split('"')[0]
-                        print 1, feat_id
                         loci[feat_id] = [i[0], i[3], i[4]] # chrom, start, end
-                        print 2
                         L = [float(i[3]), float(i[4])]
-                        print 3
                         data[i[2]][feat_id] = list()
                         if i[2] == "exon":
                             tid = j.split('transcript_id "')[1].split('"')[0]
-                            print tid
+                            if not data["gene"].has_key(gid):
+                                data['gene'][gid] = list()
                             data["gene"][gid].append(L)
-                            print L
+                            if not data["transcript"].has_key(tid):
+                                data['transcript'][tid] = list()
                             data["transcript"][tid].append(L)
                             data["exon"][feat_id].append(L)
-                            print 1
                             exon2gene[feat_id] = gid
-                            print 2
                         elif i[2] == "transcript":
                             transc2gene[feat_id] = gid
         f.close()
