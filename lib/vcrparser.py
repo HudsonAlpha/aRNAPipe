@@ -128,7 +128,7 @@ def config_file(config, path_base, folder, paths):
     var = dict()
     for i in f:
        if not i.startswith("%"):
-           i = i.rstrip().split("\t")
+           i = i.strip('\n').split("\t")
            if len(i) > 1:
                var[i[0]] = i[1]
     f.close()
