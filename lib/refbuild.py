@@ -92,7 +92,6 @@ def annotate_gtf(filename):
         data = dict()
         for i in features:
             data[i] = dict()
-        print 1
         f = open(filename, 'r')
         for i in f:
             if not i.startswith("#"):
@@ -122,11 +121,9 @@ def annotate_gtf(filename):
                         elif i[2] == "transcript":
                             transc2gene[feat_id] = gid
         f.close()
-        print 2
         results = dict()
         for i in features:
             results[i] = dict()
-        print 3
         for feat_type, feat_data in data.iteritems():
             for feat_id, exons in feat_data.iteritems():
                 ints = list([exons[0]])
@@ -168,18 +165,18 @@ def annotate_gtf(filename):
                 for i in ints:
                     n += i[1]-i[0]+1
                 results[feat_type][feat_id] = str(n)
-        print 4
         for feat_type, feat_data in results.iteritems():
             print "  - " + filename.replace(".gtf", "." + feat_type + ".txt")
             out = open(filename.replace(".gtf", "." + feat_type + ".txt"), 'w')
             print >> out, "gene\ttranscript\texon\tchrom\tstart\tend\tlength"
             for feat_id, feat_length in sorted(feat_data.iteritems()):
-                if feat_type == "gene":
-                    print >> out, feat_id + "\t.\t.\t" + "\t".join(loci[feat_id]) + "\t" + feat_length
-                elif feat_type == "transcript":
-                    print >> out, transc2gene[feat_id] + "\t" + feat_id + "\t.\t" +  "\t".join(loci[feat_id]) + "\t" + feat_length
-                elif feat_type == "exon":
-                    print >> out, exon2gene[feat_id] + "\t.\t" + feat_id + "\t" +  "\t".join(loci[feat_id]) + "\t" + feat_length
+                if loci.has_key(feat_id):
+                    if feat_type == "gene":
+                        print >> out, feat_id + "\t.\t.\t" + "\t".join(loci[feat_id]) + "\t" + feat_length
+                    elif feat_type == "transcript":
+                        print >> out, transc2gene[feat_id] + "\t" + feat_id + "\t.\t" +  "\t".join(loci[feat_id]) + "\t" + feat_length
+                    elif feat_type == "exon":
+                        print >> out, exon2gene[feat_id] + "\t.\t" + feat_id + "\t" +  "\t".join(loci[feat_id]) + "\t" + feat_length
             out.close()
         return 1
     except:
