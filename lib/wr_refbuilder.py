@@ -15,6 +15,7 @@ parser.add_option("-f", "--fasta", dest = "fasta",default = "", help = "Path to 
 parser.add_option("-c", "--cdna",  dest = "cdna", default = "", help = "Path to the cDNA fasta file (accepts '.gz').")
 parser.add_option("-g", "--gtf",   dest = "gtf",  default = "", help = "Path to the GTF gene set file ('.gtf').")
 parser.add_option("-n", "--ncpu",  dest = "n",    default = "8",help = "Number of threads that STAR will use to generate the reference genome (default=8).")
+
 (opt, args) = parser.parse_args()
 
 (opt, args) = parser.parse_args()

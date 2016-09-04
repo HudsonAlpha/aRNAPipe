@@ -92,6 +92,7 @@ def annotate_gtf(filename):
         data = dict()
         for i in features:
             data[i] = dict()
+        print 1, filename
         f = open(filename, 'r')
         for i in f:
             if not i.startswith("#"):
@@ -116,6 +117,7 @@ def annotate_gtf(filename):
         results = dict()
         for i in features:
             results[i] = dict()
+        print 2
         for feat_type, feat_data in data.iteritems():
             for feat_id, exons in feat_data.iteritems():
                 ints = list([exons[0]])
@@ -157,6 +159,7 @@ def annotate_gtf(filename):
                 for i in ints:
                     n += i[1]-i[0]+1
                 results[feat_type][feat_id] = str(n)
+        print 3
         for feat_type, feat_data in results.iteritems():
             print "  - " + filename.replace(".gtf", "." + feat_type + ".txt")
             out = open(filename.replace(".gtf", "." + feat_type + ".txt"), 'w')
