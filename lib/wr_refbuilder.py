@@ -146,4 +146,8 @@ if file_gtf != "":
 print "> Adding genome key to installed genomes..."
 out = open(root_path + "/genomes_processed/installed_genomes.txt",'a')
 print >> out, genome_label + "\t" + time.strftime("%y%m%d_%H%M%S") + "\t" + opt.fasta.split("/")[-1] + "\t" + opt.cdna.split("/")[-1] + "\t" + opt.gtf.split("/")[-1]
+
+os.system('rm -rf ' + root_path + "/genomes_processed/" + genome_label + "/log")
+os.system('rm -rf ' + root_path + "/genomes_processed/" + genome_label + "/temp")
+
 out.close()

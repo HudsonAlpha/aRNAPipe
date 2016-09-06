@@ -24,7 +24,16 @@ else:
     g = "-R span[hosts=1] "
 
 # Build arguments for 'wr_refbuilder.py'
+print "> Creating output directory for the current genome version in the processed genomes folder..."
+if os.path.exists(opt.path + "/genomes_processed/" + opt.label):
+    os.system("rm -r " + opt.path + "/genomes_processed/" + opt.label)
+os.mkdir(opt.path + "/genomes_processed/" + opt.label)
+if not os.path.exists(opt.path + "/genomes_processed/" + opt.label + "/log"):
+    os.mkdir(opt.path + "/genomes_processed/" + opt.label + "/log")
+if not os.path.exists(opt.path + "/genomes_processed/" + opt.label + "/temp"):
+    os.mkdir(opt.path + "/genomes_processed/" + opt.label + "/temp")
+
 vargs = "-L " + opt.label + " -p " + opt.path + " -f " + opt.fasta + " -c " + opt.cdna + " -g " + opt.gtf + " -n " + opt.n
-bsub_1 = "bsub " + g + "-q normal -J " + opt.label + " -n " + opt.n +" -W " + opt.wt + " -o " + opt.label + "_cluster.log"
-bsub_2 = " 'python " + os.path.dirname(sys.argv[0]) + "/lib/wr_refbuilder.py " + vargs + " > " + opt.label + ".log'"
+bsub_1 = "bsub " + g + "-q normal -J " + opt.label + " -n " + opt.n +" -W " + opt.wt + " -o " + opt.path + "/genomes_processed/" + opt.label + '/' + opt.label + "_cluster.log"
+bsub_2 = " 'python " + os.path.dirname(sys.argv[0]) + "/lib/wr_refbuilder.py " + vargs + " > " + opt.path + "/genomes_processed/" + opt.label + '/' + opt.label + ".log"
 os.system(bsub_1 + bsub_2)
