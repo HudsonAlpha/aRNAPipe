@@ -35,7 +35,5 @@ if not os.path.exists(opt.path + "/genomes_processed/" + opt.label + "/temp"):
 
 vargs = "-L " + opt.label + " -p " + opt.path + " -f " + opt.fasta + " -c " + opt.cdna + " -g " + opt.gtf + " -n " + opt.n
 bsub_1 = "bsub " + g + "-q normal -J " + opt.label + " -n " + opt.n +" -W " + opt.wt + " -o " + opt.path + "/genomes_processed/" + opt.label + '/' + opt.label + "_cluster.log"
-print bsub_1
-bsub_2 = " 'python " + os.path.dirname(sys.argv[0]) + "/lib/wr_refbuilder.py " + vargs + " > " + opt.path + "/genomes_processed/" + opt.label + '/' + opt.label + ".log"
-print bsub_2
+bsub_2 = " 'python " + os.path.dirname(sys.argv[0]) + "/lib/wr_refbuilder.py " + vargs + " > " + opt.path + "/genomes_processed/" + opt.label + '/' + opt.label + ".log'"
 os.system(bsub_1 + bsub_2)
