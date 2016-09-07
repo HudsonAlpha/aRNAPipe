@@ -75,8 +75,10 @@ else:
 
 ## CREATES OUTPUT DIRECTORY
 print "> Creating output directory for the current genome version in the processed genomes folder..."
-if os.path.exists(root_path + "/genomes_processed/" + genome_label):
-    os.system("rm -r " + root_path + "/genomes_processed/" + genome_label)
+if os.path.exists(root_path + "/genomes_processed/" + genome_label + '/refFlats'):
+    os.system("rm -r " + root_path + "/genomes_processed/" + genome_label + '/refFlats')
+if os.path.exists(root_path + "/genomes_processed/" + genome_label + '/STAR_genome'):
+    os.system("rm -r " + root_path + "/genomes_processed/" + genome_label + '/STAR_genome')
 os.mkdir(root_path + "/genomes_processed/" + genome_label)
 if not os.path.exists(root_path + "/genomes_processed/" + genome_label + "/log"):
     os.mkdir(root_path + "/genomes_processed/" + genome_label + "/log")
@@ -121,7 +123,7 @@ if file_fasta != "":
         command  = config.path_star + " --runThreadN " + str(nprocs_star) + " --runMode genomeGenerate  --genomeDir #GD --genomeFastaFiles #FASTA --sjdbGTFfile #GTF &>/dev/null"
     else:
         print "  - GTF file not included/provided"
-        command  = config.path_star + " --runThreadN " + str(nprocs_star) + " --runMode genomeGenerate  --genomeDir #GD --genomeFastaFiles #FASTA &>/dev/null"
+        command  = config.path_star + " --runThreadN " + str(nprocs_star) + " --runMode genomeGenerate --genomeChrBinNbits 10 --genomeDir #GD --genomeFastaFiles #FASTA &>/dev/null"
     command  = command.replace("#GD", root_path + "/genomes_processed/" + genome_label + "/STAR_genome")
     command  = command.replace("#FASTA", file_fasta).replace("#GTF", file_gtf)
     os.system(command)
