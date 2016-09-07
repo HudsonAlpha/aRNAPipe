@@ -79,7 +79,6 @@ if os.path.exists(root_path + "/genomes_processed/" + genome_label + '/refFlats'
     os.system("rm -r " + root_path + "/genomes_processed/" + genome_label + '/refFlats')
 if os.path.exists(root_path + "/genomes_processed/" + genome_label + '/STAR_genome'):
     os.system("rm -r " + root_path + "/genomes_processed/" + genome_label + '/STAR_genome')
-os.mkdir(root_path + "/genomes_processed/" + genome_label)
 if not os.path.exists(root_path + "/genomes_processed/" + genome_label + "/log"):
     os.mkdir(root_path + "/genomes_processed/" + genome_label + "/log")
 if not os.path.exists(root_path + "/genomes_processed/" + genome_label + "/temp"):
