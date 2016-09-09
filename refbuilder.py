@@ -35,7 +35,7 @@ if not os.path.exists(opt.path + "/genomes_processed/" + opt.label + "/temp"):
     os.mkdir(opt.path + "/genomes_processed/" + opt.label + "/temp")
 
 if opt.ram != '':
-    sb = ' -R rusage[mem=' + 1024*int(opt.ram) +']'
+    sb = ' -R rusage[mem=' + str(1024*int(opt.ram)) +']'
     sb2 = ' -r ' + opt.ram
 else:
     sb = ''
