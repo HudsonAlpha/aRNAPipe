@@ -15,10 +15,14 @@ parser.add_option("-f", "--fasta", dest = "fasta",default = "", help = "Path to 
 parser.add_option("-c", "--cdna",  dest = "cdna", default = "", help = "Path to the cDNA fasta file (accepts '.gz').")
 parser.add_option("-g", "--gtf",   dest = "gtf",  default = "", help = "Path to the GTF gene set file ('.gtf').")
 parser.add_option("-n", "--ncpu",  dest = "n",    default = "8",help = "Number of threads that STAR will use to generate the reference genome (default=8).")
+parser.add_option("-r", "--ram",  dest = "ram",    default = "",help = "Required RAM (Gb).")
 
 (opt, args) = parser.parse_args()
 
-(opt, args) = parser.parse_args()
+if opt.ram != '':
+    sb = ' --limitGenomeGenerateRAM ' + str(int(float(opt.ram)*1000000000))
+else:
+    sb = ''
 
 root_path = opt.path
 file_fasta = opt.fasta
@@ -119,10 +123,10 @@ if file_fasta != "":
         os.mkdir(root_path + "/genomes_processed/" + genome_label + "/STAR_genome")
     if file_gtf != "":
         print "  - Including GTF annotation"
-        command  = config.path_star + " --runThreadN " + str(nprocs_star) + " --runMode genomeGenerate  --genomeDir #GD --genomeFastaFiles #FASTA --sjdbGTFfile #GTF &>/dev/null"
+        command  = config.path_star + " --runThreadN " + str(nprocs_star) + " --runMode genomeGenerate"+ sb +" --genomeDir #GD --genomeFastaFiles #FASTA --sjdbGTFfile #GTF &>/dev/null"
     else:
         print "  - GTF file not included/provided"
-        command  = config.path_star + " --runThreadN " + str(nprocs_star) + " --runMode genomeGenerate --limitGenomeGenerateRAM 92798303616 --genomeDir #GD --genomeFastaFiles #FASTA &>/dev/null"
+        command  = config.path_star + " --runThreadN " + str(nprocs_star) + " --runMode genomeGenerate"+ sb +" --genomeDir #GD --genomeFastaFiles #FASTA &>/dev/null"
     command  = command.replace("#GD", root_path + "/genomes_processed/" + genome_label + "/STAR_genome")
     command  = command.replace("#FASTA", file_fasta).replace("#GTF", file_gtf)
     os.system(command)

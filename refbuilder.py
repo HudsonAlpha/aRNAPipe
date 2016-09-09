@@ -36,9 +36,11 @@ if not os.path.exists(opt.path + "/genomes_processed/" + opt.label + "/temp"):
 
 if opt.ram != '':
     sb = ' -R rusage[mem=' + 1024*int(opt.ram) +']'
+    sb2 = ' -r ' + opt.ram
 else:
     sb = ''
-vargs = "-L " + opt.label + " -p " + opt.path + " -f " + opt.fasta + " -c " + opt.cdna + " -g " + opt.gtf + " -n " + opt.n
+    sb2 = ''
+vargs = "-L " + opt.label + " -p " + opt.path + " -f " + opt.fasta + " -c " + opt.cdna + " -g " + opt.gtf + " -n " + opt.n + sb2
 bsub_1 = "bsub " + g + "-q normal -J " + opt.label + " -n " + opt.n + sb + " -W " + opt.wt + " -o " + opt.path + "/genomes_processed/" + opt.label + '/' + opt.label + "_cluster.log"
 bsub_2 = " 'python " + os.path.dirname(sys.argv[0]) + "/lib/wr_refbuilder.py " + vargs + " > " + opt.path + "/genomes_processed/" + opt.label + '/' + opt.label + ".log'"
 os.system(bsub_1 + bsub_2)
