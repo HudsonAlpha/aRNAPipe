@@ -123,10 +123,10 @@ if file_fasta != "":
         os.mkdir(root_path + "/genomes_processed/" + genome_label + "/STAR_genome")
     if file_gtf != "":
         print "  - Including GTF annotation"
-        command  = config.path_star + " --runThreadN " + str(nprocs_star) + " --runMode genomeGenerate"+ sb +" --genomeDir #GD --genomeFastaFiles #FASTA --sjdbGTFfile #GTF &>/dev/null"
+        command  = config.path_star + " --outFileNamePrefix #GD --runThreadN " + str(nprocs_star) + " --runMode genomeGenerate"+ sb +" --genomeDir #GD --genomeFastaFiles #FASTA --sjdbGTFfile #GTF &>/dev/null"
     else:
         print "  - GTF file not included/provided"
-        command  = config.path_star + " --runThreadN " + str(nprocs_star) + " --runMode genomeGenerate"+ sb +" --genomeDir #GD --genomeFastaFiles #FASTA &>/dev/null"
+        command  = config.path_star + " --outFileNamePrefix #GD --runThreadN " + str(nprocs_star) + " --runMode genomeGenerate"+ sb +" --genomeDir #GD --genomeFastaFiles #FASTA &>/dev/null"
     command  = command.replace("#GD", root_path + "/genomes_processed/" + genome_label + "/STAR_genome")
     command  = command.replace("#FASTA", file_fasta).replace("#GTF", file_gtf)
     os.system(command)
