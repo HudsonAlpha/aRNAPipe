@@ -122,7 +122,7 @@ if file_fasta != "":
         command  = config.path_star + " --runThreadN " + str(nprocs_star) + " --runMode genomeGenerate  --genomeDir #GD --genomeFastaFiles #FASTA --sjdbGTFfile #GTF &>/dev/null"
     else:
         print "  - GTF file not included/provided"
-        command  = config.path_star + " --runThreadN " + str(nprocs_star) + " --runMode genomeGenerate --genomeChrBinNbits 8 --genomeDir #GD --genomeFastaFiles #FASTA &>/dev/null"
+        command  = config.path_star + " --runThreadN " + str(nprocs_star) + " --runMode genomeGenerate --limitGenomeGenerateRAM 92798303616 --genomeDir #GD --genomeFastaFiles #FASTA &>/dev/null"
     command  = command.replace("#GD", root_path + "/genomes_processed/" + genome_label + "/STAR_genome")
     command  = command.replace("#FASTA", file_fasta).replace("#GTF", file_gtf)
     os.system(command)
