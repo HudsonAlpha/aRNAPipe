@@ -15,6 +15,7 @@ parser.add_option("-g", "--gtf",   dest = "gtf",  default = "", help = "Path to 
 parser.add_option("-n", "--ncpu",  dest = "n",    default = "8",help = "Number of threads that STAR will use to generate the reference genome (default=8).")
 parser.add_option("-w", "--wt",    dest = "wt",   default = "200:00", help = "Wall time (default=200:00).")
 parser.add_option("-s", "--span",  dest = "span",   default = "no", help = "Span 1 host (yes/no, default no).")
+parser.add_option("-r", "--ram",  dest = "ram",   default = "", help = "Required RAM (Gb).")
 (opt, args) = parser.parse_args()
 
 # Span one host?
@@ -33,7 +34,11 @@ if not os.path.exists(opt.path + "/genomes_processed/" + opt.label + "/log"):
 if not os.path.exists(opt.path + "/genomes_processed/" + opt.label + "/temp"):
     os.mkdir(opt.path + "/genomes_processed/" + opt.label + "/temp")
 
+if opt.ram != '':
+    sb = ' -R rusage[mem=' + 1024*int(opt.ram) +']'
+else:
+    sb = ''
 vargs = "-L " + opt.label + " -p " + opt.path + " -f " + opt.fasta + " -c " + opt.cdna + " -g " + opt.gtf + " -n " + opt.n
-bsub_1 = "bsub " + g + "-q normal -J " + opt.label + " -n " + opt.n +" -R rusage[mem=98304] -W " + opt.wt + " -o " + opt.path + "/genomes_processed/" + opt.label + '/' + opt.label + "_cluster.log"
+bsub_1 = "bsub " + g + "-q normal -J " + opt.label + " -n " + opt.n + sb + " -W " + opt.wt + " -o " + opt.path + "/genomes_processed/" + opt.label + '/' + opt.label + "_cluster.log"
 bsub_2 = " 'python " + os.path.dirname(sys.argv[0]) + "/lib/wr_refbuilder.py " + vargs + " > " + opt.path + "/genomes_processed/" + opt.label + '/' + opt.label + ".log'"
 os.system(bsub_1 + bsub_2)
