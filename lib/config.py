@@ -5,7 +5,7 @@ import os
 # LIBRARY USED TO SUBMIT JOBS: 'LSF' (IBM LSF WORKLOAD MANAGER), 'LOCAL' (SEQUENTIAL RUN ON SINGLE MACHINE) OR 'OTHER' FOR LIBRARY ADAPTED TO OTHER WORKLOAD MANAGERS
 mode = "LSF"
 # PATH TO THE FOLDER "genomes_processed" WHERE THE DIFFERENT GENOME BUILDS ARE STORED
-path_db = "/gpfs/gpfs1/myerslab/reference/genomes/rnaseq_pipeline/bedpipe/"
+path_db = "/gpfs/gpfs1/myerslab/reference/genomes/rnaseq_pipeline/"
 # PATHS TO BINARIES USED BY aRNApipe
 path_fastqc   = "/gpfs/gpfs1/software/fastqc/fastqc"
 path_kallisto = "/gpfs/gpfs1/software/kallisto-0.42.4/kallisto"
