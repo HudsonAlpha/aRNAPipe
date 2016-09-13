@@ -10,6 +10,7 @@ picard	10/NA/NA
 htseq-gene	10/NA/NA
 htseq-exon	10/NA/NA
 sam2sortbam  10/NA/NA
+picard_IS  10/NA/NA
 varscan	10/NA/NA
 gatk	20/30/NA
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

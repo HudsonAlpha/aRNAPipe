@@ -366,6 +366,28 @@ def sam2sortbam(timestamp, path_base, folder, samples, nproc, wt, q):
     return  submit_job_super("sam2sortbam", path_base + folder, wt, str(nproc), q, len(samples), bsub_suffix, nchild, timestamp)
 
 
+def picard_IS(timestamp, path_base, folder, samples, nproc, wt, q):
+    output = "results_picard_IS"
+    secure_mkdir(path_base + folder, output)
+    print "## Picard-InsertSize"
+    print "> Writing jobs for Picard InsertSize..."
+    nproc, nchild, bsub_suffix = manager.get_bsub_arg(nproc, len(samples))
+    commands = list()
+    ksamp = sortbysize(samples)
+    proc_files = os.listdir(path_base + folder + "/results_sam2sortbam/")
+    for sample in ksamp:
+        in_file = path_base + folder + "/results_sam2sortbam/" + sample + ".sorted.bam"
+        if sample + ".sorted.bam" in proc_files:
+            for i in range(len(config.nannots)):
+                out_file = in_file.replace("results_sam2sortbam/", "results_picard_IS/").replace(".sorted.bam", "")
+                call = "java -jar " + config.path_picard + "/CollectInsertSizeMetrics.jar I="+in_file+" O="+out_file+".txt H="+out_file+".pdf"
+                commands.append(call + sample_checker.replace("#FOLDER", path_base + folder + "/results_picard_IS").replace("#SAMPLE", sample))
+        else:
+            print "Warning: [Picard] Sorted BAM file not found -> " + in_file
+    create_scripts(nchild, commands, path_base, folder, output)
+    return  submit_job_super("picard_IS", path_base + folder, wt, str(nproc), q, len(samples), bsub_suffix, nchild, timestamp)
+
+
 def varscan(timestamp, path_base, folder, samples, nproc, wt, q, genome_build, args):
     ref = config.path_fasta.replace("#LABEL",genome_build)
     output = "results_varscan"
