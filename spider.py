@@ -26,7 +26,10 @@ except:
     samples = vcrparser.get_samples_nocheck(path.replace(project, ""), project, path + "/samples.list")
 f = open(path + "/samples.list", 'r')
 h = f.readline()
-samples_ordered = [(i.split("\t")[0]) for i in f]
+samples_ordered = list()
+for i in f:
+    if len(i.split('\t')) > 0:
+        samples_ordered.append(i.split("\t")[0])
 f.close()
 lmenu = html.get_menu(config, len(samples))
 
