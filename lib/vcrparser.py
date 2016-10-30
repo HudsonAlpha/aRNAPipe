@@ -124,6 +124,9 @@ def config_file(config, path_base, folder, paths):
     # config: path to configuration file
     # path_base: Absolute path to the location where the project folder has been created
     # folder: Name of the project folder located in 'path_base'
+    mandatory_fields = ['genome_build', 'strandedness', 'trimgalore', 'fastqc',
+                        'star', 'star-fusion', 'picard', 'htseq-gene', 'htseq-exon',
+                        'kallisto', 'sam2sortbam', 'picard_IS', 'gatk', 'varscan']
     f = open(config, 'r')
     var = dict()
     for i in f:
@@ -132,6 +135,9 @@ def config_file(config, path_base, folder, paths):
            if len(i) > 1:
                var[i[0]] = i[1]
     f.close()
+    for i in mandatory_fields:
+        if i not in var:
+            exit('Field "' + i + '" is missing in the configuration file.')
     return [config, var]
 
 

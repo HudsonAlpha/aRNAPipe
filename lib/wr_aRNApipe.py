@@ -36,7 +36,7 @@ print "> Parsing options..."
 
 ## PARSE CONFIGURATION FILE
 opt.samples = path_base + folder + "/samples.list"
-opt.config  = path_base + folder + "/config.txt"
+opt.config = path_base + folder + "/config.txt"
 [opt.config, var] = vcrparser.config_file(opt.config, path_base, folder, config)
 shutil.copy(opt.samples, opt.samples.replace("samples.list", "logs/" + timestamp + "_samples.list"))
 shutil.copy(opt.config, opt.config.replace("config.txt","logs/" + timestamp + "_config.txt"))
