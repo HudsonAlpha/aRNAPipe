@@ -180,6 +180,7 @@ def get_samples(path_base, folder, samplefile, get_phenos=False, no_check=False)
     i = f.readline().strip("\n").split("\t")
     idx = [-1, -1, -1]
     idx_pheno = []
+    pheno_names = []
     for j in range(len(i)):
         if i[j] == "SampleID":
             idx[0] = j
@@ -190,13 +191,14 @@ def get_samples(path_base, folder, samplefile, get_phenos=False, no_check=False)
         elif i[j] == "FASTQ":
             idx[1] = j
         elif i[j].startswith('PHENO_'):
+            pheno_names.append(i[j])
             idx_pheno.append(j)
     # 'SampleID' AND 'FASTQ' COLUMNS ARE REQUIRED
     if (idx[0] < 0) or (idx[1] < 0):
         exit("Error: Samples file headers must contain 'SampleID' and 'FASTQ' columns for single-end or 'SampleID', 'FASTQ_1' and 'FASTQ_2' for paired-end data")
     # PARSE SAMPLE DATA
     errors = dict({"ID duplication errors":[],"Missing input files":[], "Empty input files":[]})
-    phenos = {}
+    phenos = {i: {} for i in pheno_names}
     for i in f:
         i = i.strip("\n").split("\t")
         if len(i) > 1:
@@ -220,7 +222,8 @@ def get_samples(path_base, folder, samplefile, get_phenos=False, no_check=False)
                             else:
                                 samples[i[idx[0]]] = [i[idx[1]], i[idx[2]], 0, 0]
                             if len(idx_pheno):
-                                phenos[i[idx[0]]] = [i[ix] for ix in idx_pheno]
+                                for ifil in range(len(idx_pheno)):
+                                    phenos[pheno_names[ifil]][i[idx[0]]] = i[idx_pheno[ifil]]
                         except:
                             errors["Missing input files"].append(i[idx[ifile]])
                 else:
@@ -245,7 +248,8 @@ def get_samples(path_base, folder, samplefile, get_phenos=False, no_check=False)
                             else:
                                 samples[i[idx[0]]] = [i[idx[1]], 0]
                             if len(idx_pheno):
-                                phenos[i[idx[0]]] = [i[ix] for ix in idx_pheno]
+                                for ifil in range(len(idx_pheno)):
+                                    phenos[pheno_names[ifil]][i[idx[0]]] = i[idx_pheno[ifil]]
                         except:
                             errors["Missing input files"].append(i[idx[ifile]])
                 else:
