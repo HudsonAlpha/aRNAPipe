@@ -169,7 +169,7 @@ def job_wait(path, secs):
 #############################################################################
 ## PARSES DE SAMPLES FILE
 #############################################################################
-def get_samples_nocheck(path_base, folder, samplefile):
+def get_samples_nocheck(path_base, folder, samplefile, get_phenos=False):
     # SCAN FOR FASTQ SAMPLE FILES
     try:
         f = open(samplefile, 'r')
@@ -179,6 +179,7 @@ def get_samples_nocheck(path_base, folder, samplefile):
     # CHECK COLUMN HEADERS AND SINGLE-END/PAIRED-END DATA
     i = f.readline().strip("\n").split("\t")
     idx = [-1, -1, -1]
+    idx_pheno = []
     for j in range(len(i)):
         if i[j] == "SampleID":
             idx[0] = j
@@ -188,11 +189,14 @@ def get_samples_nocheck(path_base, folder, samplefile):
             idx[2] = j
         elif i[j] == "FASTQ":
             idx[1] = j
+        elif i[j].startswith('PHENO_'):
+            idx_pheno.append(j)
     # 'SampleID' AND 'FASTQ' COLUMNS ARE REQUIRED
     if (idx[0] < 0) or (idx[1] < 0):
         exit("Error: Samples file headers must contain 'SampleID' and 'FASTQ' columns for single-end or 'SampleID', 'FASTQ_1' and 'FASTQ_2' for paired-end data")
     # PARSE SAMPLE DATA
     errors = dict({"ID duplication errors":[],"Missing input files":[], "Empty input files":[]})
+    phenos = {}
     for i in f:
         i = i.strip("\n").split("\t")
         if len(i) > 1:
@@ -204,8 +208,9 @@ def get_samples_nocheck(path_base, folder, samplefile):
                     if samples.has_key(i[idx[0]]):
                         errors["ID duplication errors"].append(i[idx[0]])
                     else:
-                        for ifile in range(1,3):
-                            samples[i[idx[0]]] = [i[idx[1]], i[idx[2]], 0, 0]
+                        samples[i[idx[0]]] = [i[idx[1]], i[idx[2]], 0, 0]
+                        if len(idx_pheno):
+                            phenos[i[idx[0]]] = [i[ix] for ix in idx_pheno]
                 else:
                     exit("Error: Input sample files must be '.fastq' or '.fastq.gz'")
             # SINGLE-END (ONE FASTQ FILES PROVIDED PER SAMPLE
@@ -216,8 +221,9 @@ def get_samples_nocheck(path_base, folder, samplefile):
                     if samples.has_key(i[idx[0]]):
                         errors["ID duplication errors"].append(i[idx[0]])
                     else:
-                        for ifile in range(1,2):
-                            samples[i[idx[0]]] = [i[idx[1]], 0]
+                        samples[i[idx[0]]] = [i[idx[1]], 0]
+                        if len(idx_pheno):
+                            phenos[i[idx[0]]] = [i[ix] for ix in idx_pheno]
                 else:
                     exit("Error: Input sample files must be '.fastq' or '.fastq.gz'")
     if len(samples) == 0:
@@ -231,7 +237,10 @@ def get_samples_nocheck(path_base, folder, samplefile):
                 print "- " + k
     if r > 0:
         exit("Samples file errors detected")
-    return samples
+    if get_phenos:
+        return samples, phenos
+    else:
+        return samples
 
 
 def get_samples(path_base, folder, samplefile):
