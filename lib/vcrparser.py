@@ -126,7 +126,9 @@ def config_file(config, path_base, folder, paths):
     # folder: Name of the project folder located in 'path_base'
     mandatory_fields = ['genome_build', 'strandedness', 'trimgalore', 'fastqc',
                         'star', 'star-fusion', 'picard', 'htseq-gene', 'htseq-exon',
-                        'kallisto', 'sam2sortbam', 'picard_IS', 'gatk', 'varscan']
+                        'kallisto', 'sam2sortbam', 'picard_IS', 'gatk', 'varscan',
+                        'q', 'wt', 'star_args', 'star2pass', 'starfusion', 'kalboot',
+                        'varscan_args', 'gatk_args', 'htseq-gene-mode', 'htseq-exon-mode']
     f = open(config, 'r')
     var = dict()
     for i in f:
