@@ -367,6 +367,34 @@ def sam2sortbam(timestamp, path_base, folder, samples, nproc, wt, q):
     return  submit_job_super("sam2sortbam", path_base + folder, wt, str(nproc), q, len(samples), bsub_suffix, nchild, timestamp)
 
 
+def jsplice(timestamp, path_base, folder, samples, nproc, wt, q, genomebuild, pheno):
+    output_dir = path_base + folder + '/results_jsplice'
+    secure_mkdir(path_base + folder, output_dir)
+    print "## jSPLICE"
+    print "> Writing jobs for jSPLICE..."
+    nproc, nchild, bsub_suffix = manager.get_bsub_arg('1/NA/NA', len(samples))
+    commands = list()
+    ksamp = sortbysize(samples)
+    proc_files_1 = os.listdir(path_base + folder + "/results_star/")
+    proc_files_2 = os.listdir(path_base + folder + "/results_sam2sortbam/")
+    out = open(output_dir + '/expdesign.txt', 'w')
+    print >> out, '#exp\tcond\tjxnFile\tbamFile'
+    for sample in ksamp:
+        sj_file = path_base + folder + '/results_star/' + sample + '_SJ.bed' # Junction file created by STAR
+        sj_out_file = output_dir + '/' + sample + '.SJ.bed'
+        bam_file = path_base + folder + '/results_sam2sortbam/' + sample + '.sorted.bam' # BAM file created by STAR/Picard(AddOrReplaceReadGroups)
+        if (sj_file in proc_files_1) and (bam_file in proc_files_2):
+            command = 'python ' + config.path_jsplice + '/starJxn2bed.py -f ' + sj_file + ' -o '+ sj_out_file
+            commands.append(command + sample_checker.replace("#FOLDER", output_dir).replace("#SAMPLE", sample))
+            print >> out, '\t'.join([pheno[sample].split(':')[0], pheno[sample].split(':')[1], sj_out_file, bam_file])
+        else:
+            print "Warning: [JSPLICE] STAR output files not found -> " + sample
+    out.close()
+    commands.append('python ' + config.path_jsplice + '/jSplice.py  –d ' + output_dir + '/expdesign.txt –o ' + output_dir + ' -a '+ config.path_annotation.replace("#LABEL", genomebuild) + ' -c 10')
+    create_scripts(nchild, commands, path_base, folder, 'results_jsplice')
+    return  submit_job_super("sam2sortbam", path_base + folder, wt, str(nproc), q, len(samples), bsub_suffix, nchild, timestamp)
+
+
 def picard_IS(timestamp, path_base, folder, samples, nproc, wt, q):
     output = "results_picard_IS"
     secure_mkdir(path_base + folder, output)
