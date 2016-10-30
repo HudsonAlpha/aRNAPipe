@@ -23,7 +23,7 @@ config = html.check_config(path) # PARSES THE CONFIGURATION FILE
 try:
     samples = vcrparser.get_samples(path.replace(project, ""), project, path + "/samples.list") # PARSES THE SAMPLE FILE AND ASSOCIATED FASTQ FILES
 except:
-    samples = vcrparser.get_samples_nocheck(path.replace(project, ""), project, path + "/samples.list")
+    samples = vcrparser.get_samples(path.replace(project, ""), project, path + "/samples.list", no_check=True)
 f = open(path + "/samples.list", 'r')
 h = f.readline()
 samples_ordered = list()
