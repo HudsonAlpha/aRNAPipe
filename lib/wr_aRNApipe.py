@@ -210,7 +210,7 @@ if int(var["htseq-exon"].split("/")[0]) > 0:
     if len(samples_v) > 0:
         uds_htseqE, logs_htseqE = programs.htseq(timestamp, path_base, folder, samples_v, config.path_annotation, var["htseq-exon"], var["wt"], var["q"], "exon", var["strandedness"],var["htseq-exon-mode"])
         procs.append(logs_htseqE)
-if (int(var["sam2sortbam"].split("/")[0]) > 0) or (int(var["varscan"].split("/")[0]) > 0) or (int(var["gatk"].split("/")[0]) > 0) or (int(var["picard_IS"].split("/")[0]) > 0):
+if (int(var["sam2sortbam"].split("/")[0]) > 0) or (int(var["jsplice"].split("/")[0]) > 0) or (int(var["varscan"].split("/")[0]) > 0) or (int(var["gatk"].split("/")[0]) > 0) or (int(var["picard_IS"].split("/")[0]) > 0):
     samples_v, stats = vcrparser.check_samples(samples, path_base, folder, "sam2sortbam", opt.m)
     if len(samples_v) > 0:
         gk = var["sam2sortbam"] if int(var["sam2sortbam"].split("/")[0]) > 0 else var["varscan"]
@@ -222,6 +222,11 @@ if int(var["picard_IS"].split("/")[0]) > 0:
     if len(samples_v) > 0:
         uds_insert, logs_insert  = programs.picard_IS(timestamp, path_base, folder, samples_v, var["picard_IS"], var["wt"], var["q"])
         procs.append(logs_insert)
+if int(var["jsplice"].split("/")[0]) > 0:
+    samples_v, stats = vcrparser.check_samples(samples, path_base, folder, "jsplice", opt.m)
+    if len(samples_v) > 0:
+        uds_jsplice, logs_jsplice  = programs.picard_IS(timestamp, path_base, folder, samples_v, var["jsplice"], var["wt"], var["q"], var["genome_build"], pheno[pheno_label])
+        procs.append(logs_jsplice)
 if int(var["gatk"].split("/")[0]) > 0:
     samples_v, stats = vcrparser.check_samples(samples, path_base, folder, "gatk", opt.m)
     if len(samples_v) > 0:
