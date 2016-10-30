@@ -69,9 +69,9 @@ if not opt.folder.startswith("/"):
     exit("An absolute path must be provided (started with '/').")
 if opt.folder.endswith("/"):
     opt.folder = opt.folder[0:-1]
-opt.folder    = opt.folder.split("/")
+opt.folder = opt.folder.split("/")
 opt.path_base = "/".join(opt.folder[0:-1])
-opt.folder    = opt.folder[-1]
+opt.folder = opt.folder[-1]
 complete_path = opt.path_base + "/" + opt.folder
 
 ##########################################################
@@ -100,19 +100,19 @@ if opt.m == "new":
     for i in n:
         if i.startswith("results_"):
             nom = complete_path + "/" + i
-            os.system("rm -r " + nom.replace("//","/"))
+            os.system("rm -r " + nom.replace("//", "/"))
         elif i.startswith("aRNApipe_"):
             nom = complete_path + "/" + i
-            os.system("rm " + nom.replace("//","/"))
+            os.system("rm " + nom.replace("//", "/"))
         elif i=="temp":
             nom = complete_path + "/" + i
-            os.system("rm -r " + nom.replace("//","/"))
+            os.system("rm -r " + nom.replace("//", "/"))
         elif i=="pid.txt":
             nom = complete_path + "/" + i
-            os.system("rm " + nom.replace("//","/"))
+            os.system("rm " + nom.replace("//", "/"))
         elif i=="logs":
             nom = complete_path + "/" + i
-            os.system("rm -r " + nom.replace("//","/"))
+            os.system("rm -r " + nom.replace("//", "/"))
 elif opt.m == "update":
     n = os.listdir(complete_path)
     for i in n:
@@ -127,7 +127,7 @@ print "aRNApipe:"
 print "- Input: " + complete_path
 print "- Mode:  " + opt.m
 ## Kill current analysis if mode 'kill'
-if   opt.m == "kill":
+if opt.m == "kill":
     n = vcrparser.project_kill(opt.path_base, opt.folder)
 ## Check progress if mode 'progress'
 elif opt.m == "progress":
@@ -139,7 +139,6 @@ elif opt.m in ["update", "new"]:
         os.mkdir(complete_path)
     if not os.path.exists(complete_path + "/logs"):
         os.mkdir(complete_path + "/logs")
-    ## submittint job
     vcr_args  = " -f " + opt.folder + " -b " + opt.path_base + " -m " + opt.m + " -t " + timestamp
     if opt.m == "update":
         out = open(complete_path + "/logs/aRNApipe.log", 'a')
@@ -153,10 +152,10 @@ elif opt.m in ["update", "new"]:
     out.close()
     if not os.path.exists(complete_path + "/temp"):
         os.mkdir(complete_path + "/temp")
-    ce      = vcrparser.change_environment(config.environment)
+    ce = vcrparser.change_environment(config.environment)
     uds = manager.submit_job(opt.wt, "1", opt.q, complete_path + "/logs/aRNApipe_cluster_" + timestamp + ".log", opt.folder, "python " + path_aRNApipe + "/lib/wr_aRNApipe.py" + vcr_args + " >> " + complete_path + "/logs/aRNApipe.log", 0, complete_path, "")
     print "Main process submitted (jid=" + uds + ")"
-    out = open(complete_path + "/pid.txt",'w')
+    out = open(complete_path + "/pid.txt", 'w')
     print >> out, "aRNApipe\t" + uds + "\t" + timestamp
     out.close()
 else:

@@ -2,7 +2,7 @@
 import os
 import config
 import vcrparser
-
+# Conditional library load according to 'config.mode'
 if config.mode == "LSF":
     import sys_LSF as manager
 elif config.mode == "LOCAL":
@@ -119,6 +119,7 @@ def rename_tg_output(sample, files, path):
         output = g + files[0].split("/")[-1].replace(".fastq.gz","").replace(".fastq","") + "_trimmed.fq.gz"
         cmds.append("mv " + output + " " + output.replace("_trimmed.fq.gz", ".fastq.gz"))
     return "\n".join(cmds)
+
 
 def trimgalore(timestamp, path_base, folder, samples, nproc, wt, q, extra_args):
     ########################################################################
