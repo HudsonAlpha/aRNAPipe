@@ -25,6 +25,7 @@ path_gatk     = "/gpfs/gpfs1/software/GATK-3.5/GenomeAnalysisTK.jar"
 path_cutadapt = "/gpfs/gpfs1/software/python2.7/bin/cutadapt"
 path_trimgalore = "/gpfs/gpfs1/myerslab/reference/genomes/rnaseq_pipeline/bin/trim_galore"
 path_starfusion = "/gpfs/gpfs1/software/STAR_2.4.2a/STAR-Fusion-0.1.1/STAR-Fusion"
+path_jsplice = "/gpfs/gpfs1/software/jSplice-1.0.1/"
 
 # STAR options (users can add their own options):
 # The keys of this dict are used in the project config files to use the
