@@ -696,11 +696,8 @@ def bar_getdata (filename, head, cols_bar, cols_line):
 
 def build_from_template(prog, project, data, html_table, html_table2, output, template, lmenu):
     out = open(output,'w')
-    print output
     f = open(template, 'r')
-    print template
     r = output.split("/")[-1]
-    print r
     for i in f:
         i = i.strip("\n")
         if r in i:
