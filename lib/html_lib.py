@@ -573,7 +573,7 @@ def check_config(path):
     # Parses the configuration file
     print "> Parsing configuration file..."
     try:
-        z = ["trimgalore", "fastqc", "star", "star-fusion", "picard", "htseq-gene", "htseq-exon", "kallisto", "picard_IS", "varscan", "gatk"]
+        z = ["trimgalore", "fastqc", "star", "star-fusion", "picard", "htseq-gene", "htseq-exon", "kallisto", "picard_IS", "varscan", "gatk", 'jsplice']
         f = open(path + "/config.txt", 'r')
         analysis = dict()
         analysis["cluster"] = dict()
