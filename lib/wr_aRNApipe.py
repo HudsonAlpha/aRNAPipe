@@ -73,6 +73,7 @@ print "  - FastQC:          " + var["fastqc"]
 print "  - STAR:            " + var["star"]
 print "  - STAR-Fusion:     " + var["star-fusion"]
 print "  - Picard QC:       " + var["picard"]
+print "  - Picard IS:       " + var["picard_IS"]
 print "  - HTseq (gene):    " + var["htseq-gene"]
 print "  - HTseq (exon):    " + var["htseq-exon"]
 print "  - Kallisto:        " + var["kallisto"]
@@ -80,6 +81,7 @@ if var.has_key('sam2sortbam'):
     print "  - sam2sortbam:     " + var["sam2sortbam"]
 print "  - gatk:            " + var["gatk"]
 print "  - Varscan:         " + var["varscan"]
+print "  - jSplice:         " + var["jsplice"]
 print "> INDIVIDUAL ANALYSIS SETTINGS:"
 print "  - TrimGalore args: " + var["trimgal_args"]
 print "  - STAR arguments:  " + var["star_args"]
@@ -91,8 +93,10 @@ print "  - GATK args:       " + var["gatk_args"]
 print "  - HTseqGene mode:  " + var["htseq-gene-mode"]
 print "  - HTseqExon mode:  " + var["htseq-exon-mode"]
 
-samples = vcrparser.get_samples(path_base, folder, opt.samples)
-
+samples, phenos = vcrparser.get_samples(path_base, folder, opt.samples, get_phenos=True)
+if float(var["jsplice"].split('/')[0]) >= 1:
+    if var['jsplice_pheno'] not in phenos:
+        exit('Error: Phenotype column of jSplice not found in samples file.')
 ##########################################################
 ## Creates 'temp' folder for temporary managing files
 ##########################################################
@@ -225,7 +229,7 @@ if int(var["picard_IS"].split("/")[0]) > 0:
 if int(var["jsplice"].split("/")[0]) > 0:
     samples_v, stats = vcrparser.check_samples(samples, path_base, folder, "jsplice", opt.m)
     if len(samples_v) > 0:
-        uds_jsplice, logs_jsplice  = programs.picard_IS(timestamp, path_base, folder, samples_v, var["jsplice"], var["wt"], var["q"], var["genome_build"], pheno[pheno_label])
+        uds_jsplice, logs_jsplice  = programs.picard_IS(timestamp, path_base, folder, samples_v, var["jsplice"], var["wt"], var["q"], var["genome_build"], phenos[var['jsplice_pheno']])
         procs.append(logs_jsplice)
 if int(var["gatk"].split("/")[0]) > 0:
     samples_v, stats = vcrparser.check_samples(samples, path_base, folder, "gatk", opt.m)

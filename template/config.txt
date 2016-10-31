@@ -13,6 +13,7 @@ sam2sortbam  10/NA/NA
 picard_IS  10/NA/NA
 varscan	10/NA/NA
 gatk	20/30/NA
+jsplice 0/NA/NA
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% GENOME REFERENCES
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
