@@ -40,6 +40,7 @@ star_options = {"default": "",
 environment = {"JAVA_HOME":      ["/usr/java/jdk1.8.0_60/","add"],
                "PYTHONPATH":     ["/gpfs/gpfs1/software/HTSeq-0.5.3/lib/python","overwrite"],
                "PATH":           ["/gpfs/gpfs1/software/Python-2.7.2/bin","add"],
+               "PATH":           ["/gpfs/gpfs1/software/bedtools2-2.20.0/bin","add"],
                "LD_LIBRARY_PATH":["/gpfs/gpfs1/software/gcc-4.8.2/usr/lib64","add"],
                "PERL5LIB"       :["/gpfs/gpfs1/software/perl-modules/lib/perl5/5.10.1:/gpfs/gpfs1/software/perl-modules/lib/perl5/5.10.1/lib64/perl5","add"]}
 
