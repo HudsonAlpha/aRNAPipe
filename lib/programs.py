@@ -380,12 +380,10 @@ def jsplice(timestamp, path_base, folder, samples, nproc, wt, q, genomebuild, ph
     out = open(output_dir + '/expdesign.txt', 'w')
     print >> out, '#exp\tcond\tjxnFile\tbamFile'
     for sample in ksamp:
-        sj_file = path_base + folder + '/results_star/' + sample + '_SJ.bed' # Junction file created by STAR
+        sj_file = path_base + folder + '/results_star/' + sample + '_SJ.out.tab' # Junction file created by STAR
         sj_out_file = output_dir + '/' + sample + '.SJ.bed'
         bam_file = path_base + folder + '/results_sam2sortbam/' + sample + '.sorted.bam' # BAM file created by STAR/Picard(AddOrReplaceReadGroups)
-        print sj_file, sj_file in proc_files_1
-        print bam_file, bam_file in proc_files_2
-        if (sj_file in proc_files_1) and (bam_file in proc_files_2):
+        if os.path.exists(sj_file) and os.path.exists(bam_file):
             command = 'python ' + config.path_jsplice + '/starJxn2bed.py -f ' + sj_file + ' -o '+ sj_out_file
             commands.append(command + sample_checker.replace("#FOLDER", output_dir).replace("#SAMPLE", sample))
             print >> out, '\t'.join([pheno[sample].split(':')[0], pheno[sample].split(':')[1], sj_out_file, bam_file])
