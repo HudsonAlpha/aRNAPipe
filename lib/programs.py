@@ -369,7 +369,7 @@ def sam2sortbam(timestamp, path_base, folder, samples, nproc, wt, q):
 
 def jsplice(timestamp, path_base, folder, samples, nproc, wt, q, genomebuild, pheno):
     output_dir = path_base + folder + '/results_jsplice'
-    secure_mkdir(path_base + folder, output_dir)
+    secure_mkdir(path_base + folder, 'results_jsplice')
     print "## jSPLICE"
     print "> Writing jobs for jSPLICE..."
     nproc, nchild, bsub_suffix = manager.get_bsub_arg('1/NA/NA', len(samples))
