@@ -180,8 +180,6 @@ try:
         print "  - " + path + "/HTML/kallisto.html"
         html_table = html.print_table_default(path + "/outputs/kallisto_stats_est_counts.txt", -1, []) # PROVIDES HTML TABLE WITH HPC STATS
         data = html.bar_getdata (path + "/outputs/kallisto_stats_est_counts.txt",0,range(1,2),[])
-        print data
-        print html_table
         html.build_from_template("KALLISTO", project, data, html_table, "", path+"/HTML/kallisto.html", os.path.dirname(sys.argv[0]) + "/template/TEMPLATE_KALLISTO.html", lmenu)
 except:
     print "  - Not ready"

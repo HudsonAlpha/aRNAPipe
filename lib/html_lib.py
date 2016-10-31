@@ -696,10 +696,14 @@ def bar_getdata (filename, head, cols_bar, cols_line):
 
 def build_from_template(prog, project, data, html_table, html_table2, output, template, lmenu):
     out = open(output,'w')
+    print output
     f = open(template, 'r')
+    print template
     r = output.split("/")[-1]
+    print r
     for i in f:
         i = i.strip("\n")
+        print i
         if r in i:
             i = i.replace("#HIGHLIGHT", 'style="color:#808080"')
         print >> out, i.replace("#LATMENU",lmenu).replace("#PROG", prog).replace("#PROJECT", project).replace("#DATA", data).replace("#HIGHTLIGHT", "").replace("#TABLE2", html_table2).replace("#TABLE", html_table)
