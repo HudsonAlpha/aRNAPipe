@@ -93,6 +93,7 @@ print "  - GATK args:       " + var["gatk_args"]
 print "  - HTseqGene mode:  " + var["htseq-gene-mode"]
 print "  - HTseqExon mode:  " + var["htseq-exon-mode"]
 print "  - jSplice phenotpe:" + var["jsplice_pheno"]
+print "  - jSplice args:    " + var["jsplice_args"]
 
 samples, phenos = vcrparser.get_samples(path_base, folder, opt.samples, get_phenos=True)
 if float(var["jsplice"].split('/')[0]) >= 1:
@@ -230,7 +231,7 @@ if int(var["picard_IS"].split("/")[0]) > 0:
 if int(var["jsplice"].split("/")[0]) > 0:
     samples_v, stats = vcrparser.check_samples(samples, path_base, folder, "jsplice", opt.m)
     if len(samples_v) > 0:
-        uds_jsplice, logs_jsplice  = programs.jsplice(timestamp, path_base, folder, samples_v, var["jsplice"], var["wt"], var["q"], var["genome_build"], phenos[var['jsplice_pheno']])
+        uds_jsplice, logs_jsplice  = programs.jsplice(timestamp, path_base, folder, samples_v, var["jsplice"], var["wt"], var["q"], var["genome_build"], phenos[var['jsplice_pheno']], var['jsplice_args'])
         procs.append(logs_jsplice)
 if int(var["gatk"].split("/")[0]) > 0:
     samples_v, stats = vcrparser.check_samples(samples, path_base, folder, "gatk", opt.m)
