@@ -69,8 +69,9 @@ def get_menu(config, ns):
     return menu
 
 def print_samples(path,config):
-    analysis = ['trimgalore', 'fastqc', 'kallisto', 'star', 'star-fusion', 'picard', "htseq-gene", "htseq-exon", "picard_IS", "varscan", 'gatk']
-    sta= {"trimgalore":"TrimGalore", "fastqc":"FastQC","star":"STAR","star-fusion":"STAR-Fusion","picard":"PicardQC","kallisto":"Kallisto","htseq-gene":"HTseq-gene","htseq-exon":"HTseq-exon", "picard_IS":"Picard-InsertSize", "varscan":"VARSCAN", "gatk":"GATK"}
+    analysis = ['trimgalore', 'fastqc', 'kallisto', 'star', 'star-fusion', 'picard', "htseq-gene", "htseq-exon", "picard_IS", "varscan", 'gatk', 'jsplice']
+    sta= {"trimgalore":"TrimGalore", "fastqc":"FastQC","star":"STAR","star-fusion":"STAR-Fusion","picard":"PicardQC","kallisto":"Kallisto","htseq-gene":"HTseq-gene",
+          "htseq-exon":"HTseq-exon", "picard_IS":"Picard-InsertSize", "varscan":"VARSCAN", "gatk":"GATK", "jsplice":"jSplice"}
     # SAMPLES LIST
     samples = dict()
     f   = open(path + "/samples.list",'r')
