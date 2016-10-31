@@ -158,13 +158,23 @@ def print_samples(path,config):
             elif i=="picard_IS":
                 for x, y in sorted(samples.iteritems()):
                     res = []
-                    if sok.has_key(x):
+                    if sok.has_key(x) and os.path.exists(path + '/results_picard_IS/' + x + '.txt'):
                         link = "../results_picard_IS/" + x + ".txt"
                         link = '<a href="LINK" target="_blank">OK</a>'.replace("LINK", link)
                         res.append(link)
                     else:
                         res.append("FAIL")
                     results["picard_IS"][x] = " / ".join(res)
+            elif i=="jsplice":
+                for x, y in sorted(samples.iteritems()):
+                    res = []
+                    if os.path.exists(path + '/results_jsplice/jSplice_results.html'):
+                        link = '../results_jsplice/jSplice_results.html'
+                        link = '<a href="LINK" target="_blank">OK</a>'.replace("LINK", link)
+                        res.append(link)
+                    else:
+                        res.append("FAIL")
+                    results["jsplice"][x] = " / ".join(res)
             elif i=="picard":
                 for x, y in sorted(samples.iteritems()):
                     res = []
@@ -441,9 +451,6 @@ def stats_picard_2(path,samples,config):
     n = os.listdir(path)
     hh = "\t".join(['sample_id','MEDIAN_INSERT_SIZE','MEDIAN_ABSOLUTE_DEVIATION','MIN_INSERT_SIZE',
                     'MAX_INSERT_SIZE','MEAN_INSERT_SIZE','STANDARD_DEVIATION','READ_PAIRS', 'LINK_TXT', 'LINK_PDF'])
-    print n
-    print config
-    print hh
     if config.has_key("picard_IS") and ("results_picard_IS" in n):
         files  = os.listdir(path+"/results_picard_IS")
         out = open(path + "/outputs/stats_picard2.txt",'w')

@@ -315,7 +315,8 @@ def stats_log(path):
     # in a table format on an ouptut file
     order = ["success", "time_start", "time_results", "cpu_time", "max_memo", "ave_memo", "max_swap", "link"]
     Lorder= ["Success", "Star time", "End time", "CPU time", "Memory (max) [MB]", "Memory (mean) [MB]", "Swap (max) [MB]", "Link"]
-    progs = ["trimgalore", "fastqc", "kallisto", "star", "star-fusion", "picard","htseq-gene", "htseq-exon", "sam2sortbam", "varscan", "gatk"]
+    progs = ["trimgalore", "fastqc", "kallisto", "star", "star-fusion", "picard",
+             "htseq-gene", "htseq-exon", "sam2sortbam", "picard_IS", "varscan", "gatk", "jsplice"]
     print "> Recovering LSF stats from: " + path
     L = os.listdir(path)
     logs = dict()
