@@ -370,7 +370,7 @@ def stats_picard(path,samples,config):
                             vals = ii.strip("\n").split("\t")
                             for kk in range(len(head)):
                                 stats[k][head[kk]] = vals[kk]
-                                if vals[kk] != "":
+                                if (vals[kk] != "") and (vals[kk] != "?"):
                                     if float(vals[kk]) > 0:
                                         kdiff0 += 1
                             nx = 0
