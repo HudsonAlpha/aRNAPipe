@@ -322,9 +322,10 @@ def stats_log(path):
     logs = dict()
     for i in L:
         if i.endswith(".log") and (not i.endswith("_M.log")):
-            j = i.replace(".log","").split("_")
-            if (len(j) == 4) or ((len(j)==5) and j[3]=='IS'):
+            j = i.replace(".log","").replace('picard_IS', 'picard-IS').split("_")
+            if (len(j) == 4):
                 date, time, prog, proc = j
+                prog = 'picard_IS' if prog == 'picard-IS' else prog
                 if not logs.has_key(date + "_" + time):
                     logs[date + "_" + time] = dict()
                 if not logs[date + "_" + time].has_key(prog):
