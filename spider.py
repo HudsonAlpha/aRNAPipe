@@ -140,31 +140,30 @@ except:
 #########################################################################
 # PICARD
 #########################################################################
-try:
-    if config.has_key("picard"):
-        print 1
-        print "> Generating webpage with picard statistics..."
-        print "  - " + path + "/HTML/picard.html"
-        print 2
-        html_table = html.stats_picard(path,samples,config) # PROVIDES HTML TABLE WITH PICARD STATS
-        print 3
-        data = html.bar_getdata (path + "/outputs/stats_picard.txt",0,range(1,7), range(7,11))
-        print 4
-        html.build_from_template("PICARD", project, data, html_table, "", path+"/HTML/picard.html", os.path.dirname(sys.argv[0]) + "/template/TEMPLATE_PICARD.html", lmenu)
-    if config.has_key("picard_IS"):
-        print 5
-        print "> Generating webpage with picard insert size statistics..."
-        print "  - " + path + "/HTML/picard-is.html"
-        print 6
-        x = html.stats_picard_2(path,samples,config)
-        print 7
-        html_table = html.print_table_default(path + "/outputs/stats_picard2.txt", -1, [])
-        print 8
-        data = html.bar_getdata (path + "/outputs/stats_picard2.txt",0,range(1,2),[])
-        print 9
-        html.build_from_template("PICARD-InsertSize", project, data, html_table, "", path+"/HTML/picard-is.html", os.path.dirname(sys.argv[0]) + "/template/TEMPLATE_PICARDIS.html", lmenu)
-except:
-    print "  - Not ready"
+if config.has_key("picard"):
+    print 1
+    print "> Generating webpage with picard statistics..."
+    print "  - " + path + "/HTML/picard.html"
+    print 2
+    html_table = html.stats_picard(path,samples,config) # PROVIDES HTML TABLE WITH PICARD STATS
+    print 3
+    data = html.bar_getdata (path + "/outputs/stats_picard.txt",0,range(1,7), range(7,11))
+    print 4
+    html.build_from_template("PICARD", project, data, html_table, "", path+"/HTML/picard.html", os.path.dirname(sys.argv[0]) + "/template/TEMPLATE_PICARD.html", lmenu)
+if config.has_key("picard_IS"):
+    print 5
+    print "> Generating webpage with picard insert size statistics..."
+    print "  - " + path + "/HTML/picard-is.html"
+    print 6
+    x = html.stats_picard_2(path,samples,config)
+    print 7
+    html_table = html.print_table_default(path + "/outputs/stats_picard2.txt", -1, [])
+    print 8
+    data = html.bar_getdata (path + "/outputs/stats_picard2.txt",0,range(1,2),[])
+    print 9
+    html.build_from_template("PICARD-InsertSize", project, data, html_table, "", path+"/HTML/picard-is.html", os.path.dirname(sys.argv[0]) + "/template/TEMPLATE_PICARDIS.html", lmenu)
+# except:
+#     print "  - Not ready"
 
 #########################################################################
 # HTML STAR-FUSION WEBPAGE

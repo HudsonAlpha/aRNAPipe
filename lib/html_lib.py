@@ -354,10 +354,8 @@ def stats_picard(path,samples,config):
             stats = [{},{},{}]
             heads = list()
             ex = 0
-            print i
             for k in range(3):
                 if i+n[k] in files:
-                    print path+"/results_picard"+"/"+i+n[k]
                     f = open(path+"/results_picard"+"/"+i+n[k],'r')
                     nx = 0
                     kdiff0 = 0
