@@ -158,6 +158,8 @@ if int(var["star"].split("/")[0]) > 0:
     if len(args) > 0:
         for i, j in args.iteritems():
             star_params = star_params + " " + i + " " + j
+    if config['rMats'].split('/')[0] != '0':
+        star_params += ' --alignEndsType EndToEnd'
 ##########################################################
 ## Other checks
 ##########################################################

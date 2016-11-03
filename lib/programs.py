@@ -279,7 +279,6 @@ def starfusion(timestamp, path_base, folder, samples, nproc, wt, q, genomebuild)
     nproc, nchild, bsub_suffix = manager.get_bsub_arg(nproc, len(samples))
     commands = list()
     ksamp = sortbysize(samples)
-    proc_files = os.listdir(path_base + folder + "/results_star/")
     ref_file =  config.path_annotation.replace("#LABEL", genomebuild)
     for sample in ksamp:
         in_file1 = path_base + folder + "/results_star/" + sample + "_Chimeric.out.junction"
@@ -291,7 +290,7 @@ def starfusion(timestamp, path_base, folder, samples, nproc, wt, q, genomebuild)
         else:
             print "Warning: [Star-Fusion] STAR output file not found -> " + in_file1
     create_scripts(nchild, commands, path_base, folder, output)
-    return  submit_job_super("star-fusion", path_base + folder, wt, str(nproc), q, len(samples), bsub_suffix, nchild, timestamp)
+    return submit_job_super("star-fusion", path_base + folder, wt, str(nproc), q, len(samples), bsub_suffix, nchild, timestamp)
 
 
 def picardqc(timestamp, path_base, folder, samples, nproc, wt, q, annots, strand):
@@ -318,7 +317,7 @@ def picardqc(timestamp, path_base, folder, samples, nproc, wt, q, annots, strand
         else:
             print "Warning: [Picard] STAR output file not found -> " + in_file
     create_scripts(nchild, commands, path_base, folder, output)
-    return  submit_job_super("picard", path_base + folder, wt, str(nproc), q, len(samples), bsub_suffix, nchild, timestamp)
+    return submit_job_super("picard", path_base + folder, wt, str(nproc), q, len(samples), bsub_suffix, nchild, timestamp)
 
 
 def htseq(timestamp, path_base, folder, samples, path_annotation, nproc, wt, q, mode, strand, countmode):
@@ -343,7 +342,7 @@ def htseq(timestamp, path_base, folder, samples, path_annotation, nproc, wt, q, 
         else:
             print "Warning: [HTseq-" + mode + "] STAR output file not found -> " + in_file
     create_scripts(nchild, commands, path_base, folder, output)
-    return  submit_job_super("htseq-" + mode, path_base + folder, wt, str(nproc), q, len(samples), bsub_suffix, nchild, timestamp)
+    return submit_job_super("htseq-" + mode, path_base + folder, wt, str(nproc), q, len(samples), bsub_suffix, nchild, timestamp)
 
 
 def sam2sortbam(timestamp, path_base, folder, samples, nproc, wt, q):
@@ -364,7 +363,7 @@ def sam2sortbam(timestamp, path_base, folder, samples, nproc, wt, q):
         else:
             print "Warning: [SAM2SORTEDBAM] STAR output file not found -> " + in_file
     create_scripts(nchild, commands, path_base, folder, output)
-    return  submit_job_super("sam2sortbam", path_base + folder, wt, str(nproc), q, len(samples), bsub_suffix, nchild, timestamp)
+    return submit_job_super("sam2sortbam", path_base + folder, wt, str(nproc), q, len(samples), bsub_suffix, nchild, timestamp)
 
 
 def jsplice(timestamp, path_base, folder, samples, nproc, wt, q, genomebuild, pheno, extra_args):
@@ -375,15 +374,13 @@ def jsplice(timestamp, path_base, folder, samples, nproc, wt, q, genomebuild, ph
     nproc, nchild, bsub_suffix = manager.get_bsub_arg('1/NA/NA', len(samples))
     commands = list()
     ksamp = sortbysize(samples)
-    proc_files_1 = os.listdir(path_base + folder + "/results_star/")
-    proc_files_2 = os.listdir(path_base + folder + "/results_sam2sortbam/")
     out = open(output_dir + '/expdesign.txt', 'w')
     print >> out, '#exp\tcond\tjxnFile\tbamFile'
     for sample in ksamp:
         sj_file = path_base + folder + '/results_star/' + sample + '_SJ.out.tab' # Junction file created by STAR
         sj_out_file = output_dir + '/' + sample + '.SJ.bed'
         bam_file = path_base + folder + '/results_sam2sortbam/' + sample + '.sorted.bam' # BAM file created by STAR/Picard(AddOrReplaceReadGroups)
-        if os.path.exists(sj_file) and os.path.exists(bam_file):
+        if os.path.exists(sj_file) and os.path.exists(bam_file) and len(pheno[sample].split(':'))==2:
             command = 'python ' + config.path_jsplice + '/starJxn2bed.py -f ' + sj_file + ' -o '+ sj_out_file
             commands.append(command + sample_checker.replace("#FOLDER", output_dir).replace("#SAMPLE", sample))
             print >> out, '\t'.join([pheno[sample].split(':')[0], pheno[sample].split(':')[1], sj_out_file, bam_file])
@@ -392,7 +389,7 @@ def jsplice(timestamp, path_base, folder, samples, nproc, wt, q, genomebuild, ph
     out.close()
     commands.append('python ' + config.path_jsplice + '/jSplice.py -d ' + output_dir + '/expdesign.txt -o ' + output_dir + ' -a '+ config.path_annotation.replace("#LABEL", genomebuild) + ' ' + extra_args)
     create_scripts(nchild, commands, path_base, folder, 'results_jsplice')
-    return  submit_job_super("jsplice", path_base + folder, wt, str(nproc), q, len(samples), bsub_suffix, nchild, timestamp)
+    return submit_job_super("jsplice", path_base + folder, wt, str(nproc), q, len(samples), bsub_suffix, nchild, timestamp)
 
 
 def picard_IS(timestamp, path_base, folder, samples, nproc, wt, q):
@@ -414,7 +411,7 @@ def picard_IS(timestamp, path_base, folder, samples, nproc, wt, q):
         else:
             print "Warning: [Picard] Sorted BAM file not found -> " + in_file
     create_scripts(nchild, commands, path_base, folder, output)
-    return  submit_job_super("picard_IS", path_base + folder, wt, str(nproc), q, len(samples), bsub_suffix, nchild, timestamp)
+    return submit_job_super("picard_IS", path_base + folder, wt, str(nproc), q, len(samples), bsub_suffix, nchild, timestamp)
 
 
 def varscan(timestamp, path_base, folder, samples, nproc, wt, q, genome_build, args):

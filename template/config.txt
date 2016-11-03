@@ -39,3 +39,5 @@ strandedness	no
 htseq-gene-mode	union
 htseq-exon-mode	union
 jsplice_args    -c 10
+rMats_star_comp --alignEndsType EndToEnd
+
