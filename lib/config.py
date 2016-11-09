@@ -13,19 +13,19 @@ path_db = "/gpfs/gpfs1/myerslab/reference/genomes/rnaseq_pipeline/"
 
 # FULL PATHS TO BINARIES USED BY aRNApipe (users must change these values to match
 # the current locations of the binaries used by aRNApipe in their system).
-path_fastqc   = "/gpfs/gpfs1/software/fastqc/fastqc"
-path_kallisto = "/gpfs/gpfs1/software/kallisto-0.42.4/kallisto"
+path_fastqc   = "/gpfs/gpfs1/software/fastqc/fastqc" #aut
+path_kallisto = "/gpfs/gpfs1/software/kallisto-0.42.4/kallisto" #aut
 path_star     = "/gpfs/gpfs1/software/STAR_2.4.2a/bin/Linux_x86_64_static/STAR"
 path_htseq    = "/gpfs/gpfs1/software/HTSeq-0.5.3/bin/htseq-count"
 path_picard   = "/gpfs/gpfs1/software/picard-tools-1.88"
-path_samtools = "/gpfs/gpfs1/software/samtools-1.2/bin/samtools"
+path_samtools = "/gpfs/gpfs1/software/samtools-1.2/bin/samtools" #aut
 path_varscan  = "/gpfs/gpfs1/software/varscan/VarScan.v2.3.6.jar"
 path_gtf2gp   = "/gpfs/gpfs1/myerslab/reference/genomes/rnaseq_pipeline/bin/gtfToGenePred"
 path_gatk     = "/gpfs/gpfs1/software/GATK-3.5/GenomeAnalysisTK.jar"
 path_cutadapt = "/gpfs/gpfs1/software/python2.7/bin/cutadapt"
 path_trimgalore = "/gpfs/gpfs1/myerslab/reference/genomes/rnaseq_pipeline/bin/trim_galore"
 path_starfusion = "/gpfs/gpfs1/software/STAR_2.4.2a/STAR-Fusion-0.1.1/STAR-Fusion"
-path_jsplice = "/gpfs/gpfs1/software/jSplice-1.0.1/"
+path_jsplice = "/gpfs/gpfs1/software/jSplice-1.0.1/" #aut
 
 # STAR options (users can add their own options):
 # The keys of this dict are used in the project config files to use the
@@ -64,6 +64,5 @@ gatk_multithread = {"RTC": 4, "BR": 4, "PR": 4}
 # - First element: SNPs
 # - Second element: List of known indels files used by BaseRecalibrator, RealignerTargetCreator and IndelRealigner
 # https://software.broadinstitute.org/gatk/guide/article?id=1247
-annots_gatk = {"g1k_v37": ["dbsnp_138.b37.vcf",
-                           ["1000G_phase1.indels.b37.vcf", "Mills_and_1000G_gold_standard.indels.b37.vcf"]]
-               }
+annots_gatk = {}
+annots_gatk["g1k_v37"] = ["dbsnp_138.b37.vcf", ["1000G_phase1.indels.b37.vcf", "Mills_and_1000G_gold_standard.indels.b37.vcf"]]
