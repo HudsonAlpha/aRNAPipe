@@ -15,15 +15,15 @@ path_db = "/gpfs/gpfs1/myerslab/reference/genomes/rnaseq_pipeline/"
 # the current locations of the binaries used by aRNApipe in their system).
 path_fastqc   = "/gpfs/gpfs1/software/fastqc/fastqc" #aut
 path_kallisto = "/gpfs/gpfs1/software/kallisto-0.42.4/kallisto" #aut
-path_star     = "/gpfs/gpfs1/software/STAR_2.4.2a/bin/Linux_x86_64_static/STAR"
-path_htseq    = "/gpfs/gpfs1/software/HTSeq-0.5.3/bin/htseq-count"
-path_picard   = "/gpfs/gpfs1/software/picard-tools-1.88"
+path_star     = "/gpfs/gpfs1/software/STAR_2.5.2b/bin/Linux_x86_64_static/STAR"
+path_htseq    = "/gpfs/gpfs1/software/HTSeq-0.5.3/bin/htseq-count" # no
+path_picard   = "/gpfs/gpfs1/software/picard-tools-1.88" #aut
 path_samtools = "/gpfs/gpfs1/software/samtools-1.2/bin/samtools" #aut
-path_varscan  = "/gpfs/gpfs1/software/varscan/VarScan.v2.3.6.jar"
-path_gtf2gp   = "/gpfs/gpfs1/myerslab/reference/genomes/rnaseq_pipeline/bin/gtfToGenePred"
-path_gatk     = "/gpfs/gpfs1/software/GATK-3.5/GenomeAnalysisTK.jar"
-path_cutadapt = "/gpfs/gpfs1/software/python2.7/bin/cutadapt"
-path_trimgalore = "/gpfs/gpfs1/myerslab/reference/genomes/rnaseq_pipeline/bin/trim_galore"
+path_varscan  = "/gpfs/gpfs1/software/varscan/VarScan.v2.3.6.jar" #aut
+path_gtf2gp   = "/gpfs/gpfs1/myerslab/reference/genomes/rnaseq_pipeline/bin/gtfToGenePred" #aut
+path_gatk     = "/gpfs/gpfs1/software/GATK-3.5/GenomeAnalysisTK.jar" # no
+path_cutadapt = "/gpfs/gpfs1/software/python2.7/bin/cutadapt" # no
+path_trimgalore = "/gpfs/gpfs1/myerslab/reference/genomes/rnaseq_pipeline/bin/trim_galore" # aut
 path_starfusion = "/gpfs/gpfs1/software/STAR_2.4.2a/STAR-Fusion-0.1.1/STAR-Fusion"
 path_jsplice = "/gpfs/gpfs1/software/jSplice-1.0.1/" #aut
 
