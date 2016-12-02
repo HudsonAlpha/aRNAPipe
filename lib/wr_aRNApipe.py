@@ -144,7 +144,7 @@ if int(var["star"].split("/")[0]) > 0:
     if var["starfusion"] == "own":
         var["starfusion"] = var["starfusion_own"]
     else:
-        var["starfusion"] = "--chimSegmentMin 12 --chimJunctionOverhangMin 12"
+        var["starfusion"] = ""
     if var["star2pass"] == "yes":
         var["star2pass"] = "--twopassMode Basic"
     else:
