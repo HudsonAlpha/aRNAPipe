@@ -91,7 +91,7 @@ print "> INDIVIDUAL ANALYSIS SETTINGS:"
 print "  - TrimGalore args: " + var["trimgal_args"]
 print "  - STAR arguments:  " + var["star_args"]
 print "  - STAR 2-pass:     " + var["star2pass"]
-print "  - STAR output-fus: " + var["starfusion"]
+print "  - STAR-Fusion args:" + var["starfusion_args"]
 print "  - Kall bootstraps: " + var["kalboot"]
 print "  - VARSCAN args:    " + var["varscan_args"]
 print "  - GATK args:       " + var["gatk_args"]
@@ -193,7 +193,7 @@ if int(var["kallisto"].split("/")[0]) > 0:
 if int(var["star-fusion"].split("/")[0]) > 0:
     samples_v, stats = vcrparser.check_samples(samples, path_base, folder, "star-fusion", opt.m)
     if len(samples_v) > 0:
-        uds_sf, logs_sf = programs.starfusion(timestamp, path_base, folder, samples_v, var["star-fusion"], var["wt"], var["q"], config.path_star_fusion, var["starfusion"], tg)
+        uds_sf, logs_sf = programs.starfusion(timestamp, path_base, folder, samples_v, var["star-fusion"], var["wt"], var["q"], config.path_star_fusion, var["starfusion_args"], tg)
         procs.append(logs_sf)
 if int(var["star"].split("/")[0]) > 0:
     samples_v, stats = vcrparser.check_samples(samples, path_base, folder, "star", opt.m)
