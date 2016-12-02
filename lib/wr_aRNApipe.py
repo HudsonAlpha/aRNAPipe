@@ -127,8 +127,9 @@ elif var["strandedness"] == "no":
     var["strandedness"] = " --stranded=no"
 else:
     exit("Error: Strandedness value not correct (yes/no/reverse).")
-if (not (var["htseq-gene-mode"] in ["union", "intersection-strict", "intersection-nonempty"])) or (not (var["htseq-exon-mode"] in ["union", "intersection-strict", "intersection-nonempty"])):
-    exit("Error: HTseq mode value not correct (union/intersection-strict/intersection-nonempty).")
+if (int(var["htseq-gene"].split("/")[0]) > 0) or (int(var["htseq-exon"].split("/")[0]) > 0):
+    if (not (var["htseq-gene-mode"] in ["union", "intersection-strict", "intersection-nonempty"])) or (not (var["htseq-exon-mode"] in ["union", "intersection-strict", "intersection-nonempty"])):
+        exit("Error: HTseq mode value not correct (union/intersection-strict/intersection-nonempty).")
 
 ##########################################################
 ## Check STAR options
