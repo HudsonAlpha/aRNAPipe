@@ -155,8 +155,9 @@ if int(var["star"].split("/")[0]) > 0:
         if var[i] != "":
             j = var[i].split("--")
             for k in j:
-                k = k.split(' ')
-                args['--' + k[0]] = ' '.join(k[1:])
+                if len(k) > 0:
+                    k = k.split(' ')
+                    args['--' + k[0]] = ' '.join(k[1:])
     star_params = ""
     if len(args) > 0:
         for i, j in args.iteritems():
