@@ -271,7 +271,7 @@ def star(timestamp, path_base, folder, samples, nproc, wt, q, path_genome, star_
     return submit_job_super("star", path_base + folder, wt, str(nproc), q, len(samples), bsub_suffix, nchild, timestamp)
 
 
-def starfusion(timestamp, path_base, folder, samples, nproc, wt, q, genomebuild, path_star_fusion):
+def starfusion(timestamp, path_base, folder, samples, nproc, wt, q, path_star_fusion, star_fusion_params, tg):
     output = "results_star-fusion"
     secure_mkdir(path_base + folder, output)
     print "## Identification of gene fusions with star-fusion"
@@ -279,16 +279,22 @@ def starfusion(timestamp, path_base, folder, samples, nproc, wt, q, genomebuild,
     nproc, nchild, bsub_suffix = manager.get_bsub_arg(nproc, len(samples))
     commands = list()
     ksamp = sortbysize(samples)
-    ref_file =  config.path_annotation.replace("#LABEL", genomebuild)
     for sample in ksamp:
-        in_file1 = path_base + folder + "/results_star/" + sample + "_Chimeric.out.junction"
-        in_file2 = path_base + folder + "/results_star/" + sample + "_Chimeric.out.sam"
-        prefix = path_base + folder + "/results_star-fusion/" + sample
-        if os.path.exists(in_file1) and os.path.exists(in_file2):
-            call = config.path_starfusion + " -J " + in_file1 + " --output_dir " + prefix + " --genome_lib_dir " + path_star_fusion
-            commands.append(call + sample_checker.replace("#FOLDER", path_base + folder + "/results_star-fusion").replace("#SAMPLE", sample))
+        files = samples[sample]
+        if not tg:
+            fn = files
         else:
-            print "Warning: [Star-Fusion] STAR output file not found -> " + in_file1
+            g = path_base + folder + "/results_trimgalore/"
+            suf = ""
+            if not files[0].split("/")[-1].endswith(".gz"):
+                suf = ".gz"
+            fn = [g + files[0].split("/")[-1] + suf, g + files[1].split("/")[-1] + suf]
+        prefix = path_base + folder + "/results_star-fusion/" + sample
+        call = config.path_starfusion + " --output_dir " + prefix + " --genome_lib_dir " + path_star_fusion + " --left_fq " + fn[0] + " --right_fq " + fn[1] + " --CPU " + str(nproc)
+        commands.append(call + sample_checker.replace("#FOLDER", path_base + folder + "/results_star-fusion").replace("#SAMPLE", sample))
+        if len(star_fusion_params) > 0:
+            command = command + star_fusion_params
+        commands.append(command + sample_checker.replace("#FOLDER", path_base + folder + "/results_star-fusion").replace("#SAMPLE", sample))
     create_scripts(nchild, commands, path_base, folder, output)
     return submit_job_super("star-fusion", path_base + folder, wt, str(nproc), q, len(samples), bsub_suffix, nchild, timestamp)
 

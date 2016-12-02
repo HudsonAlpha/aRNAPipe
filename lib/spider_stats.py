@@ -178,15 +178,29 @@ def read_star_log(datafile, sample):
 #     out.close()
 
 
+
 def stats_fastq(path,samples,config):
     if not os.path.exists(path):
         return 1
     n = os.listdir(path)
     if config.has_key("fastqc") and ("results_fastqc" in n):
         files = os.listdir(path+"/results_fastqc")
-        h = ["Sample","Link","Basic Statistics","Per base sequence quality","Per sequence quality scores","Per base sequence content",
-             "Per base GC content","Per sequence GC content","Per base N content","Sequence Length Distribution","Sequence Duplication Levels",
-             "Overrepresented sequences","Kmer Content","Total sequences","Sequence length", "%GC"]
+        h = ["Sample",
+             "Link",
+             '<a href="http://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/3%20Analysis%20Modules/1%20Basic%20Statistics.html" target="_blank">Basic statistics</a>',
+             '<a href="http://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/3%20Analysis%20Modules/2%20Per%20Base%20Sequence%20Quality.html" target="_blank">Per base sequence quality</a>',
+             '<a href="http://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/3%20Analysis%20Modules/3%20Per%20Sequence%20Quality%20Scores.html" target="_blank">Per sequence quality scores</a>',
+             '<a href="http://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/3%20Analysis%20Modules/4%20Per%20Base%20Sequence%20Content.html" target="_blank">Per base sequence content</a>',
+             '<a href="http://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/3%20Analysis%20Modules/5%20Per%20Sequence%20GC%20Content.html" target="_blank">Per base GC content</a>',
+             '<a href="http://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/3%20Analysis%20Modules/5%20Per%20Sequence%20GC%20Content.html" target="_blank">Per sequence GC content</a>',
+             '<a href="http://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/3%20Analysis%20Modules/6%20Per%20Base%20N%20Content.html" target="_blank">Per base N content</a>',
+             '<a href="http://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/3%20Analysis%20Modules/7%20Sequence%20Length%20Distribution.html" target="_blank">Sequence Length Distribution</a>',
+             '<a href="http://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/3%20Analysis%20Modules/8%20Duplicate%20Sequences.html" target="_blank">Sequence Duplication Levels</a>',
+             '<a href="http://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/3%20Analysis%20Modules/9%20Overrepresented%20Sequences.html" target="_blank">Overrepresented sequences</a>',
+             '<a href="http://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/3%20Analysis%20Modules/11%20Kmer%20Content.html" target="_blank">Kmer Content</a>',
+             "Total sequences",
+             "Sequence length",
+             "%GC"]
         names = ["","","per_base_quality.png","per_sequence_quality.png","per_base_sequence_content.png","per_base_gc_content.png","per_sequence_gc_content.png",
                  "per_base_n_content.png", "sequence_length_distribution.png", "duplication_levels.png", "", "kmer_profiles.png", "", "", ""]
         table = list()

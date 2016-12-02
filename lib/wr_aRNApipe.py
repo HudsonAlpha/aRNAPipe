@@ -142,22 +142,18 @@ if int(var["star"].split("/")[0]) > 0:
             var["star_args"] = config.star_options[var["star_args"]]
         else:
             exit("star_args key not found in 'config.py' file.")
-    if var["starfusion"] == "own":
-        var["starfusion"] = var["starfusion_own"]
-    else:
-        var["starfusion"] = ""
     if var["star2pass"] == "yes":
         var["star2pass"] = "--twopassMode Basic"
     else:
         var["star2pass"] = ""
     args = dict()
-    for i in ["star2pass", "star_args", "starfusion"]:
+    for i in ["star2pass", "star_args"]:
         if var[i] != "":
             j = var[i].split("--")
             for k in j:
                 if len(k) > 0:
                     k = k.split(' ')
-                    args['--' + k[0]] = ' '.join(k[1:])
+                    args['--' + k[0]] = (' '.join(k[1:])).replace('  ', '')
     star_params = ""
     if len(args) > 0:
         for i, j in args.iteritems():
@@ -194,17 +190,17 @@ if int(var["kallisto"].split("/")[0]) > 0:
     if len(samples_v) > 0:
         uds_kal, logs_kal = programs.kallisto(timestamp, path_base, folder, samples_v, config.path_index, var["kalboot"], var["kallisto"], var["wt"], var["q"], tg)
         procs.append(logs_kal)
+if int(var["star-fusion"].split("/")[0]) > 0:
+    samples_v, stats = vcrparser.check_samples(samples, path_base, folder, "star-fusion", opt.m)
+    if len(samples_v) > 0:
+        uds_sf, logs_sf = programs.starfusion(timestamp, path_base, folder, samples_v, var["star-fusion"], var["wt"], var["q"], config.path_star_fusion, var["starfusion"], tg)
+        procs.append(logs_sf)
 if int(var["star"].split("/")[0]) > 0:
     samples_v, stats = vcrparser.check_samples(samples, path_base, folder, "star", opt.m)
     if len(samples_v) > 0:
         uds_star, logs_star = programs.star(timestamp, path_base, folder, samples_v, var["star"], var["wt"], var["q"], config.path_genome, star_params, tg)
         w = vcrparser.job_wait(logs_star, 20)
         procs.append(logs_star)
-if int(var["star-fusion"].split("/")[0]) > 0:
-    samples_v, stats = vcrparser.check_samples(samples, path_base, folder, "star-fusion", opt.m)
-    if len(samples_v) > 0:
-        uds_sf, logs_sf  = programs.starfusion(timestamp, path_base, folder, samples_v, var["star-fusion"], var["wt"], var["q"], var["genome_build"], config.path_star_fusion)
-        procs.append(logs_sf)
 if int(var["picard"].split("/")[0]) > 0:
     samples_v, stats = vcrparser.check_samples(samples, path_base, folder, "picard", opt.m)
     if len(samples_v) > 0:
