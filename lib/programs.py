@@ -271,7 +271,7 @@ def star(timestamp, path_base, folder, samples, nproc, wt, q, path_genome, star_
     return submit_job_super("star", path_base + folder, wt, str(nproc), q, len(samples), bsub_suffix, nchild, timestamp)
 
 
-def starfusion(timestamp, path_base, folder, samples, nproc, wt, q, genomebuild):
+def starfusion(timestamp, path_base, folder, samples, nproc, wt, q, genomebuild, path_star_fusion):
     output = "results_star-fusion"
     secure_mkdir(path_base + folder, output)
     print "## Identification of gene fusions with star-fusion"
@@ -285,7 +285,7 @@ def starfusion(timestamp, path_base, folder, samples, nproc, wt, q, genomebuild)
         in_file2 = path_base + folder + "/results_star/" + sample + "_Chimeric.out.sam"
         prefix = path_base + folder + "/results_star-fusion/" + sample
         if os.path.exists(in_file1) and os.path.exists(in_file2):
-            call = config.path_starfusion + " -J " + in_file1 + " -S " + in_file2 + " -G " + ref_file + " --out_prefix " + prefix
+            call = config.path_starfusion + " -J " + in_file1 + " --output_dir " + prefix + " --genome_lib_dir " + path_star_fusion
             commands.append(call + sample_checker.replace("#FOLDER", path_base + folder + "/results_star-fusion").replace("#SAMPLE", sample))
         else:
             print "Warning: [Star-Fusion] STAR output file not found -> " + in_file1

@@ -55,6 +55,11 @@ for i in range(3):
     config.annots[i] = config.annots[i].replace("#LABEL", var["genome_build"])
     if not os.path.exists(config.annots[i]):
         exit("annots not found. Genome build " + var["genome_build"] + " missing or incomplete.")
+config.path_star_fusion = config.path_star_fusion.replace("#LABEL", var["genome_build"])
+if int(var["star-fusion"].split("/")[0]) > 0:
+    if not os.path.exists(config.path_star_fusion):
+        exit("STAR fusion enabled but indexes not found in the genome reference folder: " + config.path_star_fusion)
+
 
 ## VERBOSE OPTIONS
 print "> GLOBAL VARIABLES:"
@@ -164,9 +169,9 @@ if int(var["star"].split("/")[0]) > 0:
 if int(var["gatk"].split("/")[0]) > 0:
     if not config.annots_gatk.has_key(var["genome_build"]):
         exit("GATK annotation files are not available for this genome build: " + var["genome_build"])
-if int(var["star-fusion"].split("/")[0]) > 0:
+if (int(var["star-fusion"].split("/")[0]) > 0) or (int(var["picard_IS"].split("/")[0]) > 0):
     if len(samples[samples.keys()[0]]) == 2:
-        exit("Star-Fusion requires paired-end reads.")
+        exit("Star-Fusion/Picard-Insert-Size require paired-end reads.")
 ##########################################################
 ## Starts analysis
 ##########################################################
@@ -199,7 +204,7 @@ if int(var["star"].split("/")[0]) > 0:
 if int(var["star-fusion"].split("/")[0]) > 0:
     samples_v, stats = vcrparser.check_samples(samples, path_base, folder, "star-fusion", opt.m)
     if len(samples_v) > 0:
-        uds_sf, logs_sf  = programs.starfusion(timestamp, path_base, folder, samples_v, var["star-fusion"], var["wt"], var["q"], var["genome_build"])
+        uds_sf, logs_sf  = programs.starfusion(timestamp, path_base, folder, samples_v, var["star-fusion"], var["wt"], var["q"], var["genome_build"], config.path_star_fusion)
         procs.append(logs_sf)
 if int(var["picard"].split("/")[0]) > 0:
     samples_v, stats = vcrparser.check_samples(samples, path_base, folder, "picard", opt.m)

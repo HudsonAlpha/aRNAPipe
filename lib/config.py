@@ -24,7 +24,7 @@ path_gtf2gp   = "/gpfs/gpfs1/myerslab/reference/genomes/rnaseq_pipeline/bin/gtfT
 path_gatk     = "/gpfs/gpfs1/software/GATK-3.5/GenomeAnalysisTK.jar" # no
 path_cutadapt = "/gpfs/gpfs1/software/python2.7/bin/cutadapt" # no
 path_trimgalore = "/gpfs/gpfs1/myerslab/reference/genomes/rnaseq_pipeline/bin/trim_galore" # aut
-path_starfusion = "/gpfs/gpfs1/software/STAR_2.4.2a/STAR-Fusion-0.1.1/STAR-Fusion"
+path_starfusion = "/gpfs/gpfs1/software/STAR_2.5.2b/STAR-Fusion/STAR-Fusion"
 path_jsplice = "/gpfs/gpfs1/software/jSplice-1.0.1/" #aut
 
 # STAR options (users can add their own options):
@@ -49,6 +49,7 @@ environment = {"JAVA_HOME":      ["/usr/java/jdk1.8.0_60/","add"],
 path_genome = path_db + "/genomes_processed/#LABEL/STAR_genome"
 path_index = path_db + "/genomes_processed/#LABEL/kallisto.idx"
 path_annotation = path_db + "/genomes_processed/#LABEL/genesets.gtf"
+path_star_fusion = path_db + "/genomes_processed/#LABEL/star-fusion"
 path_fasta = path_db + "/genomes_processed/#LABEL/genome.fa"
 annots = [path_db + "/genomes_processed/#LABEL/genesets.refFlat",
           path_db + "/genomes_processed/#LABEL/refFlats/protein_coding.refFlat",
