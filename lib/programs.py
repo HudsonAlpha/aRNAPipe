@@ -110,7 +110,7 @@ def compute_mean_std(path_base, folder, samples, output, nproc, wt, q):
 
 def rename_tg_output(sample, files, path):
     g = path + "/results_trimgalore/"
-    cmds = list()
+    cmds = ['sleep 10']
     if len(files) == 4:
         for i in range(2):
             output = g + files[i].split("/")[-1].replace(".fastq.gz","").replace(".fastq","") + "_val_" + str(i+1) +".fq.gz"
