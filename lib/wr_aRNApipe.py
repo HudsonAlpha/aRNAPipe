@@ -153,13 +153,10 @@ if int(var["star"].split("/")[0]) > 0:
     args = dict()
     for i in ["star2pass", "star_args", "starfusion"]:
         if var[i] != "":
-            j = var[i].split(" ")
-            if (len(j) % 2) != 0:
-                exit(i + " not properly formatted.")
-            for k in range(0, len(j), 2):
-                if not j[k].startswith("--"):
-                    exit(i + " not properly formatted.")
-                args[j[k]] = j[k + 1]
+            j = var[i].split("--")
+            for k in j:
+                k = k.split(' ')
+                args['--' + k[0]] = ' '.join(k[1:])
     star_params = ""
     if len(args) > 0:
         for i, j in args.iteritems():
