@@ -127,7 +127,7 @@ def config_file(config, path_base, folder, paths):
     mandatory_fields = ['genome_build', 'strandedness', 'trimgalore', 'fastqc',
                         'star', 'star-fusion', 'picard', 'htseq-gene', 'htseq-exon',
                         'kallisto', 'sam2sortbam', 'picard_IS', 'gatk', 'varscan',
-                        'q', 'wt', 'star_args', 'star2pass', 'starfusion', 'kalboot',
+                        'q', 'wt', 'star_args', 'star2pass', 'starfusion_args', 'kalboot',
                         'varscan_args', 'gatk_args', 'htseq-gene-mode', 'htseq-exon-mode', "jsplice"]
     f = open(config, 'r')
     var = dict()
