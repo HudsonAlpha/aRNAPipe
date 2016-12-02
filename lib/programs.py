@@ -292,7 +292,7 @@ def starfusion(timestamp, path_base, folder, samples, nproc, wt, q, path_star_fu
         prefix = path_base + folder + "/results_star-fusion/" + sample
         call = config.path_starfusion + " --output_dir " + prefix + " --genome_lib_dir " + path_star_fusion + " --left_fq " + fn[0] + " --right_fq " + fn[1] + " --CPU " + str(nproc)
         if len(star_fusion_params) > 0:
-            command = command + star_fusion_params
+            call = call + star_fusion_params
         commands.append(call + sample_checker.replace("#FOLDER", path_base + folder + "/results_star-fusion").replace("#SAMPLE", sample))
     create_scripts(nchild, commands, path_base, folder, output)
     return submit_job_super("star-fusion", path_base + folder, wt, str(nproc), q, len(samples), bsub_suffix, nchild, timestamp)
