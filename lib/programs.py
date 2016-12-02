@@ -114,10 +114,10 @@ def rename_tg_output(sample, files, path):
     if len(files) == 4:
         for i in range(2):
             output = g + files[i].split("/")[-1].replace(".fastq.gz","").replace(".fastq","") + "_val_" + str(i+1) +".fq.gz"
-            cmds.append("mv '" + output + "' '" + output.replace("_val_" + str(i+1) +".fq.gz", ".fastq.gz") + "'")
+            cmds.append("mv '" + output + "' '" + output.replace("_val_" + str(i+1) +".fq.gz", ".fastq.gz") + "' || true")
     else:
         output = g + files[0].split("/")[-1].replace(".fastq.gz","").replace(".fastq","") + "_trimmed.fq.gz"
-        cmds.append("mv '" + output + "' '" + output.replace("_trimmed.fq.gz", ".fastq.gz") + "'")
+        cmds.append("mv '" + output + "' '" + output.replace("_trimmed.fq.gz", ".fastq.gz") + "' || true")
     return "\n".join(cmds)
 
 
