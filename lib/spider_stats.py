@@ -82,15 +82,11 @@ def stats_trimgalore(path):
             if os.path.exists(fpath):
                 f = open(fpath, 'r')
                 for i in f:
-                    i = i.strip("\n")
+                    i = i.strip("\n").replace(' bp', '').replace(',', '')
                     for fi in fields2:
                         j = i.split(fi)
                         if len(j) > 1:
-                            j = j[1].split()
-                            if fi in ["Total reads processed:", "Total basepairs processed:"]:
-                                data[k][fi] = j[0].replace(',', '')
-                            elif fi in fields2:
-                                data[k][fi] = (j[0] + j[1]).replace(',', '')
+                            data[k][fi] = j
                 f.close()
             k += 1
         g = ""
@@ -102,7 +98,7 @@ def stats_trimgalore(path):
             if len(files) == 2:
                 if data[1].has_key(i):
                     r2 = data[1][i]
-                g = g + "\t" + r1 + " / " + r2
+                g = g + "\t" + r1 + " | " + r2
             else:
                 g = g + "\t" + r1
         print >> out, sample + g
