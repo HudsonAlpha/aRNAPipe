@@ -84,6 +84,7 @@ def stats_trimgalore(path):
                 for i in f:
                     i = i.strip("\n").replace(' bp', '').replace(',', '')
                     for fi in fields2:
+                        print i
                         j = i.split(fi)
                         if len(j) > 1:
                             data[k][fi] = j
