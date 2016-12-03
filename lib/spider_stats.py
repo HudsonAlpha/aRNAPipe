@@ -87,7 +87,7 @@ def stats_trimgalore(path):
                         print i
                         j = i.split(fi)
                         if len(j) > 1:
-                            data[k][fi] = j
+                            data[k][fi] = ' '.join(j[1:])
                 f.close()
             k += 1
         g = ""
