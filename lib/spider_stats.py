@@ -90,7 +90,8 @@ def stats_trimgalore(path):
                             data[k][fi] = ' '.join(j[1:])
                 f.close()
             k += 1
-        g = ""
+        g1 = ""
+        g2 = ""
         for i in fields2:
             r1 = "NA"
             r2 = "NA"
@@ -99,10 +100,13 @@ def stats_trimgalore(path):
             if len(files) == 2:
                 if data[1].has_key(i):
                     r2 = data[1][i]
-                g = g + "\t" + r1 + " | " + r2
+                g1 = g1 + "\t" + r1
+                g2 = g2 + "\t" + r1
             else:
-                g = g + "\t" + r1
-        print >> out, sample + g
+                g1 = g1 + "\t" + r1
+        print >> out, sample + g1
+        if g2 != '':
+            print >> out, sample + g2
     out.close()
 
 
