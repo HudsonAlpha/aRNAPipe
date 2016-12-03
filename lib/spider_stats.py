@@ -63,7 +63,7 @@ def stats_trimgalore(path):
     fields = ["Processed reads:","Processed bases:", "Trimmed reads:","Quality-trimmed:",
           "Trimmed bases:","Too short reads:","Too long reads:"]
     fnames = ["Proc-Reads","Proc-Bases","Trim-Reads","Qual-Trimmed","Trim-Bases","Short-Reads","Long-Reads"]
-    fields2 = ["Total reads processed","Total basepairs processed","","","",""]
+    fields2 = ["Total reads processed","Total basepairs processed","Quality-trimmed:","","",""]
     f = open(path + "/samples.list", 'r')
     h = f.readline()
     samples = dict()
@@ -87,7 +87,7 @@ def stats_trimgalore(path):
                 f = open(fpath, 'r')
                 mode =1
                 for i in f:
-                    if i.startswith("Trim Galore version"):
+                    if i.startswith("Cutadapt version"):
                         if "1.8.1" in i:
                             mode = 2
                     i = i.strip("\n")
