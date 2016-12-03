@@ -44,10 +44,10 @@ def stats_fusion(path):
     samples = dict()
     for i in f:
         i = i.strip("\n").split("\t")
-        samples[i[0]] = path + "/results_star-fusion/" + i[0] + ".fusion_candidates.txt"
+        samples[i[0]] = path + "/results_star-fusion/" + i[0] + "/star-fusion.fusion_candidates.final.abridged"
     f.close()
     out = open(path + "/outputs/starfusion_aggregate.txt", 'w')
-    print >> out, "sample_id\tfusion\tJunctReads\tSpanFrags\tLeftGene\tLeftBreak\tLeftDistFromRefExonSplice"
+    print >> out, "sample_id\tFusionName\tJunctionReadCount\tSpanningFragCount\tSpliceType\tLeftGene\tLeftBreakpoint\tRightGene\tRightBreakpoint\tLargeAnchorSupport\tLeftBreakDinuc\tLeftBreakEntropy\tRightBreakDinucRightBreakEntropy"
     for sample, filename in samples.iteritems():
         if os.path.exists(filename):
             f = open(filename, 'r')
