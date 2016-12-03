@@ -60,10 +60,8 @@ def stats_fusion(path):
 
 
 def stats_trimgalore(path):
-    fields = ["Processed reads:","Processed bases:", "Trimmed reads:","Quality-trimmed:",
-          "Trimmed bases:","Too short reads:","Too long reads:"]
-    fnames = ["Proc-Reads","Proc-Bases","Trim-Reads","Qual-Trimmed","Trim-Bases","Short-Reads","Long-Reads"]
-    fields2 = ["Total reads processed","Total basepairs processed","Quality-trimmed:","","",""]
+    fields2 = ["Total reads processed:","Reads with adapters:","Reads written (passing filters):","Total basepairs processed:","Quality-trimmed:","Total written (filtered):"]
+    fnames2 = ['Processed reads', 'Reads with adapters', 'Reads passing filters', 'Processed basepairs', 'Quality-trimmed basepairs', 'Basepairs passing filters']
     f = open(path + "/samples.list", 'r')
     h = f.readline()
     samples = dict()
@@ -75,9 +73,7 @@ def stats_trimgalore(path):
                 samples[i[0]].append(j.split("/")[-1])
     f.close()
     out = open(path + "/outputs/stats_trim.txt", 'w')
-    print >> out, "sample_id\t" + "\t".join(fnames)
-    out2 = open(path + "/outputs/stats_trim_plot.txt", 'w')
-    print >> out2, "sample_id\tTrimmed-1\tTrimmed-2\tQuality-1\tQuality-2"
+    print >> out, "sample_id\t" + "\t".join(fnames2)
     for sample, files in samples.iteritems():
         k = 0
         data = [{},{}]
@@ -85,60 +81,32 @@ def stats_trimgalore(path):
             fpath = path + "/results_trimgalore/" + filname + "_trimming_report.txt"
             if os.path.exists(fpath):
                 f = open(fpath, 'r')
-                mode =1
                 for i in f:
-                    if i.startswith("Cutadapt version"):
-                        if "1.8.1" in i:
-                            mode = 2
                     i = i.strip("\n")
-                    for fi in fields:
+                    for fi in fields2:
                         j = i.split(fi)
                         if len(j) > 1:
-                            if mode == 1:
-                                j = j[1].split()
-                                if fi in ["Processed reads:", "Processed bases:"]:
-                                    data[k][fi] = j[0]
-                                elif fi in ["Trimmed reads:", "Too short reads:","Too long reads:"]:
-                                    data[k][fi] = j[0] + j[1].replace(")","") + ")"
-                                elif fi in fields:
-                                    data[k][fi] = j[0] + j[4] + ")"
-                            else:
-                                j = j[1].split()
-                                if fi in ["Processed reads:", "Processed bases:"]:
-                                    data[k][fi] = j[0]
-                                elif fi in ["Trimmed reads:", "Too short reads:","Too long reads:"]:
-                                    data[k][fi] = j[0] + j[1].replace(")","") + ")"
-                                elif fi in fields:
-                                    data[k][fi] = j[0] + j[4] + ")"
+                            j = j[1].split()
+                            if fi in ["Total reads processed:", "Total basepairs processed:"]:
+                                data[k][fi] = j[0].replace(',', '')
+                            elif fi in fields2:
+                                data[k][fi] = (j[0] + j[1]).replace(',', '')
                 f.close()
             k += 1
         g = ""
-        g2 = ""
-        for i in fields:
+        for i in fields2:
             r1 = "NA"
             r2 = "NA"
             if data[0].has_key(i):
                 r1 = data[0][i]
-            if (len(files) == 2) and (not i in ["Processed reads:","Processed bases:"]):
+            if len(files) == 2:
                 if data[1].has_key(i):
                     r2 = data[1][i]
                 g = g + "\t" + r1 + " / " + r2
-                if i in ["Trimmed reads:","Quality-trimmed:"]:
-                    if r1 != "NA":
-                        r1 = r1.split("(")[1].split("%")[0]
-                    if r2 != "NA":
-                        r2 = r2.split("(")[1].split("%")[0]
-                    g2 = g2 + "\t" + r1 + "\t" + r2
             else:
                 g = g + "\t" + r1
-                if i in ["Trimmed reads:","Quality-trimmed:"]:
-                    if r1 != "NA":
-                        r1 = r1.split("(")[1].split("%")[0]
-                    g2 = g2 + "\t" + r1 + "\t0"
         print >> out, sample + g
-        print >> out2, sample + g2
     out.close()
-    out2.close()
 
 
 def read_star_log(datafile, sample):
@@ -328,7 +296,7 @@ def stats_log(path):
     # Given a path to a 'logs' folder parses all the LSF log files and writes the relevant parameters
     # in a table format on an ouptut file
     order = ["success", "time_start", "time_results", "cpu_time", "max_memo", "ave_memo", "max_swap", "link"]
-    Lorder= ["Success", "Star time", "End time", "CPU time", "Memory (max) [MB]", "Memory (mean) [MB]", "Swap (max) [MB]", "Link"]
+    Lorder= ["Success", "Started", "Ended", "CPU time", "Memory (max) [MB]", "Memory (mean) [MB]", "Swap (max) [MB]", "Link"]
     progs = ["trimgalore", "fastqc", "kallisto", "star", "star-fusion", "picard",
              "htseq-gene", "htseq-exon", "sam2sortbam", "picard_IS", "varscan", "gatk", "jsplice"]
     print "> Recovering LSF stats from: " + path
