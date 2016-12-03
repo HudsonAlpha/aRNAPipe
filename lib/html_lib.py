@@ -150,7 +150,7 @@ def print_samples(path,config):
                 for x, y in sorted(samples.iteritems()):
                     res = []
                     if sok.has_key(x):
-                        link = "../results_star-fusion/" + x + ".fusion_candidates.txt"
+                        link = "../results_star-fusion/" + x + "/star-fusion.fusion_candidates.final.abridged"
                         link = '<a href="LINK" target="_blank">OK</a>'.replace("LINK", link)
                         res.append(link)
                     else:
