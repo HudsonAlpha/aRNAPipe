@@ -84,7 +84,6 @@ def stats_trimgalore(path):
                 for i in f:
                     i = i.strip("\n").replace(' bp', '').replace(',', '')
                     for fi in fields2:
-                        print i
                         j = i.split(fi)
                         if len(j) > 1:
                             data[k][fi] = ' '.join(j[1:])
@@ -101,7 +100,7 @@ def stats_trimgalore(path):
                 if data[1].has_key(i):
                     r2 = data[1][i]
                 g1 = g1 + "\t" + r1
-                g2 = g2 + "\t" + r1
+                g2 = g2 + "\t" + r2
             else:
                 g1 = g1 + "\t" + r1
         if g2 != '':
