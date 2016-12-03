@@ -104,9 +104,11 @@ def stats_trimgalore(path):
                 g2 = g2 + "\t" + r1
             else:
                 g1 = g1 + "\t" + r1
-        print >> out, sample + g1
         if g2 != '':
-            print >> out, sample + g2
+            print >> out, sample + ' (1)' + g1
+            print >> out, sample + ' (2)' + g2
+        else:
+            print >> out, sample + g1
     out.close()
 
 
