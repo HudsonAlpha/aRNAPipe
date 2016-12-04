@@ -74,6 +74,8 @@ def stats_trimgalore(path):
     f.close()
     out = open(path + "/outputs/stats_trim.txt", 'w')
     print >> out, "sample_id\t" + "\t".join(fnames2)
+    out2 = open(path + "/outputs/stats_trim_plot.txt", 'w')
+    print >> out2, "sample_id\tReads with adapters\tReads passing filters\tQuality-trimmed basepairs\tBasepairs passing filters"
     for sample, files in samples.iteritems():
         k = 0
         data = [{},{}]
@@ -91,6 +93,8 @@ def stats_trimgalore(path):
             k += 1
         g1 = ""
         g2 = ""
+        plt1 = ''
+        plt2 = ''
         for i in fields2:
             r1 = "NA"
             r2 = "NA"
@@ -101,13 +105,21 @@ def stats_trimgalore(path):
                     r2 = data[1][i]
                 g1 = g1 + "\t" + r1
                 g2 = g2 + "\t" + r2
+                if '%' in r2:
+                    plt1 = plt2 + "\t" + r2.split(' ')[1].replace('(', '').replace('%)', '')
+                    plt2 = plt2 + "\t" + r2.split(' ')[1].replace('(', '').replace('%)', '')
             else:
+                if '%' in r1:
+                    plt1 = plt1 + "\t" + r1.split(' ')[1].replace('(', '').replace('%)', '')
                 g1 = g1 + "\t" + r1
         if g2 != '':
             print >> out, sample + ' (1)' + g1
             print >> out, sample + ' (2)' + g2
+            print >> out2, sample + ' (1)' + plt1
+            print >> out2, sample + ' (2)' + plt2
         else:
             print >> out, sample + g1
+            print >> out2, sample + plt1
     out.close()
 
 
