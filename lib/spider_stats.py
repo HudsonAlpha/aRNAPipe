@@ -106,7 +106,7 @@ def stats_trimgalore(path):
                 g1 = g1 + "\t" + r1
                 g2 = g2 + "\t" + r2
                 if '%' in r2:
-                    plt1 = plt2 + "\t" + r2.split(' ')[1].replace('(', '').replace('%)', '')
+                    plt1 = plt1 + "\t" + r1.split(' ')[1].replace('(', '').replace('%)', '')
                     plt2 = plt2 + "\t" + r2.split(' ')[1].replace('(', '').replace('%)', '')
             else:
                 if '%' in r1:
