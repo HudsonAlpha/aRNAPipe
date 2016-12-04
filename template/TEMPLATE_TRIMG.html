@@ -37,3 +37,143 @@
 #TABLE
 </center>
 </div></body></html>
+
+#ITERATOR={"sample": "#VAR0","a1": #VAR1,"a2": #VAR2,"a3": #VAR3,"a4": #VAR4}
+<!doctype html>
+<html><head><title>#PROJECT: QC #PROG</title>
+<script type="text/javascript" language="javascript" src="./html/lytebox.js"></script>
+<script type="text/javascript" language="javascript" src="./html/jquery-1.12.0.js"></script>
+<script type="text/javascript" language="javascript" src="./html/jquery.dataTables.min.js"></script>
+<script type="text/javascript" language="javascript" src="./html/dataTables.colReorder.min.js"></script>
+<script type="text/javascript" language="javascript" src="./html/amcharts.js"></script>
+<script type="text/javascript" language="javascript" src="./html/xy.js" type="text/javascript"></script>
+<script type="text/javascript" language="javascript" src="./html/serial.js" type="text/javascript"></script>
+<link rel="stylesheet" type="text/css" href="./html/lytebox.css">
+<link rel="stylesheet" type="text/css" href="./html/jquery.dataTables.min.css">
+<link rel="stylesheet" type="text/css" href="./html/style.css">
+<script>
+        var chart;
+        var chartData = [#SITERATOR];
+        AmCharts.ready(function () {
+                // LINE DISTRIBUTION COUNTS //////////////////////////////////////////////////////////////////////////
+                // SERIALL CHART
+                chart2 = new AmCharts.AmSerialChart();
+                chart2.dataProvider = chartData;
+                chart2.categoryField = "sample";
+                chart2.plotAreaBorderAlpha = 0.2;
+                chart2.rotate = false;
+                // AXES
+                // Category
+                var categoryAxis = chart2.categoryAxis;
+                categoryAxis.gridAlpha = 0.1;
+                categoryAxis.labelRotation = 90;
+                categoryAxis.axisAlpha = 0;
+                // value
+                var valueAxis = new AmCharts.ValueAxis();
+                valueAxis.stackType = "none";
+                valueAxis.gridAlpha = 0.1;
+                valueAxis.axisAlpha = 0;
+                valueAxis.title = "log2(1+Counts)";
+                chart2.addValueAxis(valueAxis);
+                var graph = new AmCharts.AmGraph();
+                graph.title = "Reads with adapters";
+                graph.valueField = "a1";
+                graph.type = "line";
+                graph.fillAlphas = 0;
+                graph.lineAlpha = 1;
+                graph.useLineColorForBulletBorder = true;
+                graph.bullet = "round";
+                graph.bulletBorderAlpha = 1;
+                graph.bulletColor = "#000000";
+                graph.lineColor = "#000000";
+                graph.lineThickness = 1;
+                graph.bulletSize = 4;
+                graph.balloonText = "<span style='font-size:13px;'>[[title]] in [[category]]:<b>[[value]]</b></span>";
+                chart2.addGraph(graph);
+                var graph = new AmCharts.AmGraph();
+                graph.title = "25%";
+                graph.valueField = "Reads passing filters";
+                graph.type = "line";
+                graph.fillAlphas = 0;
+                graph.lineAlpha = 1;
+                graph.useLineColorForBulletBorder = true;
+                graph.bullet = "round";
+                graph.bulletBorderAlpha = 1;
+                graph.bulletColor = "#00FF00";
+                graph.lineColor = "#00FF00";
+                graph.lineThickness = 1;
+                graph.bulletSize = 4;
+                graph.balloonText = "<span style='font-size:13px;'>[[title]] in [[category]]:<b>[[value]]</b></span>";
+                chart2.addGraph(graph);
+                var graph = new AmCharts.AmGraph();
+                graph.title = "Quality-trimmed basepairs";
+                graph.valueField = "a3";
+                graph.type = "line";
+                graph.fillAlphas = 0;
+                graph.lineAlpha = 1;
+                graph.useLineColorForBulletBorder = true;
+                graph.bullet = "round";
+                graph.bulletBorderAlpha = 1;
+                graph.bulletColor = "#FF0000";
+                graph.lineColor = "#FF0000";
+                graph.lineThickness = 1;
+                graph.bulletSize = 4;
+                graph.balloonText = "<span style='font-size:13px;'>[[title]] in [[category]]:<b>[[value]]</b></span>";
+                chart2.addGraph(graph);
+                var graph = new AmCharts.AmGraph();
+                graph.title = "Basepairs passing filters";
+                graph.valueField = "a4";
+                graph.type = "line";
+                graph.fillAlphas = 0;
+                graph.lineAlpha = 1;
+                graph.useLineColorForBulletBorder = true;
+                graph.bullet = "round";
+                graph.bulletBorderAlpha = 1;
+                graph.bulletColor = "#FF0000";
+                graph.lineColor = "#FF0000";
+                graph.lineThickness = 1;
+                graph.bulletSize = 4;
+                graph.balloonText = "<span style='font-size:13px;'>[[title]] in [[category]]:<b>[[value]]</b></span>";
+                chart2.addGraph(graph);
+                // LEGEND
+                var legend = new AmCharts.AmLegend();
+                legend.position = "bottom";
+                legend.borderAlpha = 0.3;
+                legend.horizontalGap = 2;
+                legend.switchType = "v";
+                chart2.addLegend(legend);
+                chart2.creditsPosition = "top-right";
+                chart2.depth3D = 20;
+                chart2.angle = 30;
+                // WRITE
+                chart2.write("chartdiv4");
+        });
+</script>
+<script type="text/javascript" class="init">
+        $(document).ready(function() {
+                $('#DT').DataTable({
+                        colReorder: true,
+                        'scrollY': '400px',
+                        'scrollCollapse': true,
+                        'bPaginate': false,
+                        'bAutoWidth': true,
+                        'sScrollX': '800px'});
+        });
+</script>
+</head>
+<body>
+<title>RNA-Seq pipeline (aRNApipe)</title>
+<h1>RNA-Seq pipeline (aRNApipe)</h1>
+<h2>Project: #PROJECT</h2>
+<div id="menu">
+#LATMENU
+</div>
+<div id="content">
+<h1><hr>#PROG: ADAPTOR TRIMMING<hr></h1>
+<center>
+<div id="chartdiv4" style="width: 400px; height: 450px;"></div>
+#TABLE
+</center>
+</div>
+</body>
+</html>
