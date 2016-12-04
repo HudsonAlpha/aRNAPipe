@@ -450,8 +450,9 @@ def stats_picard(path,samples,config):
 
 def stats_picard_2(path,samples,config):
     n = os.listdir(path)
-    hh = "\t".join(['sample_id','MEDIAN_INSERT_SIZE','MEDIAN_ABSOLUTE_DEVIATION','MIN_INSERT_SIZE',
-                    'MAX_INSERT_SIZE','MEAN_INSERT_SIZE','STANDARD_DEVIATION','READ_PAIRS', 'LINK_TXT', 'LINK_PDF'])
+    H= ['sample_id','MEDIAN_INSERT_SIZE','MEDIAN_ABSOLUTE_DEVIATION','MIN_INSERT_SIZE',
+                    'MAX_INSERT_SIZE','MEAN_INSERT_SIZE','STANDARD_DEVIATION','READ_PAIRS', 'LINK_TXT', 'LINK_PDF']
+    hh = "\t".join(H)
     if config.has_key("picard_IS") and ("results_picard_IS" in n):
         files  = os.listdir(path+"/results_picard_IS")
         out = open(path + "/outputs/stats_picard2.txt",'w')
@@ -461,15 +462,20 @@ def stats_picard_2(path,samples,config):
                 f = open(path+"/results_picard_IS"+"/"+i+".txt",'r')
                 k = 0
                 while (1):
-                    j = f.readline()
-                    if j.startswith("MEDIAN_INSERT_SIZE"):
+                    h = f.readline()
+                    if h.startswith("MEDIAN_INSERT_SIZE"):
                         j = f.readline().strip("\n").split("\t")
+                        h = h.strip("\n").split("\t")
                         break
                     k += 1
                     if k > 10 or len(j) == 0:
                         j = ['NA' for i in range(7)]
                         break
-                print >> out, "\t".join([i] + j + ['<a href="../results_picard_IS/' + i + '.txt" target="_blank">+</a>', '<a href="../results_picard_IS/' + i + '.pdf" target="_blank">+</a>'])
+                J = []
+                for k in range(len(h)):
+                    if h[k] in H:
+                        J.append(j[k])
+                print >> out, "\t".join([i] + J + ['<a href="../results_picard_IS/' + i + '.txt" target="_blank">+</a>', '<a href="../results_picard_IS/' + i + '.pdf" target="_blank">+</a>'])
                 f.close()
             else:
                 print >> out, "\t".join([i] + ['NA' for i in range(9)])
