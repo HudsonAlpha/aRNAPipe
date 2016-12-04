@@ -468,7 +468,7 @@ def stats_picard_2(path,samples,config):
                         h = h.strip("\n").split("\t")
                         break
                     k += 1
-                    if k > 10 or len(j) == 0:
+                    if k > 10 or len(h) == 0:
                         j = ['NA' for i in range(7)]
                         break
                 J = []
