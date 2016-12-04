@@ -11,6 +11,7 @@
 <link rel="stylesheet" type="text/css" href="./html/jquery.dataTables.min.css">
 <link rel="stylesheet" type="text/css" href="./html/style.css">
 <script>
+
     var chart;
     #DATA
     AmCharts.ready(function () {
@@ -34,20 +35,20 @@
         valueAxis.axisAlpha = 0;
         valueAxis.title = "#LABEL";
         chart.addValueAxis(valueAxis);
-	    var valueAxis = new AmCharts.ValueAxis();
-        valueAxis.position = "left";
-	    valueAxis.stackType = "regular";
-    	valueAxis.id = "axis1";
-        valueAxis.gridAlpha = 0.1;
-        valueAxis.axisAlpha = 0;
-        valueAxis.title = "Percentage (%)";
-        chart.addValueAxis(valueAxis);
+    	var valueAxis2 = new AmCharts.ValueAxis();
+        valueAxis2.position = "left";
+        valueAxis2.stackType = "none";
+        valueAxis2.gridAlpha = 0.1;
+        valueAxis2.axisAlpha = 0;
+	    valueAxis2.id = "axis2";
+        valueAxis2.title = "Percentage (%)";
+        chart.addValueAxis(valueAxis2);
         // GRAPHS
-        var graph = new AmCharts.AmGraph(); graph.valueAxis = "axis1"; graph.title = "Reads with adapters"; graph.valueField = "Reads with adapters"; graph.type = "line"; graph.lineAlpha = 0; graph.fillAlphas = 1; graph.lineColor = "#FFA500"; graph.balloonText = "<b><span style='color:#afbb86'>[[title]]</b></span><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>"; graph.labelPosition = "middle"; chart.addGraph(graph);
-	    var graph = new AmCharts.AmGraph(); graph.valueAxis = "axis1"; graph.title = "Reads passing filters"; graph.valueField = "Reads passing filters"; graph.type = "line"; graph.lineAlpha = 0; graph.fillAlphas = 1; graph.lineColor = "#9D26CD"; graph.balloonText = "<b><span style='color:#afbb86'>[[title]]</b></span><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>"; graph.labelPosition = "middle"; chart.addGraph(graph);
-	    var graph = new AmCharts.AmGraph(); graph.valueAxis = "axis1"; graph.title = "Quality-trimmed basepairs"; graph.valueField = "Quality-trimmed basepairs"; graph.type = "line"; graph.lineAlpha = 0; graph.fillAlphas = 1; graph.lineColor = "#2B5E54"; graph.balloonText = "<b><span style='color:#afbb86'>[[title]]</b></span><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>"; graph.labelPosition = "middle"; chart.addGraph(graph);
-	    var graph = new AmCharts.AmGraph(); graph.valueAxis = "axis1"; graph.title = "Basepairs passing filters"; graph.valueField = "Basepairs passing filters"; graph.type = "line"; graph.lineAlpha = 0; graph.fillAlphas = 1; graph.lineColor = "#00FFFF"; graph.balloonText = "<b><span style='color:#afbb86'>[[title]]</b></span><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>"; graph.labelPosition = "middle"; chart.addGraph(graph);
-	    // LEGEND
+    var graph = new AmCharts.AmGraph(); graph.valueAxis = "axis2"; graph.title = "Reads with adapters"; graph.valueField = "Reads with adapters"; graph.type = "line"; graph.fillAlphas = 0;graph.lineAlpha = 1; graph.useLineColorForBulletBorder = true;graph.bullet = "round";graph.bulletBorderAlpha = 1;graph.bulletColor = "#00008B";graph.lineColor = "#00008B";graph.lineThickness = 2;graph.bulletSize = 7;graph.balloonText = "<span style='font-size:13px;'>[[title]] in [[category]]:<b>[[value]]</b></span>";chart.addGraph(graph);
+	var graph = new AmCharts.AmGraph(); graph.valueAxis = "axis2"; graph.title = "Reads passing filters"; graph.valueField = "Reads passing filters"; graph.type = "line"; graph.fillAlphas = 0;graph.lineAlpha = 1; graph.useLineColorForBulletBorder = true;graph.bullet = "round";graph.bulletBorderAlpha = 1;graph.bulletColor = "#801616";graph.lineColor = "#801616";graph.lineThickness = 2;graph.bulletSize = 7;graph.balloonText = "<span style='font-size:13px;'>[[title]] in [[category]]:<b>[[value]]</b></span>";chart.addGraph(graph);
+	var graph = new AmCharts.AmGraph(); graph.valueAxis = "axis2"; graph.title = "Quality-trimmed basepairs"; graph.valueField = "Quality-trimmed basepairs"; graph.type = "line"; graph.fillAlphas = 0;graph.lineAlpha = 1; graph.useLineColorForBulletBorder = true;graph.bullet = "round";graph.bulletBorderAlpha = 1;graph.bulletColor = "#FF0000";graph.lineColor = "#FF0000";graph.lineThickness = 2;graph.bulletSize = 7;graph.balloonText = "<span style='font-size:13px;'>[[title]] in [[category]]:<b>[[value]]</b></span>";chart.addGraph(graph);
+	var graph = new AmCharts.AmGraph(); graph.valueAxis = "axis2"; graph.title = "Basepairs passing filters"; graph.valueField = "Basepairs passing filters"; graph.type = "line"; graph.fillAlphas = 0;graph.lineAlpha = 1; graph.useLineColorForBulletBorder = true;graph.bullet = "round";graph.bulletBorderAlpha = 1;graph.bulletColor = "#00FF00";graph.lineColor = "#00FF00";graph.lineThickness = 2;graph.bulletSize = 7;graph.balloonText = "<span style='font-size:13px;'>[[title]] in [[category]]:<b>[[value]]</b></span>";chart.addGraph(graph);
+        // LEGEND
         var legend = new AmCharts.AmLegend();
         legend.position = "right";
         legend.borderAlpha = 0.3;
@@ -71,6 +72,7 @@
         }
         chart.validateNow();
     }
+
 </script>
 <script type="text/javascript" class="init">
         $(document).ready(function() {
