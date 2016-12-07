@@ -371,7 +371,7 @@ def sam2sortbam(timestamp, path_base, folder, samples, nproc, wt, q):
     return submit_job_super("sam2sortbam", path_base + folder, wt, str(nproc), q, len(samples), bsub_suffix, nchild, timestamp)
 
 
-def jsplice(timestamp, path_base, folder, samples, nproc, wt, q, genomebuild, pheno, extra_args):
+def jsplice(timestamp, path_base, folder, samples, nproc, wt, q, genomebuild, pheno, extra_args, strand):
     output_dir = path_base + folder + '/results_jsplice'
     secure_mkdir(path_base + folder, 'results_jsplice')
     print "## jSPLICE"
@@ -392,6 +392,8 @@ def jsplice(timestamp, path_base, folder, samples, nproc, wt, q, genomebuild, ph
         else:
             print "Warning: [JSPLICE] STAR output files not found -> " + sample
     out.close()
+    if strand == " --stranded=no":
+        extra_args = '-s ' + extra_args
     commands.append('python ' + config.path_jsplice + '/jSplice.py -d ' + output_dir + '/expdesign.txt -o ' + output_dir + ' -a '+ config.path_annotation.replace("#LABEL", genomebuild) + ' ' + extra_args)
     create_scripts(nchild, commands, path_base, folder, 'results_jsplice')
     return submit_job_super("jsplice", path_base + folder, wt, str(nproc), q, len(samples), bsub_suffix, nchild, timestamp)

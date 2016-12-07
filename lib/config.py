@@ -31,8 +31,7 @@ path_jsplice = "/gpfs/gpfs1/software/jSplice-1.0.1/" #aut
 # The keys of this dict are used in the project config files to use the
 # referenced STAR arguments within the corresponding dictionary values
 star_options = {"default": "",
-                "encode":  "--outFilterType BySJout --outFilterMultimapNmax 20 --alignSJoverhangMin 8 --alignSJDBoverhangMin 1 --outFilterMismatchNmax 999 --outFilterMismatchNoverLmax 0.04 --alignIntronMin 20 --alignIntronMax 1000000 --alignMatesGapMax 1000000",
-                "fusion":  "--alignSJDBoverhangMin 10 --chimJunctionOverhangMin 12 --outReadsUnmapped None --chimSegmentMin 12 --alignMatesGapMax 200000 --alignIntronMax 200000 --chimSegmentReadGapMax parameter 3 --alignSJstitchMismatchNmax 5 -1 5 5"}
+                "encode":  "--outFilterType BySJout --outFilterMultimapNmax 20 --alignSJoverhangMin 8 --alignSJDBoverhangMin 1 --outFilterMismatchNmax 999 --outFilterMismatchNoverLmax 0.04 --alignIntronMin 20 --alignIntronMax 1000000 --alignMatesGapMax 1000000"}
 
 # ENVIRONMENT VARIABLES:
 # The following system environment variables are changed to add or overwrite
