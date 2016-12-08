@@ -72,7 +72,7 @@ def stats_trimgalore(path):
     for i in f:
         i = i.strip("\n").split("\t")
         if len(i) > 1:
-            samples[i[0]] = [j.split("/")[-1] for j in idx]
+            samples[i[0]] = [i[j].split("/")[-1] for j in idx]
     f.close()
     out = open(path + "/outputs/stats_trim.txt", 'w')
     print >> out, "sample_id\t" + "\t".join(fnames2)
