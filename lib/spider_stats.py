@@ -77,11 +77,11 @@ def stats_trimgalore(path):
     out2 = open(path + "/outputs/stats_trim_plot.txt", 'w')
     print >> out2, "sample_id\tReads with adapters\tReads passing filters\tQuality-trimmed basepairs\tBasepairs passing filters"
     for sample, files in samples.iteritems():
+        print files
         k = 0
         data = [{},{}]
         for filname in files:
             fpath = path + "/results_trimgalore/" + filname + "_trimming_report.txt"
-            print fpath
             if os.path.exists(fpath):
                 print 'open'
                 f = open(fpath, 'r')
@@ -93,7 +93,6 @@ def stats_trimgalore(path):
                             data[k][fi] = ' '.join(j[1:])
                 f.close()
             k += 1
-        print data
         g1 = ""
         g2 = ""
         plt1 = ''
