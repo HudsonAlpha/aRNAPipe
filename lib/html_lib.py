@@ -80,10 +80,14 @@ def print_samples(path,config):
     samples = dict()
     f   = open(path + "/samples.list",'r')
     hs = f.readline().strip("\n").split("\t")
+    idx = []
+    for i, ix in enumerate(hs):
+        if ix.startswith('FASTQ'):
+            idx.append(i)
     for i in f:
         i = i.strip("\n").split("\t")
         if i[0] != "":
-            samples[i[0]] = i[1:]
+            samples[i[0]] = [i[j] for j in idx]
     f.close()
     # scan
     results  = dict()

@@ -84,7 +84,6 @@ def stats_trimgalore(path):
         for filname in files:
             fpath = path + "/results_trimgalore/" + filname + "_trimming_report.txt"
             if os.path.exists(fpath):
-                print 'open'
                 f = open(fpath, 'r')
                 for i in f:
                     i = i.strip("\n").replace(' bp', '').replace(',', '')
