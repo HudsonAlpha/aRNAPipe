@@ -115,15 +115,15 @@ except:
 #########################################################################
 # TRIM_GALORE
 #########################################################################
-try:
-    if config.has_key("trimgalore"):
-        print "> Generating webpage with TrimGalore/Cutadapt statistics..."
-        print "  - " + path + "/HTML/trim.html"
-        html_table = html.print_table_default(path + "/outputs/stats_trim.txt", -1, []) # PROVIDES HTML TABLE WITH HPC STATS
-        data = html.bar_getdata(path + "/outputs/stats_trim_plot.txt",0,[],[])
-        html.build_from_template("TrimGalore", project, data, html_table, "", path+"/HTML/trim.html", os.path.dirname(sys.argv[0]) + "/template/TEMPLATE_TRIMG.html", lmenu)
-except:
-    print "  - Not ready"
+#try:
+if config.has_key("trimgalore"):
+    print "> Generating webpage with TrimGalore/Cutadapt statistics..."
+    print "  - " + path + "/HTML/trim.html"
+    html_table = html.print_table_default(path + "/outputs/stats_trim.txt", -1, []) # PROVIDES HTML TABLE WITH HPC STATS
+    data = html.bar_getdata(path + "/outputs/stats_trim_plot.txt",0,[],[])
+    html.build_from_template("TrimGalore", project, data, html_table, "", path+"/HTML/trim.html", os.path.dirname(sys.argv[0]) + "/template/TEMPLATE_TRIMG.html", lmenu)
+# except:
+#     print "  - Not ready"
 
 #########################################################################
 # FASTQ
@@ -260,11 +260,11 @@ except:
 #########################################################################
 # jSplice
 #########################################################################
-#try:
-if config.has_key("jsplice"):
-    print "> Generating webpage with picard statistics..."
-    print "  - " + path + "/HTML/jsplice.html"
-    html_table = html.print_table_default(path + "/results_jsplice/jSplice_results.txt", -1, []) # PROVIDES HTML TABLE WITH HPC STATS
-    html.build_from_template("jSplice", project, "", html_table, "", path+"/HTML/jsplice.html", os.path.dirname(sys.argv[0]) + "/template/TEMPLATE_JSPLICE.html", lmenu)
-#except:
-#    print "  - Not ready"
+try:
+    if config.has_key("jsplice"):
+        print "> Generating webpage with picard statistics..."
+        print "  - " + path + "/HTML/jsplice.html"
+        html_table = html.print_table_default(path + "/results_jsplice/jSplice_results.txt", -1, []) # PROVIDES HTML TABLE WITH HPC STATS
+        html.build_from_template("jSplice", project, "", html_table, "", path+"/HTML/jsplice.html", os.path.dirname(sys.argv[0]) + "/template/TEMPLATE_JSPLICE.html", lmenu)
+except:
+    print "  - Not ready"
