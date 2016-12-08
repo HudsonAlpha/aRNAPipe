@@ -65,6 +65,9 @@ def get_menu(config, ns):
     if enabled.has_key("star-fusion"):
         menu.append('<h1>Gene fusions:</h1>')
         menu.append('<h2><a #highlight="" href="./star-fusion.html">- Star-Fusion</a></h2>')
+    if enabled.has_key("jsplice"):
+        menu.append('<h1>Alternative splicing:</h1>')
+        menu.append('<h2><a #highlight="" href="./jsplice.html">- jSplice</a></h2>')
     menu = "\n".join(menu)
     return menu
 
