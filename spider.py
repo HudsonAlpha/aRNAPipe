@@ -265,6 +265,6 @@ if config.has_key("jsplice"):
     print "> Generating webpage with picard statistics..."
     print "  - " + path + "/HTML/jsplice.html"
     html_table = html.print_table_default(path + "/results_jsplice/jSplice_results.txt", -1, []) # PROVIDES HTML TABLE WITH HPC STATS
-    html.build_from_template("jSplice", project, "", html_table, "", path+"/HTML/picard.html", os.path.dirname(sys.argv[0]) + "/template/TEMPLATE_JSPLICE.html", lmenu)
+    html.build_from_template("jSplice", project, "", html_table, "", path+"/HTML/jsplice.html", os.path.dirname(sys.argv[0]) + "/template/TEMPLATE_JSPLICE.html", lmenu)
 #except:
 #    print "  - Not ready"
