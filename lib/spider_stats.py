@@ -63,21 +63,22 @@ def stats_trimgalore(path):
     fields2 = ["Total reads processed:","Reads with adapters:","Reads written (passing filters):","Total basepairs processed:","Quality-trimmed:","Total written (filtered):"]
     fnames2 = ['Processed reads', 'Reads with adapters', 'Reads passing filters', 'Processed basepairs', 'Quality-trimmed basepairs', 'Basepairs passing filters']
     f = open(path + "/samples.list", 'r')
-    h = f.readline()
+    h = f.readline().strip('\n').split('\t')
+    idx = []
+    for ix, i in enumerate(h):
+        if i.startswith('FASTQ'):
+            idx.append(ix)
     samples = dict()
     for i in f:
         i = i.strip("\n").split("\t")
         if len(i) > 1:
-            samples[i[0]] = list()
-            for j in i[1:]:
-                samples[i[0]].append(j.split("/")[-1])
+            samples[i[0]] = [j.split("/")[-1] for j in idx]
     f.close()
     out = open(path + "/outputs/stats_trim.txt", 'w')
     print >> out, "sample_id\t" + "\t".join(fnames2)
     out2 = open(path + "/outputs/stats_trim_plot.txt", 'w')
     print >> out2, "sample_id\tReads with adapters\tReads passing filters\tQuality-trimmed basepairs\tBasepairs passing filters"
     for sample, files in samples.iteritems():
-        print files
         k = 0
         data = [{},{}]
         for filname in files:
