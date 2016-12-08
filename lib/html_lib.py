@@ -79,11 +79,12 @@ def print_samples(path,config):
     # SAMPLES LIST
     samples = dict()
     f   = open(path + "/samples.list",'r')
-    hs = f.readline().strip("\n").split("\t")
+    hss = f.readline().strip("\n").split("\t")
     idx = []
-    for i, ix in enumerate(hs):
+    for i, ix in enumerate(hss):
         if ix.startswith('FASTQ'):
             idx.append(i)
+    hs = [hss[i] for i in idx]
     for i in f:
         i = i.strip("\n").split("\t")
         if i[0] != "":
