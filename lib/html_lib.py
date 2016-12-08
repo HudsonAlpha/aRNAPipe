@@ -78,13 +78,13 @@ def print_samples(path,config):
           "htseq-exon":"HTseq-exon", "picard_IS":"Picard-InsertSize", "varscan":"VARSCAN", "gatk":"GATK", "jsplice":"jSplice"}
     # SAMPLES LIST
     samples = dict()
-    f   = open(path + "/samples.list",'r')
+    f = open(path + "/samples.list",'r')
     hss = f.readline().strip("\n").split("\t")
     idx = []
     for i, ix in enumerate(hss):
         if ix.startswith('FASTQ'):
             idx.append(i)
-    hs = [hss[i] for i in idx]
+    hs = [hss[0]] + [hss[i] for i in idx]
     for i in f:
         i = i.strip("\n").split("\t")
         if i[0] != "":
