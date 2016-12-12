@@ -1,5 +1,4 @@
 import os
-import sys
 import config
 
 head_star_log = ["Sample", "Links","Started job","Started mapping","Finished","Mapping speed [Mr/h]","Input reads [n]","Input read length (mean)","Uniquely mapped [n]","Uniquely mapped [%]","Mapped length","Splices [n]","Splices annotated [n]","Splices GT/AG [n]","Splices: GC/AG [n]","Splices: AT/AC [n]","Splices: Non-canonical [n]","Mismatch rate per base [%]","Deletion rate per base [%]","Deletion average length","Insertion rate per base [%]","Insertion average length","Multimapping reads [n]","Multimapping reads [%]","Multimapping reads (+) [n]","Multimapping reads (+) [%]","Unmapped reads: too many mismatches [%]","Unmapped reads: too short [%]","Unmapped reads: other [%]"]
@@ -45,10 +44,10 @@ def stats_fusion(path):
     samples = dict()
     for i in f:
         i = i.strip("\n").split("\t")
-        samples[i[0]] = path + "/results_star-fusion/" + i[0] + ".fusion_candidates.txt"
+        samples[i[0]] = path + "/results_star-fusion/" + i[0] + "/star-fusion.fusion_candidates.final.abridged"
     f.close()
     out = open(path + "/outputs/starfusion_aggregate.txt", 'w')
-    print >> out, "sample_id\tfusion\tJunctReads\tSpanFrags\tLeftGene\tLeftBreak\tLeftDistFromRefExonSplice"
+    print >> out, "sample_id\tFusionName\tJunctionReadCount\tSpanningFragCount\tSpliceType\tLeftGene\tLeftBreakpoint\tRightGene\tRightBreakpoint\tLargeAnchorSupport\tLeftBreakDinuc\tLeftBreakEntropy\tRightBreakDinucRightBreakEntropy"
     for sample, filename in samples.iteritems():
         if os.path.exists(filename):
             f = open(filename, 'r')
@@ -61,24 +60,24 @@ def stats_fusion(path):
 
 
 def stats_trimgalore(path):
-    fields = ["Processed reads:","Processed bases:", "Trimmed reads:","Quality-trimmed:",
-          "Trimmed bases:","Too short reads:","Too long reads:"]
-    fnames = ["Proc-Reads","Proc-Bases","Trim-Reads","Qual-Trimmed","Trim-Bases","Short-Reads","Long-Reads"]
-    fields2 = ["Total reads processed","Total basepairs processed","","","",""]
+    fields2 = ["Total reads processed:","Reads with adapters:","Reads written (passing filters):","Total basepairs processed:","Quality-trimmed:","Total written (filtered):"]
+    fnames2 = ['Processed reads', 'Reads with adapters', 'Reads passing filters', 'Processed basepairs', 'Quality-trimmed basepairs', 'Basepairs passing filters']
     f = open(path + "/samples.list", 'r')
-    h = f.readline()
+    h = f.readline().strip('\n').split('\t')
+    idx = []
+    for ix, i in enumerate(h):
+        if i.startswith('FASTQ'):
+            idx.append(ix)
     samples = dict()
     for i in f:
         i = i.strip("\n").split("\t")
         if len(i) > 1:
-            samples[i[0]] = list()
-            for j in i[1:]:
-                samples[i[0]].append(j.split("/")[-1])
+            samples[i[0]] = [i[j].split("/")[-1] for j in idx]
     f.close()
     out = open(path + "/outputs/stats_trim.txt", 'w')
-    print >> out, "sample_id\t" + "\t".join(fnames)
+    print >> out, "sample_id\t" + "\t".join(fnames2)
     out2 = open(path + "/outputs/stats_trim_plot.txt", 'w')
-    print >> out2, "sample_id\tTrimmed-1\tTrimmed-2\tQuality-1\tQuality-2"
+    print >> out2, "sample_id\tReads with adapters\tReads passing filters\tQuality-trimmed basepairs\tBasepairs passing filters"
     for sample, files in samples.iteritems():
         k = 0
         data = [{},{}]
@@ -86,60 +85,44 @@ def stats_trimgalore(path):
             fpath = path + "/results_trimgalore/" + filname + "_trimming_report.txt"
             if os.path.exists(fpath):
                 f = open(fpath, 'r')
-                mode =1
                 for i in f:
-                    if i.startswith("Trim Galore version"):
-                        if "1.8.1" in i:
-                            mode = 2
-                    i = i.strip("\n")
-                    for fi in fields:
+                    i = i.strip("\n").replace(' bp', '').replace(',', '')
+                    for fi in fields2:
                         j = i.split(fi)
                         if len(j) > 1:
-                            if mode == 1:
-                                j = j[1].split()
-                                if fi in ["Processed reads:", "Processed bases:"]:
-                                    data[k][fi] = j[0]
-                                elif fi in ["Trimmed reads:", "Too short reads:","Too long reads:"]:
-                                    data[k][fi] = j[0] + j[1].replace(")","") + ")"
-                                elif fi in fields:
-                                    data[k][fi] = j[0] + j[4] + ")"
-                            else:
-                                j = j[1].split()
-                                if fi in ["Processed reads:", "Processed bases:"]:
-                                    data[k][fi] = j[0]
-                                elif fi in ["Trimmed reads:", "Too short reads:","Too long reads:"]:
-                                    data[k][fi] = j[0] + j[1].replace(")","") + ")"
-                                elif fi in fields:
-                                    data[k][fi] = j[0] + j[4] + ")"
+                            data[k][fi] = ' '.join(j[1:])
                 f.close()
             k += 1
-        g = ""
+        g1 = ""
         g2 = ""
-        for i in fields:
+        plt1 = ''
+        plt2 = ''
+        for i in fields2:
             r1 = "NA"
             r2 = "NA"
             if data[0].has_key(i):
                 r1 = data[0][i]
-            if (len(files) == 2) and (not i in ["Processed reads:","Processed bases:"]):
+            if len(files) == 2:
                 if data[1].has_key(i):
                     r2 = data[1][i]
-                g = g + "\t" + r1 + " / " + r2
-                if i in ["Trimmed reads:","Quality-trimmed:"]:
-                    if r1 != "NA":
-                        r1 = r1.split("(")[1].split("%")[0]
-                    if r2 != "NA":
-                        r2 = r2.split("(")[1].split("%")[0]
-                    g2 = g2 + "\t" + r1 + "\t" + r2
+                g1 = g1 + "\t" + r1
+                g2 = g2 + "\t" + r2
+                if '%' in r2:
+                    plt1 = plt1 + "\t" + r1.split('(')[1].replace('%)', '')
+                    plt2 = plt2 + "\t" + r2.split('(')[1].replace('%)', '')
             else:
-                g = g + "\t" + r1
-                if i in ["Trimmed reads:","Quality-trimmed:"]:
-                    if r1 != "NA":
-                        r1 = r1.split("(")[1].split("%")[0]
-                    g2 = g2 + "\t" + r1 + "\t0"
-        print >> out, sample + g
-        print >> out2, sample + g2
+                if '%' in r1:
+                    plt1 = plt1 + "\t" + r1.split('(')[1].replace('%)', '')
+                g1 = g1 + "\t" + r1
+        if g2 != '':
+            print >> out, sample + ' (1)' + g1
+            print >> out, sample + ' (2)' + g2
+            print >> out2, sample + ' (1)' + plt1
+            print >> out2, sample + ' (2)' + plt2
+        else:
+            print >> out, sample + g1
+            print >> out2, sample + plt1
     out.close()
-    out2.close()
 
 
 def read_star_log(datafile, sample):
@@ -179,15 +162,29 @@ def read_star_log(datafile, sample):
 #     out.close()
 
 
+
 def stats_fastq(path,samples,config):
     if not os.path.exists(path):
         return 1
     n = os.listdir(path)
     if config.has_key("fastqc") and ("results_fastqc" in n):
         files = os.listdir(path+"/results_fastqc")
-        h = ["Sample","Link","Basic Statistics","Per base sequence quality","Per sequence quality scores","Per base sequence content",
-             "Per base GC content","Per sequence GC content","Per base N content","Sequence Length Distribution","Sequence Duplication Levels",
-             "Overrepresented sequences","Kmer Content","Total sequences","Sequence length", "%GC"]
+        h = ["Sample",
+             "Link",
+             '<a href="http://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/3%20Analysis%20Modules/1%20Basic%20Statistics.html" target="_blank">Basic statistics</a>',
+             '<a href="http://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/3%20Analysis%20Modules/2%20Per%20Base%20Sequence%20Quality.html" target="_blank">Per base sequence quality</a>',
+             '<a href="http://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/3%20Analysis%20Modules/3%20Per%20Sequence%20Quality%20Scores.html" target="_blank">Per sequence quality scores</a>',
+             '<a href="http://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/3%20Analysis%20Modules/4%20Per%20Base%20Sequence%20Content.html" target="_blank">Per base sequence content</a>',
+             '<a href="http://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/3%20Analysis%20Modules/5%20Per%20Sequence%20GC%20Content.html" target="_blank">Per base GC content</a>',
+             '<a href="http://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/3%20Analysis%20Modules/5%20Per%20Sequence%20GC%20Content.html" target="_blank">Per sequence GC content</a>',
+             '<a href="http://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/3%20Analysis%20Modules/6%20Per%20Base%20N%20Content.html" target="_blank">Per base N content</a>',
+             '<a href="http://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/3%20Analysis%20Modules/7%20Sequence%20Length%20Distribution.html" target="_blank">Sequence Length Distribution</a>',
+             '<a href="http://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/3%20Analysis%20Modules/8%20Duplicate%20Sequences.html" target="_blank">Sequence Duplication Levels</a>',
+             '<a href="http://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/3%20Analysis%20Modules/9%20Overrepresented%20Sequences.html" target="_blank">Overrepresented sequences</a>',
+             '<a href="http://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/3%20Analysis%20Modules/11%20Kmer%20Content.html" target="_blank">Kmer Content</a>',
+             "Total sequences",
+             "Sequence length",
+             "%GC"]
         names = ["","","per_base_quality.png","per_sequence_quality.png","per_base_sequence_content.png","per_base_gc_content.png","per_sequence_gc_content.png",
                  "per_base_n_content.png", "sequence_length_distribution.png", "duplication_levels.png", "", "kmer_profiles.png", "", "", ""]
         table = list()
@@ -315,16 +312,18 @@ def stats_log(path):
     # Given a path to a 'logs' folder parses all the LSF log files and writes the relevant parameters
     # in a table format on an ouptut file
     order = ["success", "time_start", "time_results", "cpu_time", "max_memo", "ave_memo", "max_swap", "link"]
-    Lorder= ["Success", "Star time", "End time", "CPU time", "Memory (max) [MB]", "Memory (mean) [MB]", "Swap (max) [MB]", "Link"]
-    progs = ["trimgalore", "fastqc", "kallisto", "star", "star-fusion", "picard","htseq-gene", "htseq-exon", "sam2sortbam", "varscan", "gatk"]
+    Lorder= ["Success", "Started", "Ended", "CPU time", "Memory (max) [MB]", "Memory (mean) [MB]", "Swap (max) [MB]", "Link"]
+    progs = ["trimgalore", "fastqc", "kallisto", "star", "star-fusion", "picard",
+             "htseq-gene", "htseq-exon", "sam2sortbam", "picard_IS", "varscan", "gatk", "jsplice"]
     print "> Recovering LSF stats from: " + path
     L = os.listdir(path)
     logs = dict()
     for i in L:
         if i.endswith(".log") and (not i.endswith("_M.log")):
-            j = i.replace(".log","").split("_")
-            if len(j) == 4:
+            j = i.replace(".log","").replace('picard_IS', 'picard-IS').split("_")
+            if (len(j) == 4):
                 date, time, prog, proc = j
+                prog = 'picard_IS' if prog == 'picard-IS' else prog
                 if not logs.has_key(date + "_" + time):
                     logs[date + "_" + time] = dict()
                 if not logs[date + "_" + time].has_key(prog):
@@ -523,7 +522,7 @@ def stats_star(path, samples):
             r = list()
             for sample in samples:
                 if N[i].has_key(sample):
-                    if len(N[i][sample]) > j:
+                    if (len(N[i][sample]) > j) and (MT[sample] > 0):
                         s = str(round(float(N[i][sample][j]) * 1000000000 / (float(L[ng[j]]) * MT[sample]),4))
                     else:
                         s = "NA"

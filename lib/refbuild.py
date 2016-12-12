@@ -99,18 +99,26 @@ def annotate_gtf(filename):
                 if len(i) == 9:
                     if i[2] in features: # gene/transcript/exon
                         j = i[8]
-                        feat_id = j.split(i[2]+'_id "')[1].split('"')[0] # feature id
-                        gid     = j.split('gene_id "')[1].split('"')[0]  # associated gene id
+                        gid = j.split('gene_id "')[1].split('"')[0]  # associated gene id
+                        if i[2]+'_id "' in j:
+                            feat_id = j.split(i[2]+'_id "')[1].split('"')[0] # feature id
+                        else:
+                            if i[2]=='exon':
+                                feat_id = gid + '_' + j.split('transcript_id "')[1].split('"')[0] + '_' + j.split('exon_number "')[1].split('"')[0]
                         loci[feat_id] = [i[0], i[3], i[4]] # chrom, start, end
                         L = [float(i[3]), float(i[4])]
                         data[i[2]][feat_id] = list()
                         if i[2] == "exon":
                             tid = j.split('transcript_id "')[1].split('"')[0]
+                            if not data["gene"].has_key(gid):
+                                data['gene'][gid] = list()
                             data["gene"][gid].append(L)
+                            if not data["transcript"].has_key(tid):
+                                data['transcript'][tid] = list()
                             data["transcript"][tid].append(L)
                             data["exon"][feat_id].append(L)
                             exon2gene[feat_id] = gid
-                        if i[2] == "transcript":
+                        elif i[2] == "transcript":
                             transc2gene[feat_id] = gid
         f.close()
         results = dict()
@@ -162,12 +170,13 @@ def annotate_gtf(filename):
             out = open(filename.replace(".gtf", "." + feat_type + ".txt"), 'w')
             print >> out, "gene\ttranscript\texon\tchrom\tstart\tend\tlength"
             for feat_id, feat_length in sorted(feat_data.iteritems()):
-                if feat_type == "gene":
-                    print >> out, feat_id + "\t.\t.\t" + "\t".join(loci[feat_id]) + "\t" + feat_length
-                elif feat_type == "transcript":
-                    print >> out, transc2gene[feat_id] + "\t" + feat_id + "\t.\t" +  "\t".join(loci[feat_id]) + "\t" + feat_length
-                elif feat_type == "exon":
-                    print >> out, exon2gene[feat_id] + "\t.\t" + feat_id + "\t" +  "\t".join(loci[feat_id]) + "\t" + feat_length
+                if loci.has_key(feat_id):
+                    if feat_type == "gene":
+                        print >> out, feat_id + "\t.\t.\t" + "\t".join(loci[feat_id]) + "\t" + feat_length
+                    elif feat_type == "transcript":
+                        print >> out, transc2gene[feat_id] + "\t" + feat_id + "\t.\t" +  "\t".join(loci[feat_id]) + "\t" + feat_length
+                    elif feat_type == "exon":
+                        print >> out, exon2gene[feat_id] + "\t.\t" + feat_id + "\t" +  "\t".join(loci[feat_id]) + "\t" + feat_length
             out.close()
         return 1
     except:

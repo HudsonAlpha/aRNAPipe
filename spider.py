@@ -23,10 +23,13 @@ config = html.check_config(path) # PARSES THE CONFIGURATION FILE
 try:
     samples = vcrparser.get_samples(path.replace(project, ""), project, path + "/samples.list") # PARSES THE SAMPLE FILE AND ASSOCIATED FASTQ FILES
 except:
-    samples = vcrparser.get_samples_nocheck(path.replace(project, ""), project, path + "/samples.list")
+    samples = vcrparser.get_samples(path.replace(project, ""), project, path + "/samples.list", no_check=True)
 f = open(path + "/samples.list", 'r')
 h = f.readline()
-samples_ordered = [(i.split("\t")[0]) for i in f]
+samples_ordered = list()
+for i in f:
+    if len(i.split('\t')) > 0:
+        samples_ordered.append(i.split("\t")[0])
 f.close()
 lmenu = html.get_menu(config, len(samples))
 
@@ -117,7 +120,7 @@ try:
         print "> Generating webpage with TrimGalore/Cutadapt statistics..."
         print "  - " + path + "/HTML/trim.html"
         html_table = html.print_table_default(path + "/outputs/stats_trim.txt", -1, []) # PROVIDES HTML TABLE WITH HPC STATS
-        data = html.bar_getdata (path + "/outputs/stats_trim_plot.txt",0,[],[])
+        data = html.bar_getdata(path + "/outputs/stats_trim_plot.txt",0,[],[])
         html.build_from_template("TrimGalore", project, data, html_table, "", path+"/HTML/trim.html", os.path.dirname(sys.argv[0]) + "/template/TEMPLATE_TRIMG.html", lmenu)
 except:
     print "  - Not ready"
@@ -144,6 +147,13 @@ try:
         html_table = html.stats_picard(path,samples,config) # PROVIDES HTML TABLE WITH PICARD STATS
         data = html.bar_getdata (path + "/outputs/stats_picard.txt",0,range(1,7), range(7,11))
         html.build_from_template("PICARD", project, data, html_table, "", path+"/HTML/picard.html", os.path.dirname(sys.argv[0]) + "/template/TEMPLATE_PICARD.html", lmenu)
+    if config.has_key("picard_IS"):
+        print "> Generating webpage with picard insert size statistics..."
+        print "  - " + path + "/HTML/picard-is.html"
+        x = html.stats_picard_2(path,samples,config)
+        html_table = html.print_table_default(path + "/outputs/stats_picard2.txt", -1, [])
+        data = html.bar_getdata (path + "/outputs/stats_picard2.txt",0,range(1,2),[])
+        html.build_from_template("PICARD-InsertSize", project, data, html_table, "", path+"/HTML/picard-is.html", os.path.dirname(sys.argv[0]) + "/template/TEMPLATE_PICARDIS.html", lmenu)
 except:
     print "  - Not ready"
 
@@ -156,6 +166,19 @@ try:
         print "  - " + path + "/HTML/star-fusion.html"
         html_table = html.print_table_default(path + "/outputs/starfusion_aggregate.txt", -1, []) # PROVIDES HTML TABLE WITH HPC STATS
         html.build_from_template("STAR-FUSION", project, "", html_table, "", path+"/HTML/star-fusion.html", os.path.dirname(sys.argv[0]) + "/template/TEMPLATE_STARFUSION.html", lmenu)
+except:
+    print "  - Not ready"
+
+#########################################################################
+# KALLISTO_QC
+#########################################################################
+try:
+    if config.has_key("kallisto"):
+        print "> Generating webpage with Kallisto statistics..."
+        print "  - " + path + "/HTML/kallisto.html"
+        html_table = html.print_table_default(path + "/outputs/kallisto_stats_est_counts.txt", -1, []) # PROVIDES HTML TABLE WITH HPC STATS
+        data = html.bar_getdata (path + "/outputs/kallisto_stats_est_counts.txt",0,range(1,2),[])
+        html.build_from_template("KALLISTO", project, data, html_table, "", path+"/HTML/kallisto.html", os.path.dirname(sys.argv[0]) + "/template/TEMPLATE_KALLISTO.html", lmenu)
 except:
     print "  - Not ready"
 
@@ -192,16 +215,19 @@ except:
 try:
     if len(samples) > 1:
         if config["programs"]["strandedness"] == "yes":
-            n = {"star":["STAR","star_stranded"],"htseq-gene":["HTseq-count Gene", "htseq-gene"],"htseq-exon":["HTseq-count Exon", "htseq-exon"]}
+            n = {"star":["STAR","star_stranded"],"htseq-gene":["HTseq-count Gene", "htseq-gene"],"htseq-exon":["HTseq-count Exon", "htseq-exon"], 'kallisto': ['Kallisto', 'kallisto']}
         elif config["programs"]["strandedness"] == "no":
-            n = {"star":["STAR","star_unstranded"],"htseq-gene":["HTseq-count Gene", "htseq-gene"],"htseq-exon":["HTseq-count Exon", "htseq-exon"]}
+            n = {"star":["STAR","star_unstranded"],"htseq-gene":["HTseq-count Gene", "htseq-gene"],"htseq-exon":["HTseq-count Exon", "htseq-exon"], 'kallisto': ['Kallisto', 'kallisto']}
         elif config["programs"]["strandedness"] == "reverse":
-            n = {"star":["STAR","star_stranded-reverse"],"htseq-gene":["HTseq-count Gene", "htseq-gene"],"htseq-exon":["HTseq-count Exon", "htseq-exon"]}
+            n = {"star":["STAR","star_stranded-reverse"],"htseq-gene":["HTseq-count Gene", "htseq-gene"],"htseq-exon":["HTseq-count Exon", "htseq-exon"], 'kallisto': ['Kallisto', 'kallisto']}
         for prog, pname in n.iteritems():
             if config.has_key(prog):
                 os.system("Rscript "+pathscript+"/stats_algs.R " + path + "/outputs/ " + pname[1]) # PLOT OF HPC USAGE
                 html_table = html.print_table_default(path + "/outputs/" + pname[1] + "_pca.txt", -1, [0, 1, 2, 3, 4, 6, 7, 8, 12, 13, 14, 15, 17, 18, 19])
-                html.build_amcharts(os.path.dirname(sys.argv[0]) + "/template/TEMPLATE_PCA.html", path + "/HTML/" + prog + "2.html", prog, pname, path, html_table, project, lmenu)
+                if prog != 'kallisto':
+                    html.build_amcharts(os.path.dirname(sys.argv[0]) + "/template/TEMPLATE_PCA.html", path + "/HTML/" + prog + "2.html", prog, pname, path, html_table, project, lmenu)
+                else:
+                    html.build_amcharts(os.path.dirname(sys.argv[0]) + "/template/TEMPLATE_PCA2.html", path + "/HTML/" + prog + "2.html", prog, pname, path, html_table, project, lmenu)
 except:
     print "  - Not ready"
 
@@ -228,5 +254,17 @@ try:
         html_table = html.print_table_default(path + "/outputs/stats_gatk.txt", -1, []) # PROVIDES HTML TABLE WITH HPC STATS
         data = html.bar_getdata (path + "/outputs/stats_gatk.txt",0,[],[])
         html.build_from_template("GATK", project, data, html_table, "", path+"/HTML/gatk.html", os.path.dirname(sys.argv[0]) + "/template/TEMPLATE_GATK.html", lmenu)
+except:
+    print "  - Not ready"
+
+#########################################################################
+# jSplice
+#########################################################################
+try:
+    if config.has_key("jsplice"):
+        print "> Generating webpage with picard statistics..."
+        print "  - " + path + "/HTML/jsplice.html"
+        html_table = html.print_table_default(path + "/results_jsplice/jSplice_results.txt", -1, []) # PROVIDES HTML TABLE WITH HPC STATS
+        html.build_from_template("jSplice", project, "", html_table, "", path+"/HTML/jsplice.html", os.path.dirname(sys.argv[0]) + "/template/TEMPLATE_JSPLICE.html", lmenu)
 except:
     print "  - Not ready"

@@ -1,37 +1,41 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% ANALYSIS
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-trimgalore	20/NA/NA
-fastqc	10/NA/NA
-kallisto	10/NA/NA
-star	12/40/5
-star-fusion	10/NA/NA
-picard	10/NA/NA
-htseq-gene	10/NA/NA
-htseq-exon	10/NA/NA
-varscan	10/NA/NA
-gatk	20/30/NA
+trimgalore	4/NA/NA
+fastqc	4/NA/NA
+kallisto	4/NA/NA
+star	12/40/1
+star-fusion	0/NA/NA
+picard	4/NA/NA
+htseq-gene	4/NA/NA
+htseq-exon	4/NA/NA
+sam2sortbam	4/NA/NA
+picard_IS	0/NA/NA
+varscan	4/NA/NA
+gatk	4/NA/NA
+jsplice	1/NA/NA
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% GENOME REFERENCES
+%% GENOMIC REFERENCES
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 genome_build	g1k_v37
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% HPC CONFIG
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-wt	400:00
+wt	450:00
 q	normal
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% ADDITIONAL PROGRAM OPTIONS
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 kalboot	20	Number of bootstraps for Kallisto analysis
-trimgal_args	--illumina
+trimgal_args
 star2pass	yes
-star_args	encode
-star_args_own	
-starfusion	default
-starfusion_own	
+star_args	default
+star_args_own
+starfusion_args
 varscan_args	--output-vcf 1 --variants 1
 gatk_args	yes|30
 strandedness	no
 htseq-gene-mode	union
 htseq-exon-mode	union
+jsplice_pheno
+jsplice_args	-c 10

@@ -96,8 +96,8 @@
 </script>
 </head>
 <body>
-<title>RNA-Seq pipeline (BEDpipe)</title>
-<h1>RNA-Seq pipeline (BEDpipe)</h1>
+<title>RNA-Seq pipeline (aRNApipe)</title>
+<h1>RNA-Seq pipeline (aRNApipe)</h1>
 <h2>Project: #PROJECT</h2>
 <div id="menu">
 #LATMENU
@@ -112,4 +112,12 @@
 <center>
 #TABLE
 </center>
+The following definitions are extracted from the <a href="http://www-huber.embl.de/HTSeq/doc/count.html#usage" target="_blank">HTseq documentation website</a>:
+<ul>
+  <li>no_feature: reads (or read pairs) which could not be assigned to any feature (set S as described above was empty).</li>
+  <li>ambiguous: reads (or read pairs) which could have been assigned to more than one feature and hence were not counted for any of these (set S had mroe than one element).</li>
+  <li>too_low_aQual: reads (or read pairs) which were skipped due to the -a option.</li>
+  <li>not_aligned: reads (or read pairs) in the SAM file without alignment.</li>
+  <li>alignment_not_unique: reads (or read pairs) with more than one reported alignment.</li>
+</ul>
 </div></body></html>

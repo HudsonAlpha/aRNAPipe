@@ -15,9 +15,14 @@ parser.add_option("-f", "--fasta", dest = "fasta",default = "", help = "Path to 
 parser.add_option("-c", "--cdna",  dest = "cdna", default = "", help = "Path to the cDNA fasta file (accepts '.gz').")
 parser.add_option("-g", "--gtf",   dest = "gtf",  default = "", help = "Path to the GTF gene set file ('.gtf').")
 parser.add_option("-n", "--ncpu",  dest = "n",    default = "8",help = "Number of threads that STAR will use to generate the reference genome (default=8).")
-(opt, args) = parser.parse_args()
+parser.add_option("-r", "--ram",  dest = "ram",    default = "",help = "Required RAM (Gb).")
 
 (opt, args) = parser.parse_args()
+
+if opt.ram != '':
+    sb = ' --limitGenomeGenerateRAM ' + str(int(float(opt.ram)*1000000000))
+else:
+    sb = ''
 
 root_path = opt.path
 file_fasta = opt.fasta
@@ -74,9 +79,10 @@ else:
 
 ## CREATES OUTPUT DIRECTORY
 print "> Creating output directory for the current genome version in the processed genomes folder..."
-if os.path.exists(root_path + "/genomes_processed/" + genome_label):
-    os.system("rm -r " + root_path + "/genomes_processed/" + genome_label)
-os.mkdir(root_path + "/genomes_processed/" + genome_label)
+if os.path.exists(root_path + "/genomes_processed/" + genome_label + '/refFlats'):
+    os.system("rm -r " + root_path + "/genomes_processed/" + genome_label + '/refFlats')
+if os.path.exists(root_path + "/genomes_processed/" + genome_label + '/STAR_genome'):
+    os.system("rm -r " + root_path + "/genomes_processed/" + genome_label + '/STAR_genome')
 if not os.path.exists(root_path + "/genomes_processed/" + genome_label + "/log"):
     os.mkdir(root_path + "/genomes_processed/" + genome_label + "/log")
 if not os.path.exists(root_path + "/genomes_processed/" + genome_label + "/temp"):
@@ -117,10 +123,10 @@ if file_fasta != "":
         os.mkdir(root_path + "/genomes_processed/" + genome_label + "/STAR_genome")
     if file_gtf != "":
         print "  - Including GTF annotation"
-        command  = config.path_star + " --runThreadN " + str(nprocs_star) + " --runMode genomeGenerate  --genomeDir #GD --genomeFastaFiles #FASTA --sjdbGTFfile #GTF &>/dev/null"
+        command  = config.path_star + " --outFileNamePrefix #GD --runThreadN " + str(nprocs_star) + " --runMode genomeGenerate"+ sb +" --genomeDir #GD --genomeFastaFiles #FASTA --sjdbGTFfile #GTF &>/dev/null"
     else:
         print "  - GTF file not included/provided"
-        command  = config.path_star + " --runThreadN " + str(nprocs_star) + " --runMode genomeGenerate  --genomeDir #GD --genomeFastaFiles #FASTA &>/dev/null"
+        command  = config.path_star + " --outFileNamePrefix #GD --runThreadN " + str(nprocs_star) + " --runMode genomeGenerate"+ sb +" --genomeDir #GD --genomeFastaFiles #FASTA &>/dev/null"
     command  = command.replace("#GD", root_path + "/genomes_processed/" + genome_label + "/STAR_genome")
     command  = command.replace("#FASTA", file_fasta).replace("#GTF", file_gtf)
     os.system(command)
@@ -145,4 +151,8 @@ if file_gtf != "":
 print "> Adding genome key to installed genomes..."
 out = open(root_path + "/genomes_processed/installed_genomes.txt",'a')
 print >> out, genome_label + "\t" + time.strftime("%y%m%d_%H%M%S") + "\t" + opt.fasta.split("/")[-1] + "\t" + opt.cdna.split("/")[-1] + "\t" + opt.gtf.split("/")[-1]
+
+os.system('rm -rf ' + root_path + "/genomes_processed/" + genome_label + "/log")
+os.system('rm -rf ' + root_path + "/genomes_processed/" + genome_label + "/temp")
+
 out.close()
